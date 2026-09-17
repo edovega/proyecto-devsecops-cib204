@@ -14,6 +14,8 @@ Aplicación móvil que **cifra y descifra datos** (RSA) con un servicio backend 
 | **Tablas de entrega** | — | [`docs/tablas/`](docs/tablas/) — Tablas 1 a 6 listas para completar (requisitos, STRIDE, diagnóstico, antes/después, riesgo, pruebas) |
 | **Evidencias** | — | [`docs/evidencias/`](docs/evidencias/) — manifiesto SHA-256, capturas y figuras |
 | **Guía del proyecto** | — | [`guia-paso-a-paso.md`](guia-paso-a-paso.md) — plan completo y mapa de la rúbrica |
+| **Plan de acción** | — | [`docs/plan-de-accion.md`](docs/plan-de-accion.md) — cobertura 100% de la rúbrica (45/45): herramientas, acciones, evidencia y verificación por criterio |
+| **Datos del curso** | — | [`docs/datos-del-curso.md`](docs/datos-del-curso.md) — datos validados del curso, docente e integrantes |
 
 ## 🏗️ Estructura del repositorio
 
