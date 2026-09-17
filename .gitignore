@@ -1,0 +1,30 @@
+# Dependencias
+node_modules/
+
+# Llaves privadas y datos sensibles (NUNCA subir a Git)
+keys/
+*.pem
+*.key
+*.env
+.env
+.env.*
+!.env.example
+
+# Secretos de práctica del laboratorio (se eliminan en Fase 2)
+servidor/.env
+servidor/config.js
+
+# Archivos temporales y de entorno
+*.log
+.DS_Store
+logs/
+
+# Artefactos de pruebas y reportes locales
+*.sarif
+coverage/
+dist/
+build/
+
+# Reportes descargados del pipeline (se guardan como evidencia en docs/evidencias/)
+reportes/
+*.zip

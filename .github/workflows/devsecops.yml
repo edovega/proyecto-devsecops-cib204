@@ -1,0 +1,184 @@
+# ⚠️ VERSIÓN PROVISIONAL — Pipeline DevSecOps
+# Basada en la descripción de la guía del laboratorio (6 pruebas).
+# Cuando llegue el material oficial (proyecto-devsecops-cib204.zip),
+# este archivo se reemplaza por el devsecops.yml oficial del curso.
+#
+# Las 6 pruebas: SAST (Semgrep + CodeQL), Secretos (Gitleaks),
+# SCA (npm audit + Trivy), Imagen (Trivy + Syft SBOM) y DAST (OWASP ZAP).
+# Fase 1: se espera que varios jobs salgan en ROJO (diagnóstico).
+# Fase 2: se corrigen los hallazgos hasta dejar todo en VERDE.
+
+name: DevSecOps
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── 1. SAST con Semgrep ──────────────────────────────────────────────
+  sast_semgrep:
+    name: SAST - Semgrep
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Ejecutar Semgrep (reglas de seguridad)
+        run: |
+          docker run --rm -v "${PWD}:/src" returntocorp/semgrep \
+            semgrep scan --config=auto --json --output=/src/semgrep-report.json /src || true
+
+      - name: Subir reporte Semgrep como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-semgrep
+          path: semgrep-report.json
+          if-no-files-found: ignore
+
+  # ── 2. SAST con CodeQL (requiere repo PÚBLICO) ───────────────────────
+  sast_codeql:
+    name: SAST - CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [javascript]
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Inicializar CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Análisis CodeQL
+        uses: github/codeql-action/analyze@v3
+
+  # ── 3. Secretos con Gitleaks ─────────────────────────────────────────
+  secretos:
+    name: Secretos - Gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ejecutar Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ── 4. SCA: dependencias con fallas conocidas ────────────────────────
+  sca:
+    name: SCA - npm audit + Trivy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: servidor/package-lock.json
+
+      - name: npm audit (dependencias del servicio)
+        working-directory: servidor
+        run: npm audit --audit-level=high || true
+
+      - name: Escaneo Trivy del sistema de archivos
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: servidor
+          format: table
+          exit-code: 0
+
+      - name: Subir reporte SCA como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-sca
+          path: |
+            servidor/npm-audit.txt
+            trivy-fs-report.json
+          if-no-files-found: ignore
+
+  # ── 5. Imagen del contenedor: Trivy + Syft (SBOM) ────────────────────
+  imagen:
+    name: Imagen - Trivy + Syft
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Construir imagen del servicio
+        run: docker build -t cifrado:lab ./servidor
+
+      - name: Escaneo Trivy de la imagen
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: cifrado:lab
+          format: table
+          exit-code: 0
+
+      - name: Generar SBOM con Syft
+        uses: anchore/sbom-action@v0
+        with:
+          image: cifrado:lab
+          format: spdx-json
+
+      - name: Subir SBOM como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.spdx.json
+          if-no-files-found: ignore
+
+  # ── 6. DAST con OWASP ZAP (ataca la app viva) ────────────────────────
+  dast:
+    name: DAST - OWASP ZAP
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: servidor/package-lock.json
+
+      - name: Instalar dependencias del servicio
+        working-directory: servidor
+        run: npm ci
+
+      - name: Levantar el servicio (blanco del DAST)
+        working-directory: servidor
+        run: |
+          node servidor.js &
+          sleep 5
+          curl -s http://localhost:3000/salud || true
+
+      - name: Escaneo ZAP (full scan)
+        uses: zaproxy/action-full-scan@v0.12.0
+        with:
+          target: http://localhost:3000
+          cmd_options: "-a"
+
+      - name: Subir informe ZAP como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-zap
+          path: report_html.html
+          if-no-files-found: ignore

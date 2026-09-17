@@ -1,0 +1,38 @@
+# ⚠️ VERSIÓN PROVISIONAL — docker-compose.yml
+# Basada en la descripción de la guía del laboratorio.
+# Cuando llegue el material oficial (proyecto-devsecops-cib204.zip),
+# este archivo se reemplaza por el docker-compose.yml oficial del curso.
+#
+# Levanta dos servicios:
+#   - cifrado  : API de cifrado Node.js (puerto 3000)
+#   - keycloak : IAM que entrega y valida tokens (puerto 8080)
+#
+# La guía indica que el compose oficial detecta solo la URL del Codespace
+# y configura Keycloak con ella (la consola funciona sin pasos extra).
+
+services:
+  cifrado:
+    build: ./servidor
+    container_name: cifrado
+    ports:
+      - "3000:3000"
+    environment:
+      # En Fase 2 estos valores pasan a variables de entorno reales
+      # (nunca secretos reales en el repo)
+      KEYCLOAK_URL: ${KEYCLOAK_URL:-http://localhost:8080}
+      KEYCLOAK_REALM: appmovil
+      KEYCLOAK_CLIENT_ID: servicio-cifrado
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    container_name: keycloak
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      # URL pública del Codespace (la detecta el compose oficial)
+      KC_HOSTNAME_URL: ${CODESPACE_URL:-http://localhost:8080}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

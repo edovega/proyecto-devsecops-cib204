@@ -1,0 +1,4 @@
+# Manifiesto SHA-256 de evidencias — Proyecto DevSecOps CIB-204
+# Generado: 2026-09-17
+# Verificar con: sha256sum -c manifiesto-sha256.txt
+# (Los archivos se agregan a medida que se generan las evidencias)
