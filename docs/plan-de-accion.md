@@ -189,7 +189,7 @@ El proyecto está **100% completo** cuando:
 | Riesgo | Impacto | Mitigación |
 |---|---|---|
 | ⏳ Zip oficial no ha llegado | No se puede ejecutar Fase 1 real | Estructura lista; al llegar el zip se integra en minutos |
-| CodeQL requiere repo público | Job sin resultados si es privado | ✅ Repo ya es público |
+| CodeQL requiere repo público | Job sin resultados mientras esté privado | Repo **privado durante el desarrollo** (Semgrep es la prueba SAST principal); se hace **público al finalizar** — acción: `gh repo edit edovega/proyecto-devsecops-cib204 --visibility public --accept-visibility-change-consequences` |
 | Horas de Codespace limitadas | Tiempo de trabajo | Detener Codespace al terminar; plan gratuito alcanza |
 | Fechas de entrega no confirmadas | Informe con fechas incorrectas | Confirmar con la docente (sección 4 de datos-del-curso) |
 | Pandoc no instalado | PDF final | Instalar (`apt install pandoc`) o usar alternativa Python |

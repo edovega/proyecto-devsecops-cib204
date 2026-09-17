@@ -60,6 +60,6 @@
 | Campo | Valor |
 |---|---|
 | Repositorio | https://github.com/edovega/proyecto-devsecops-cib204 |
-| Visibilidad | **Público** (requisito para CodeQL gratis) |
+| Visibilidad | **Privado durante el desarrollo** → **público al finalizar** (requisito para CodeQL gratis y revisión del docente) |
 | Rama principal | `main` |
 | Identidad git | Eduardo J. Vega Arguedas <eduardo.j.vega@gmail.com> |

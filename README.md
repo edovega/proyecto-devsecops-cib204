@@ -67,7 +67,7 @@ proyecto-devsecops-cib204
 | `imagen` | Contenedor | Fallas de la imagen Docker; genera el SBOM | Trivy + Syft |
 | `dast` | DAST | Ataca la app viva (cabeceras, CORS) | OWASP ZAP |
 
-> ⚠️ **CodeQL necesita repo público.** Este repositorio es **público** para que CodeQL sea gratis y el docente pueda revisar. Los secretos incluidos son ficticios, de práctica; nunca subas secretos reales a un repo público.
+> ⚠️ **CodeQL necesita repo público.** Este repositorio está **privado durante el desarrollo** y se hará **público al finalizar** (para que CodeQL sea gratis y el docente pueda revisar). Mientras esté privado, el paso de CodeQL no dará resultados y **Semgrep es la prueba SAST principal** (el pipeline funciona igual). Los secretos incluidos son ficticios, de práctica; nunca subas secretos reales a un repo público.
 
 ## 🚀 Inicio rápido (en el Codespace)
 
