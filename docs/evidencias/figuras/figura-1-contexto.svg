@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420" font-family="Segoe UI, Arial, sans-serif">
+  <title>Figura 1. Contexto de la aplicación</title>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="900" height="420" fill="#ffffff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1a2e">Figura 1. Contexto de la aplicación</text>
+  <text x="450" y="50" text-anchor="middle" font-size="12" fill="#666">Sistema de cifrado seguro: app móvil, servicio Node.js, Keycloak y pipeline DevSecOps</text>
+
+  <!-- App móvil -->
+  <rect x="60" y="110" width="220" height="150" rx="10" fill="#e8f4fd" stroke="#2b7de9" stroke-width="2"/>
+  <text x="170" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a2e">APP MÓVIL (cliente)</text>
+  <text x="170" y="170" text-anchor="middle" font-size="11" fill="#333">Expo / React Native</text>
+  <text x="170" y="190" text-anchor="middle" font-size="11" fill="#333">app-movil/App.js</text>
+  <text x="170" y="215" text-anchor="middle" font-size="11" fill="#333">Cifrar / descifrar</text>
+  <text x="170" y="235" text-anchor="middle" font-size="11" fill="#333">Maneja el token JWT</text>
+
+  <!-- Servicio -->
+  <rect x="340" y="110" width="220" height="150" rx="10" fill="#eafaf1" stroke="#27ae60" stroke-width="2"/>
+  <text x="450" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a2e">SERVICIO DE CIFRADO</text>
+  <text x="450" y="170" text-anchor="middle" font-size="11" fill="#333">Node.js · servidor/</text>
+  <text x="450" y="190" text-anchor="middle" font-size="11" fill="#333">servidor.js (API REST)</text>
+  <text x="450" y="210" text-anchor="middle" font-size="11" fill="#333">cifrado.js (RSA-OAEP)</text>
+  <text x="450" y="230" text-anchor="middle" font-size="11" fill="#333">auth.js (valida JWT)</text>
+
+  <!-- Keycloak -->
+  <rect x="620" y="110" width="220" height="150" rx="10" fill="#fdf2e9" stroke="#e67e22" stroke-width="2"/>
+  <text x="730" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a1a2e">IAM — KEYCLOAK</text>
+  <text x="730" y="170" text-anchor="middle" font-size="11" fill="#333">docker-compose.yml</text>
+  <text x="730" y="190" text-anchor="middle" font-size="11" fill="#333">Realm: appmovil</text>
+  <text x="730" y="210" text-anchor="middle" font-size="11" fill="#333">Cliente: servicio-cifrado</text>
+  <text x="730" y="230" text-anchor="middle" font-size="11" fill="#333">Usuario: demo</text>
+
+  <!-- Flechas -->
+  <line x1="280" y1="170" x2="335" y2="170" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="307" y="160" text-anchor="middle" font-size="10" fill="#555">HTTPS + JWT</text>
+  <line x1="560" y1="170" x2="615" y2="170" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="587" y="160" text-anchor="middle" font-size="10" fill="#555">valida token</text>
+  <line x1="730" y1="110" x2="730" y2="80" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="730" y="72" text-anchor="middle" font-size="10" fill="#555">entrega token</text>
+
+  <!-- Pipeline -->
+  <rect x="60" y="310" width="780" height="80" rx="10" fill="#f4f4f9" stroke="#8e44ad" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="450" y="338" text-anchor="middle" font-size="14" font-weight="bold" fill="#8e44ad">PIPELINE DevSecOps — GitHub Actions (revisa todo en cada push)</text>
+  <text x="450" y="362" text-anchor="middle" font-size="11" fill="#333">sast_semgrep · sast_codeql · secretos · sca · imagen · dast</text>
+  <text x="450" y="380" text-anchor="middle" font-size="10" fill="#666">Semgrep · CodeQL · Gitleaks · npm audit · Trivy · Syft · OWASP ZAP</text>
+
+  <!-- Línea punteada del pipeline hacia el sistema -->
+  <line x1="450" y1="310" x2="450" y2="265" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="4 3"/>
+</svg>

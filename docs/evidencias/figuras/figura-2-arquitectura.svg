@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="480" viewBox="0 0 900 480" font-family="Segoe UI, Arial, sans-serif">
+  <title>Figura 2. Arquitectura y límites de confianza</title>
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="900" height="480" fill="#ffffff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1a2e">Figura 2. Arquitectura y límites de confianza</text>
+
+  <!-- Límite: usuario -->
+  <rect x="40" y="70" width="820" height="90" rx="10" fill="#fef9e7" stroke="#f1c40f" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="60" y="95" font-size="12" font-weight="bold" fill="#7d6608">LÍMITE DE CONFIANZA 1 — USUARIO (no confiable)</text>
+  <rect x="60" y="110" width="200" height="35" rx="6" fill="#fff" stroke="#f1c40f" stroke-width="1.5"/>
+  <text x="160" y="132" text-anchor="middle" font-size="11" fill="#333">Usuario demo (Keycloak)</text>
+
+  <!-- Límite: app móvil -->
+  <rect x="40" y="180" width="820" height="110" rx="10" fill="#e8f4fd" stroke="#2b7de9" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="60" y="205" font-size="12" font-weight="bold" fill="#1a4d8f">LÍMITE DE CONFIANZA 2 — APP MÓVIL (parcialmente confiable)</text>
+  <rect x="60" y="220" width="240" height="55" rx="6" fill="#fff" stroke="#2b7de9" stroke-width="1.5"/>
+  <text x="180" y="242" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">App.js</text>
+  <text x="180" y="260" text-anchor="middle" font-size="10" fill="#333">Cifrar/descifrar · token JWT</text>
+
+  <!-- Límite: servicio -->
+  <rect x="40" y="310" width="820" height="150" rx="10" fill="#eafaf1" stroke="#27ae60" stroke-width="2" stroke-dasharray="6 3"/>
+  <text x="60" y="335" font-size="12" font-weight="bold" fill="#145a32">LÍMITE DE CONFIANZA 3 — SERVICIO + IAM (confiable, en la nube)</text>
+  <rect x="60" y="350" width="150" height="90" rx="6" fill="#fff" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="135" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">servidor.js</text>
+  <text x="135" y="390" text-anchor="middle" font-size="10" fill="#333">API REST</text>
+  <text x="135" y="406" text-anchor="middle" font-size="10" fill="#333">/salud /cifrar /descifrar</text>
+  <text x="135" y="422" text-anchor="middle" font-size="10" fill="#333">Validación de entrada</text>
+
+  <rect x="230" y="350" width="150" height="90" rx="6" fill="#fff" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="305" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">cifrado.js</text>
+  <text x="305" y="390" text-anchor="middle" font-size="10" fill="#333">RSA-2048</text>
+  <text x="305" y="406" text-anchor="middle" font-size="10" fill="#333">OAEP-SHA256</text>
+  <text x="305" y="422" text-anchor="middle" font-size="10" fill="#333">Cifrar/descifrar</text>
+
+  <rect x="400" y="350" width="150" height="90" rx="6" fill="#fff" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="475" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">auth.js</text>
+  <text x="475" y="390" text-anchor="middle" font-size="10" fill="#333">Valida JWT</text>
+  <text x="475" y="406" text-anchor="middle" font-size="10" fill="#333">Firma · expiración</text>
+  <text x="475" y="422" text-anchor="middle" font-size="10" fill="#333">Emisor · audiencia</text>
+
+  <rect x="570" y="350" width="150" height="90" rx="6" fill="#fff" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="645" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">db.js</text>
+  <text x="645" y="390" text-anchor="middle" font-size="10" fill="#333">Bitácora</text>
+  <text x="645" y="406" text-anchor="middle" font-size="10" fill="#333">Registro de</text>
+  <text x="645" y="422" text-anchor="middle" font-size="10" fill="#333">operaciones</text>
+
+  <rect x="740" y="350" width="100" height="90" rx="6" fill="#fdf2e9" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="790" y="372" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a1a2e">Keycloak</text>
+  <text x="790" y="390" text-anchor="middle" font-size="10" fill="#333">Emite y</text>
+  <text x="790" y="406" text-anchor="middle" font-size="10" fill="#333">valida</text>
+  <text x="790" y="422" text-anchor="middle" font-size="10" fill="#333">tokens</text>
+
+  <!-- Flechas -->
+  <line x1="160" y1="145" x2="160" y2="215" stroke="#555" stroke-width="2" marker-end="url(#arrow2)"/>
+  <text x="170" y="185" font-size="10" fill="#555">usa la app</text>
+  <line x1="300" y1="275" x2="300" y2="345" stroke="#555" stroke-width="2" marker-end="url(#arrow2)"/>
+  <text x="310" y="315" font-size="10" fill="#555">HTTPS + JWT</text>
+  <line x1="790" y1="350" x2="790" y2="315" stroke="#555" stroke-width="2" marker-end="url(#arrow2)"/>
+  <text x="800" y="335" font-size="10" fill="#555">valida token</text>
+</svg>

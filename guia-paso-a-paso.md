@@ -2,6 +2,8 @@
 
 Plan completo del laboratorio con **mapeo explícito a la rúbrica del curso** (45 puntos del proyecto, 40% de la nota). Cada paso indica qué entregable produce y qué criterio de la rúbrica excede.
 
+> 📘 **Trazabilidad completa:** la [lista de validación de objetivos](docs/validacion-objetivos.md) mapea cada objetivo del curso, entregable y criterio de rúbrica a dónde se desarrolla y cómo se excede.
+
 ---
 
 ## Mapa de entregas y rúbrica
@@ -113,6 +115,8 @@ bash iniciar-app.sh        # entra a app-movil/, instala y arranca Expo (puerto 
 - [ ] **📸 Evidencia:** capturas de los jobs en rojo + reportes en `docs/evidencias/`
 
 ### Paso 11. FASE 2 — Corregir de rojo a verde (remediación)
+> 📘 Usa el **[playbook de remediación](docs/remediacion-playbook.md)**: cada hallazgo esperado tiene su patrón de corrección (secretos, eval, JWT, CORS, errores, imagen, cabeceras) con mejores prácticas.
+
 Orden sugerido de corrección (cada una = commit + push + verificación):
 
 | # | Hallazgo | Job | Corrección típica |

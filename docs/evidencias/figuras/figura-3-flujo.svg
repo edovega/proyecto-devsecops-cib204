@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520" font-family="Segoe UI, Arial, sans-serif">
+  <title>Figura 3. Flujo de cifrado con identidad</title>
+  <defs>
+    <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+  <text x="450" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1a1a2e">Figura 3. Flujo de cifrado con identidad</text>
+  <text x="450" y="50" text-anchor="middle" font-size="12" fill="#666">La app pide un token a Keycloak, lo envía al servicio, y este valida el token antes de cifrar/descifrar con RSA</text>
+
+  <!-- Actores -->
+  <rect x="60" y="90" width="200" height="60" rx="8" fill="#e8f4fd" stroke="#2b7de9" stroke-width="2"/>
+  <text x="160" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">APP MÓVIL</text>
+  <text x="160" y="138" text-anchor="middle" font-size="10" fill="#333">app-movil/App.js</text>
+
+  <rect x="350" y="90" width="200" height="60" rx="8" fill="#eafaf1" stroke="#27ae60" stroke-width="2"/>
+  <text x="450" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">SERVICIO</text>
+  <text x="450" y="138" text-anchor="middle" font-size="10" fill="#333">servidor/ (Node.js)</text>
+
+  <rect x="640" y="90" width="200" height="60" rx="8" fill="#fdf2e9" stroke="#e67e22" stroke-width="2"/>
+  <text x="740" y="118" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a1a2e">KEYCLOAK</text>
+  <text x="740" y="138" text-anchor="middle" font-size="10" fill="#333">IAM · realm appmovil</text>
+
+  <!-- Paso 1 -->
+  <line x1="740" y1="150" x2="740" y2="200" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <line x1="740" y1="200" x2="265" y2="200" stroke="#555" stroke-width="2"/>
+  <line x1="265" y1="200" x2="265" y2="155" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <rect x="300" y="185" width="330" height="30" rx="6" fill="#fdf2e9" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="465" y="204" text-anchor="middle" font-size="11" fill="#333">1. La app pide token con usuario/contraseña (demo)</text>
+
+  <!-- Paso 2 -->
+  <line x1="160" y1="150" x2="160" y2="260" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <rect x="60" y="245" width="330" height="30" rx="6" fill="#e8f4fd" stroke="#2b7de9" stroke-width="1.5"/>
+  <text x="225" y="264" text-anchor="middle" font-size="11" fill="#333">2. Keycloak entrega el token JWT a la app</text>
+
+  <!-- Paso 3 -->
+  <line x1="265" y1="275" x2="345" y2="275" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <rect x="60" y="305" width="330" height="30" rx="6" fill="#e8f4fd" stroke="#2b7de9" stroke-width="1.5"/>
+  <text x="225" y="324" text-anchor="middle" font-size="11" fill="#333">3. La app envía texto + token JWT al servicio (/cifrar)</text>
+
+  <!-- Paso 4 -->
+  <line x1="450" y1="150" x2="450" y2="230" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <rect x="350" y="215" width="330" height="30" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="515" y="234" text-anchor="middle" font-size="11" fill="#333">4. El servicio valida el token (firma, expiración, emisor)</text>
+
+  <!-- Paso 5 -->
+  <rect x="350" y="305" width="330" height="30" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="515" y="324" text-anchor="middle" font-size="11" fill="#333">5. Cifra con RSA-OAEP y devuelve el texto cifrado</text>
+  <line x1="450" y1="245" x2="450" y2="300" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+
+  <!-- Paso 6 -->
+  <line x1="395" y1="320" x2="270" y2="320" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <rect x="60" y="365" width="330" height="30" rx="6" fill="#e8f4fd" stroke="#2b7de9" stroke-width="1.5"/>
+  <text x="225" y="384" text-anchor="middle" font-size="11" fill="#333">6. La app muestra el texto cifrado ("Cifrado OK")</text>
+
+  <!-- Paso 7 -->
+  <line x1="225" y1="395" x2="225" y2="430" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <rect x="60" y="435" width="330" height="30" rx="6" fill="#e8f4fd" stroke="#2b7de9" stroke-width="1.5"/>
+  <text x="225" y="454" text-anchor="middle" font-size="11" fill="#333">7. La app envía el texto cifrado + token (/descifrar)</text>
+
+  <!-- Paso 8 -->
+  <line x1="395" y1="450" x2="270" y2="450" stroke="#555" stroke-width="2" marker-end="url(#arrow3)"/>
+  <rect x="350" y="435" width="330" height="30" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="515" y="454" text-anchor="middle" font-size="11" fill="#333">8. Valida token, descifra y devuelve el texto original</text>
+
+  <!-- Nota de seguridad -->
+  <rect x="60" y="480" width="780" height="30" rx="6" fill="#f4f4f9" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="450" y="500" text-anchor="middle" font-size="11" fill="#333">Sin token válido → 401 · Dato manipulado → error controlado · Entrada inválida → rechazo (disponibilidad)</text>
+</svg>
