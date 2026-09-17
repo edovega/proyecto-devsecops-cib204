@@ -192,7 +192,7 @@ El proyecto está **100% completo** cuando:
 | CodeQL requiere repo público | Job sin resultados mientras esté privado | Repo **privado durante el desarrollo** (Semgrep es la prueba SAST principal); se hace **público al finalizar** — acción: `gh repo edit edovega/proyecto-devsecops-cib204 --visibility public --accept-visibility-change-consequences` |
 | Horas de Codespace limitadas | Tiempo de trabajo | Detener Codespace al terminar; plan gratuito alcanza |
 | Fechas de entrega no confirmadas | Informe con fechas incorrectas | Confirmar con la docente (sección 4 de datos-del-curso) |
-| Pandoc no instalado | PDF final | Instalar (`apt install pandoc`) o usar alternativa Python |
+| Pandoc no instalado | PDF final | ✅ Resuelto: pandoc 3.9 verificado (venv `pypandoc-binary`); LaTeX se instala en el Codespace (root) o se usa DOCX/GitHub-Print como alternativa |
 
 ---
 
@@ -200,6 +200,6 @@ El proyecto está **100% completo** cuando:
 
 | Herramienta | Necesaria para | Acción |
 |---|---|---|
-| Pandoc | Conversión del informe a PDF | Instalar cuando se genere el informe final |
+| Pandoc | Conversión del informe a PDF | ✅ pandoc 3.9 verificado (venv `pypandoc-binary`). PDF final: en el Codespace `apt-get install -y texlive-latex-base` + `pandoc informe-maestro.md -o informe.pdf`; alternativas: DOCX o GitHub → Print → PDF |
 | docker-compose (local) | Pruebas locales del stack | No es necesaria: el lab corre en Codespace (compose incluido) |
 | Confirmación de equipo | Portada del informe | Preguntar al compañero Keylor si participa en este laboratorio |

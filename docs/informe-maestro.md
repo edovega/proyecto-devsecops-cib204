@@ -144,6 +144,21 @@ Todo el entorno es reproducible: `.devcontainer/devcontainer.json` define el Cod
 
 Cada amenaza incluye en la Tabla 2: severidad justificada, prueba concreta de verificación del control y CWE asociada (para cruzar con los hallazgos de la Tabla 3).
 
+### 6.1 Casos de abuso (misuse cases)
+
+Complementan el modelado STRIDE con escenarios concretos de uso malicioso:
+
+| ID | Caso de abuso | Actor | Resultado esperado del control |
+|---|---|---|---|
+| CA-01 | Usar el servicio de cifrado sin autenticarse | Atacante externo | 401 No autorizado |
+| CA-02 | Cifrar/descifrar con un token falso (firma inválida) | Atacante externo | 401 No autorizado |
+| CA-03 | Alterar el texto cifrado en tránsito | Atacante MITM | Error controlado (OAEP detecta manipulación) |
+| CA-04 | Enviar entradas malformadas (vacías, enormes, no texto) | Atacante externo | Rechazo con 400; servicio sigue disponible |
+| CA-05 | Leer secretos del repositorio | Cualquiera (repo público) | Sin secretos en el repo (Gitleaks en verde) |
+| CA-06 | Explotar el servicio como oráculo de cifrado | Atacante autenticado | Rate limiting y bitácora (no repudio) |
+| CA-07 | Escalar privilegios dentro del contenedor | Atacante con acceso | Contenedor no-root (Trivy en verde) |
+| CA-08 | Negar una operación realizada | Usuario | Bitácora consultable (no repudio) |
+
 ## 7. Jerarquía de diseño
 
 > Ver [`docs/jerarquia_diseno.md`](docs/jerarquia_diseno.md) — arquitectura, árbol de archivos, tabla de subsistemas y componentes críticos.
@@ -167,6 +182,21 @@ Cada amenaza incluye en la Tabla 2: severidad justificada, prueba concreta de ve
 
 ### 7.2 Componentes críticos
 Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, exposición a datos sensibles e interacción con componentes externos), los componentes críticos son: **API de cifrado**, **autenticación (JWT)**, **módulo RSA** y **app móvil**. Sus modos de fallo y mitigaciones están documentados en `docs/jerarquia_diseno.md`.
+
+### 7.3 Inventario de activos
+
+| ID | Activo | Tipo | Clasificación | Dueño | Almacenamiento |
+|---|---|---|---|---|---|
+| A-01 | Texto plano del usuario | Datos | Confidencial | Usuario | En memoria, solo durante la operación |
+| A-02 | Texto cifrado (base64) | Datos | Confidencial | Usuario | En memoria / respuesta HTTP |
+| A-03 | Llaves RSA (pública/privada) | Criptográfico | **Crítico** | Servicio | Fuera del repo (env / secretos) |
+| A-04 | Tokens JWT | Credencial | **Crítico** | Usuario | En memoria de la app |
+| A-05 | Credenciales de Keycloak (admin/demo) | Credencial | **Crítico** | Administrador | Consola Keycloak / env |
+| A-06 | Bitácora de operaciones | Datos | Confidencial | Servicio | `db.js` (SQLite) |
+| A-07 | Código fuente (servidor + app) | Código | Público (al finalizar) | Equipo | Repositorio GitHub |
+| A-08 | Reportes de seguridad (Semgrep, Gitleaks, SBOM, ZAP) | Evidencia | Confidencial | Equipo | `docs/evidencias/` + artifacts |
+
+> El inventario alimenta el análisis ALE de la Tabla 5 (valor de activos y factor de exposición).
 
 ## 8. Configuración del entorno (paso a paso)
 
@@ -211,28 +241,96 @@ El puerto 3000 debe estar en **Público** (Port Visibility → Public) para que 
 
 # PARTE II — IMPLEMENTACIÓN Y ENTORNO
 
+> **Nota de trazabilidad:** esta parte documenta las **decisiones de diseño** del módulo de cifrado, las utilidades, la autenticación y el pipeline. El código fuente oficial (con sus vulnerabilidades `// [VULN-n]`) se integra desde el material del laboratorio; aquí se documenta el diseño seguro de referencia que guía la remediación de la Fase 2.
+
 ## 9. Módulo de encriptación/desencriptación (RSA)
 
-*(Pendiente de material oficial — se documenta cuando el zip esté integrado: funciones, selección de algoritmo, implementación RSA-OAEP y justificación.)*
+### 9.1 Selección del algoritmo criptográfico
+
+| Decisión | Valor | Justificación |
+|---|---|---|
+| Algoritmo | **RSA** | Cifrado asimétrico estándar; el laboratorio lo fija |
+| Tamaño de llave | **2048 bits** | Mínimo recomendado por NIST (SP 800-57); ~112 bits de seguridad |
+| Padding | **OAEP con SHA-256** | OAEP es IND-CCA2 seguro; PKCS#1 v1.5 es vulnerable al ataque de oráculo de padding (Bleichenbacher, CWE-780) |
+| Codificación de salida | **Base64** | Transporte seguro del texto cifrado (binario → texto) |
+
+### 9.2 Funciones del módulo (`cifrado.js`)
+
+| Función | Entrada | Salida | Comportamiento seguro |
+|---|---|---|---|
+| `generarLlaves()` | — | par (pública, privada) | Genera RSA-2048; las llaves se guardan fuera del repo (nunca en el código) |
+| `cifrar(textoPlano)` | texto | texto cifrado (base64) | Valida entrada; usa OAEP-SHA256; falla seguro ante error |
+| `descifrar(textoCifrado)` | base64 | texto plano | Valida entrada; OAEP detecta manipulación (falla con error controlado) |
+
+### 9.3 Diseño seguro de referencia vs. versión vulnerable
+
+| Aspecto | Versión insegura (Fase 1, esperada) | Diseño seguro (Fase 2) |
+|---|---|---|
+| Padding | PKCS#1 v1.5 o sin padding (CWE-780) | OAEP-SHA256 |
+| Llaves | Quemadas en el repo (CWE-798) | Variables de entorno / secretos de GitHub |
+| Validación de entrada | Ausente o mínima | Tipo, tamaño y formato validados |
+| Errores | Detalle interno en la respuesta (CWE-209) | Respuesta genérica; detalle en bitácora |
+
+> ⚠️ La columna "versión insegura" se confirma con el código oficial del zip y los hallazgos reales de la Tabla 3.
 
 ## 10. Funciones de utilidad
 
-*(Pendiente de material oficial — validación de entrada, manejo de errores genéricos, codificación y bitácora.)*
+### 10.1 Validación de entrada
+- **Tipo:** solo cadenas de texto (rechaza números, objetos, `null`).
+- **Tamaño:** límite superior (rechaza entradas enormes → mitiga DoS, CWE-400).
+- **Contenido:** sin caracteres de control problemáticos; codificación UTF-8.
+- **Comportamiento:** rechazo con error genérico y código HTTP adecuado (400).
+
+### 10.2 Manejo de errores
+- Respuestas HTTP con mensajes **genéricos** (`{"error":"Error interno"}`) — nunca stack traces ni detalles de implementación (CWE-209).
+- El detalle técnico se registra en la bitácora del servidor.
+- **Fallo seguro:** ante cualquier excepción, la operación falla cerrada (no devuelve datos parciales).
+
+### 10.3 Codificación y bitácora
+- Base64 estándar para el texto cifrado.
+- Bitácora de operaciones (quién, qué, cuándo) para el requisito de **no repudio** (Tabla 1).
 
 ## 11. Autenticación con Keycloak (JWT)
 
-*(Pendiente de material oficial — flujo de token, validación en auth.js: firma, expiración, emisor.)*
+### 11.1 Flujo de identidad
+1. La app móvil solicita un token a Keycloak (realm `appmovil`, cliente `servicio-cifrado`, usuario `demo`).
+2. La app envía el token en el encabezado `Authorization: Bearer <token>`.
+3. El servicio valida el token en `auth.js` **antes** de cifrar/descifrar.
+4. Token válido → 200 OK; token inválido/ausente → 401.
+
+### 11.2 Validación del token (diseño seguro)
+
+| Verificación | Qué valida | Cómo |
+|---|---|---|
+| Firma | El token fue emitido por Keycloak | `jwt.verify()` con la clave pública (JWKS) |
+| Algoritmo | Solo `RS256` (evita confusión de algoritmo) | `algorithms: ['RS256']` explícito |
+| Expiración | El token no está vencido | Claim `exp` |
+| Emisor | El token viene del realm correcto | Claim `iss` = realm `appmovil` |
+| Audiencia | El token es para este servicio | Claim `aud` = cliente `servicio-cifrado` |
+
+> ⚠️ La versión vulnerable esperada valida mal el token (por ejemplo, solo `jwt.decode()` sin verificar firma, o sin revisar `exp`/`iss`). La corrección sigue el **Patrón 4** del playbook de remediación.
 
 ## 12. Pipeline DevSecOps (las 6 pruebas)
 
-| Job | Tipo | Herramienta | Qué revisa |
-|---|---|---|---|
-| sast_semgrep | SAST | Semgrep | eval, inyección, JWT, CORS |
-| sast_codeql | SAST | CodeQL | Análisis con motor de GitHub (requiere repo público) |
-| secretos | Secretos | Gitleaks | Claves y contraseñas |
-| sca | SCA | npm audit + Trivy | Dependencias vulnerables |
-| imagen | Contenedor | Trivy + Syft | Fallas de imagen; SBOM |
-| dast | DAST | OWASP ZAP | Cabeceras, CORS |
+### 12.1 Diseño del pipeline
+
+| Job | Tipo | Herramienta | Qué revisa | Artefacto |
+|---|---|---|---|---|
+| sast_semgrep | SAST | Semgrep | eval, inyección, JWT, CORS, errores | reporte Semgrep |
+| sast_codeql | SAST | CodeQL | Análisis con motor de GitHub (requiere repo público) | alertas en Code scanning |
+| secretos | Secretos | Gitleaks | Claves y contraseñas quemadas | reporte Gitleaks |
+| sca | SCA | npm audit + Trivy | Dependencias vulnerables | SBOM |
+| imagen | Contenedor | Trivy + Syft | Fallas de imagen; SBOM | SBOM |
+| dast | DAST | OWASP ZAP | Cabeceras, CORS | reporte-zap |
+
+### 12.2 Comportamiento por fase
+- **Fase 1:** los jobs sast_semgrep, secretos, sca e imagen **fallan** (rojo) por las vulnerabilidades del código; CodeQL genera alertas (no falla el job); ZAP produce el informe de cabeceras/CORS.
+- **Fase 2:** tras cada corrección (un commit por hallazgo), el job correspondiente pasa a **verde**; al final, 6/6 en verde y las alertas de CodeQL revisadas.
+
+### 12.3 Configuración del workflow
+- Se ejecuta en cada `push` a `main` (y en PRs).
+- Los reportes se suben como **artifacts** (`actions/upload-artifact`) para descargarlos como evidencia.
+- El workflow provisional está en `.github/workflows/devsecops.yml`; se reemplaza por la versión oficial del zip cuando esté disponible.
 
 ---
 
@@ -312,3 +410,80 @@ Riesgo = Probabilidad × Impacto (escala 1–3), con análisis gerencial ALE.
 - **Anexo B:** Reportes del pipeline (Semgrep, Gitleaks, SBOM, ZAP, CodeQL)
 - **Anexo C:** Manifiesto SHA-256 de evidencias
 - **Anexo D:** Historial de versiones del repositorio
+- **Anexo E:** Cronograma del proyecto
+- **Anexo F:** Guía de lectura (evidencias, siglas y archivos)
+- **Anexo G:** Glosario y convenciones
+- **Anexo H:** Nota de transparencia IA
+
+---
+
+## Anexo E — Cronograma del proyecto
+
+| Semana | Actividad | Entregable | Estado |
+|---|---|---|---|
+| 1 | Lectura de la guía y la rúbrica; creación del repositorio | Repo + estructura | ✅ |
+| 2 | Datos del curso, plan de acción, validación de objetivos | `docs/` | ✅ |
+| 3 | **Primer Avance (10%)**: contexto, diseño, Tablas 1–2, entorno | Informe Parte I–II | ✅ (sin zip) |
+| 4–5 | Integración del material oficial; Fase 1 (pipeline en rojo) | Tabla 3 + reportes | ⏳ espera zip |
+| 6–7 | Fase 2: remediación (un commit por hallazgo) | Tabla 4 + pipeline verde | ⏳ |
+| 8 | Pentest, riesgos (Tabla 5), pruebas (Tabla 6) | Tablas 5–6 | ⏳ |
+| 9 | **Segundo Avance (15%)**: diagnóstico, remediación, pruebas | Informe Parte III–IV | ⏳ |
+| 10–13 | Protección de rama, revisión de CodeQL, informe final | Informe Parte V | ⏳ |
+| 14 | **Informe Final (15%)**: PDF integrado + repo público | Entrega | ⏳ |
+
+---
+
+## Anexo F — Guía de lectura (evidencias, siglas y archivos)
+
+### Sistema de evidencias
+Cada evidencia tiene un ID único **EV-C204-XXX** (ver índice de evidencias, sección inicial). Las evidencias de captura viven en `docs/evidencias/capturas/` y las figuras en `docs/evidencias/figuras/`. El manifiesto `docs/evidencias/manifiesto-sha256.txt` registra el hash SHA-256 de cada archivo de evidencia para garantizar integridad.
+
+### Siglas usadas
+| Sigla | Significado |
+|---|---|
+| SAST | Static Application Security Testing |
+| DAST | Dynamic Application Security Testing |
+| SCA | Software Composition Analysis |
+| SBOM | Software Bill of Materials |
+| IAM | Identity and Access Management |
+| JWT | JSON Web Token |
+| OAEP | Optimal Asymmetric Encryption Padding |
+| CWE | Common Weakness Enumeration |
+| STRIDE | Spoofing, Tampering, Repudiation, Information disclosure, DoS, Elevation |
+| ALE | Annualized Loss Expectancy |
+| SLE / ARO | Single Loss Expectancy / Annualized Rate of Occurrence |
+
+### Archivos clave
+| Archivo | Qué es |
+|---|---|
+| `docs/informe-maestro.md` | Informe integrado (este documento) |
+| `docs/tablas/tabla-1..6` | Tablas de entrega del laboratorio |
+| `docs/validacion-objetivos.md` | Trazabilidad objetivos → dónde → cómo excede |
+| `docs/remediacion-playbook.md` | Correcciones de la Fase 2 |
+| `.github/workflows/devsecops.yml` | Pipeline de 6 pruebas |
+| `.devcontainer/devcontainer.json` | Configuración del Codespace |
+
+---
+
+## Anexo G — Glosario y convenciones
+
+| Término | Definición |
+|---|---|
+| **Fase 1 (Diagnóstico)** | Subir el proyecto inseguro; documentar los hallazgos en rojo del pipeline |
+| **Fase 2 (Remediación)** | Corregir cada hallazgo con un commit; verificar la transición a verde |
+| **Hallazgo** | Vulnerabilidad detectada por una prueba del pipeline (con CWE) |
+| **Riesgo** | Probabilidad × Impacto (escala 1–3) |
+| **VULN-n** | Marcador de vulnerabilidad en el código oficial (`// [VULN-n]`) |
+| **Rojo / Verde** | Estado de un job del pipeline: falla / pasa |
+
+**Convenciones:**
+- Un commit por corrección, con mensaje descriptivo en español.
+- Los reportes se descargan como artefactos y se registran en el manifiesto SHA-256.
+- El repositorio es privado durante el desarrollo y público al finalizar.
+- Los secretos del laboratorio son ficticios; nunca se suben secretos reales.
+
+---
+
+## Anexo H — Nota de transparencia IA
+
+Este proyecto se desarrolló con asistencia de herramientas de IA (asistente de codificación en el entorno OpenWork) para: estructurar la documentación, redactar el informe y las tablas, generar las figuras, y agilizar tareas repetitivas del pipeline. **Todas las decisiones de seguridad, la ejecución del laboratorio, la verificación de resultados y el análisis crítico fueron realizados y validados por los integrantes del equipo.** El código fuente del laboratorio es el material oficial del curso; las correcciones de la Fase 2 fueron revisadas y verificadas por el equipo antes de cada commit.
