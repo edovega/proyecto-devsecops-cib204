@@ -347,20 +347,31 @@ Detalles del incidente:
 | Job | Tipo | Herramienta | Qué revisa | Artefacto |
 |---|---|---|---|---|
 | sast_semgrep | SAST | Semgrep | eval, inyección, JWT, CORS, errores | reporte Semgrep |
-| sast_codeql | SAST | CodeQL | Análisis con motor de GitHub (requiere repo público) | alertas en Code scanning |
+| sast_codeql | SAST | CodeQL | Análisis con motor de GitHub | alertas en Code scanning |
 | secretos | Secretos | Gitleaks | Claves y contraseñas quemadas | reporte Gitleaks |
 | sca | SCA | npm audit + Trivy | Dependencias vulnerables | SBOM |
 | imagen | Contenedor | Trivy + Syft | Fallas de imagen; SBOM | SBOM |
 | dast | DAST | OWASP ZAP | Cabeceras, CORS | reporte-zap |
 
+> **Nota:** el job `sast_codeql` del workflow se eliminó en la Fase 2 (commit `f3f9ab4`): el análisis CodeQL lo gestiona GitHub vía **default setup** (Settings → Code security → Code scanning), que corre el workflow "Run CodeQL" en cada push (ver §8.6). El pipeline queda con 5 jobs + CodeQL default setup.
+
 ### 12.2 Comportamiento por fase
 - **Fase 1:** los jobs sast_semgrep, secretos, sca e imagen **fallan** (rojo) por las vulnerabilidades del código; CodeQL genera alertas (no falla el job); ZAP produce el informe de cabeceras/CORS.
-- **Fase 2:** tras cada corrección (un commit por hallazgo), el job correspondiente pasa a **verde**; al final, 6/6 en verde y las alertas de CodeQL revisadas.
+- **Fase 2:** tras cada corrección (un commit por hallazgo), el job correspondiente pasa a **verde**; al final, **5/5 jobs en verde** (run 35390161512) + **CodeQL default setup en verde** (run 35390161555) y las alertas de CodeQL revisadas.
 
 ### 12.3 Configuración del workflow
 - Se ejecuta en cada `push` a `main` (y en PRs).
 - Los reportes se suben como **artifacts** (`actions/upload-artifact`) para descargarlos como evidencia.
-- El workflow provisional está en `.github/workflows/devsecops.yml`; se reemplaza por la versión oficial del zip cuando esté disponible.
+- El workflow está en `.github/workflows/devsecops.yml`; las acciones se fijan a **SHA completo** (commit `cc759ad`) para evitar ataques de supply chain por tags mutables.
+
+### 12.4 Hallazgos DAST (ZAP) del run verde — EV-C204-011
+El informe ZAP del run verde (2.17.0) reporta **0 High, 1 Medium, 1 Low** y 5 informativos:
+
+| Riesgo | Hallazgo | Tratamiento |
+|---|---|---|
+| Medium | CSP: Failure to Define Directive with No Fallback (en `/robots.txt`, 404) | **Falso positivo:** Express 4.22.3 añade `Content-Security-Policy: default-src 'none'` en sus páginas de error/404 (CSP máximamente restrictiva: nada puede cargar, por lo que las directivas "faltantes" `frame-ancestors`/`form-action` no aplican). Las respuestas 200 llevan la CSP completa de Helmet. |
+| Low | Permissions Policy Header Not Set | **Corregido** (FIX-17, commit pendiente): `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()` vía middleware propio (helmet 7 ya no lo incluye). |
+| Informational | Sec-Fetch-* headers, Storable and Cacheable Content | Sin tratamiento: informativos de ZAP, sin riesgo para una API JSON. |
 
 ---
 

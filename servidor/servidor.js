@@ -31,6 +31,15 @@ const app = express();
 // [FIX-06] Cabeceras de seguridad activas (Helmet): CSP, X-Content-Type-Options,
 //   X-Frame-Options, etc.  Cierra CWE-693 y CWE-942 (CORS abierto restringido).
 app.use(helmet());
+
+// [FIX-17] Permissions-Policy: restringe APIs sensibles del navegador (helmet 7
+//   ya no incluye este middleware; se define manualmente). Cierra el hallazgo
+//   Low de ZAP "Permissions Policy Header Not Set".
+app.use((req, res, next) => {
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=()');
+  next();
+});
+
 app.use(cors({ origin: config.ORIGENES_PERMITIDOS }));
 
 app.use(express.json({ limit: '10kb' })); // [FIX-05] CWE-20: tamano de cuerpo acotado
