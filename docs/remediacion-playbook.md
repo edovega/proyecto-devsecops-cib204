@@ -141,8 +141,9 @@ git push
 
 ## Criterios de aceptación (Definition of Done de la Fase 2)
 
-- [ ] 6/6 jobs del pipeline en **verde**
+- [ ] 5/5 jobs del pipeline en **verde** (Semgrep, Gitleaks, SCA, Trivy+SBOM, ZAP) + **CodeQL default setup** en verde (el job avanzado de CodeQL se eliminó del workflow: no puede coexistir con el default setup — ver informe §8.6)
 - [ ] Cada hallazgo de la Tabla 3 tiene su fila en la Tabla 4 con commit referenciado
 - [ ] Reportes finales descargados (Semgrep, Gitleaks, SBOM, ZAP) como evidencia
 - [ ] Alertas de CodeQL revisadas (cerradas o justificadas)
 - [ ] Pruebas funcionales re-ejecutadas (el servicio sigue funcionando tras las correcciones)
+- [ ] Riesgo residual documentado (CVEs de util-linux sin versión fija, excluidos con `--ignore-unfixed` — informe §8.5)

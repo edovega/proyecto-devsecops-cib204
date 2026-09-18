@@ -239,29 +239,33 @@ El puerto 3000 debe estar en **Público** (Port Visibility → Public) para que 
 
 ### 8.5 Ajustes aplicados al Dockerfile del laboratorio
 
-Durante la remediación de la Fase 2 el build de la imagen se rompió; a continuación se documenta el origen del error y los cambios aplicados (trazables por commit).
+Durante la remediación de la Fase 2 el build de la imagen se rompió y el escaneo de imagen (Trivy) falló varias veces; a continuación se documenta el origen del error y los cambios aplicados (trazables por commit).
 
 | Commit | Cambio | Motivo |
 |---|---|---|
 | `8b8b86e` | Remedición: imagen fija `node:20-bookworm-slim`, `npm ci --only=production`, copia selectiva de archivos, `USER node` | Cierra VULN-11/12/13 del zip (CWE-1104 imagen no reproducible, CWE-538 `COPY . .` filtra secretos, CWE-250 ejecución como root) |
 | `8b8b86e` (introdujo) → `e267ad5` (quitó) | `COPY public ./public` | **Error introducido por la remediación, no por el zip:** `servidor/public` no existe en el material y `servidor.js` no usa `express.static`; Docker abortaba el build con `/public: not found` |
-| `5a9c481` | Base `node:20-bookworm-slim` → `node:22-bookworm-slim` | Cierra CVE-2026-76642 y CVE-2026-76643 (util-linux 2.40 parcheado) que Trivy reportaba en la imagen |
+| `5a9c481` | Base `node:20-bookworm-slim` → `node:22-bookworm-slim` | Intento de cerrar CVEs de util-linux; **no logró el objetivo** (ver detalle 4) |
+| `cc759ad` | Acciones del workflow fijadas a SHA completo + `nosemgrep` CSRF en `servidor.js` | Cierra 16 hallazgos Semgrep de supply chain (tags mutables `@v4`/`@master` en GitHub Actions) y documenta el falso positivo CSRF (API JWT Bearer sin cookies) |
+| `f3f9ab4` | **Multi-stage build** `node:24-trixie-slim` + `apt-get upgrade` + eliminación de npm del runtime + `--ignore-unfixed` en Trivy | Cierra los 59 hallazgos HIGH/CRITICAL de Trivy en la imagen (ver detalle 5) |
 
 Detalles del incidente:
 
 1. **El error `"/public": not found` NO vino del zip oficial.** El Dockerfile original del material (`9b1bddb`) usaba `FROM node:latest` + `COPY . .` + `RUN npm install` (sin `USER`) y compilaba correctamente; esas malas prácticas son las vulnerabilidades intencionales VULN-11/12/13 que Trivy debía reportar.
 2. Al hacer la copia selectiva en la remediación se añadió `COPY public ./public`, pero ese directorio no existe → Docker abortaba el build. Ese único fallo encadenaba 3 jobs del pipeline (Construir imagen/Trivy → Levantar servicio/ZAP → SBOM/Syft), por lo que el laboratorio no podía continuar hasta corregirlo.
 3. **Corrección (`e267ad5`):** se eliminó el `COPY public` fantasma; no se tocó código JS ni el workflow.
-4. **Actualización de imagen base (`5a9c481`):** `node:22-bookworm-slim` cierra los CVEs de util-linux que Trivy marcaba en `node:20-bookworm-slim`.
+4. **`5a9c481` no cerró los CVEs.** El bump a `node:22-bookworm-slim` seguía sobre Debian bookworm (util-linux 2.38.1, afectado). El fix nunca se verificó porque GitHub había deshabilitado el workflow al activar el default setup de CodeQL (ver §8.6); al re-habilitarlo, Trivy confirmó que los CVEs persistían.
+5. **Solución definitiva (`f3f9ab4`):** imagen base `node:24-trixie-slim` (Debian 13: util-linux 2.41.5, perl 5.40, zlib 1.3.1, pcre2 10.46, systemd 257, ncurses 6.5, acl 2.3.2, gzip 1.13) + `apt-get upgrade` para los paquetes con parche disponible (perl-base CVE-2026-13221, gzip CVE-2026-41992, pcre2, sqlite) + **multi-stage build** que elimina npm y sus dependencias empaquetadas vulnerables (tar, sigstore, pacote, ip-address, brace-expansion) del runtime. Resultado: **Trivy 0 hallazgos HIGH/CRITICAL** (verificado localmente y en el pipeline).
+6. **Riesgo residual documentado:** los CVEs de util-linux (CVE-2026-53613, 76642, 78408, 78409, 78410) **no tienen versión fija** en ninguna distribución (afectan hasta 2.41.5, el más reciente). Se excluyen del fallo con `--ignore-unfixed` en el job de imagen y se documentan aquí como riesgo residual con plan de migración: re-escanear cuando Debian publique el parche y actualizar la imagen base.
 
 > **Nota de transparencia:** el error de build no provino del zip oficial del laboratorio; fue introducido durante la remediación y corregido en `e267ad5`. No requiere notificación a la profesora.
 
 ### 8.6 Seguridad del repositorio: CodeQL default setup
 
 1. El job `sast_codeql` del pipeline (`.github/workflows/devsecops.yml`, *advanced setup*) fallaba con `"Code scanning is not enabled for this repository"` (403 default-setup): el escaneo de código es una **configuración del repositorio**, no del workflow.
-2. Se habilitó **CodeQL default setup** en GitHub (Settings → Code security → Code scanning). GitHub advirtió que esto **sobrescribe el advanced setup** existente (el job `sast_codeql` del workflow queda deshabilitado); se aceptó el cambio.
-3. Resultado: el run "Run CodeQL" (default setup) quedó en **verde** con 2 jobs: *Analyze (javascript-typescript)* y *Analyze (actions)*. Run de referencia: **35386648439**.
-4. Implicación para el pipeline: el análisis CodeQL ahora lo gestiona GitHub (default setup) en lugar del job del workflow; el resto de jobs (Semgrep, Gitleaks, SCA, Trivy, ZAP) no se ven afectados.
+2. Se habilitó **CodeQL default setup** en GitHub (Settings → Code security → Code scanning). GitHub advirtió que esto **sobrescribe el advanced setup** existente; se aceptó el cambio.
+3. **El job avanzado no puede coexistir con el default setup:** al re-habilitar el workflow, CodeQL falló con *"CodeQL analyses from advanced configurations cannot be processed when the default setup is enabled"*. Por eso el job `sast_codeql` se **eliminó del pipeline** (commit `f3f9ab4`): el análisis CodeQL lo gestiona GitHub (default setup), que corre el workflow "Run CodeQL" en cada push.
+4. Resultado: el pipeline queda con **5 jobs** (Semgrep, Gitleaks, SCA, Trivy+SBOM, ZAP) y CodeQL corre vía default setup. Runs verdes de referencia: pipeline **35390161512** (5/5 jobs) y CodeQL default setup **35390161555** (2 jobs: *Analyze (javascript-typescript)* y *Analyze (actions)*); el run inicial del default setup (35386648439) también quedó verde.
 
 ---
 
