@@ -24,8 +24,15 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 (SHA fijo: supply chain)
       - name: Ejecutar Semgrep
+        # [FIX-18] Alcance SAST acotado al codigo fuente de la app.
+        #   --exclude 'docs/**': docs/ contiene EVIDENCIA (artefactos DAST ZAP,
+        #   SBOM, reportes) no codigo de aplicacion; su contenido incluye links
+        #   http://localhost (objetivo del DAST local) que generan falsos
+        #   positivos plaintext-http-link. Se excluye del SAST igual que
+        #   .semgrepignore (redundancia a prueba de version) y se documenta en
+        #   docs/informe-maestro.md §12.x (FIX-18).
         # --error hace fallar el job si hay hallazgos; se guarda el SARIF.
-        run: semgrep scan --config p/default --config p/javascript --config p/nodejs --error --sarif --output semgrep.sarif .
+        run: semgrep scan --config p/default --config p/javascript --config p/nodejs --exclude 'docs/**' --error --sarif --output semgrep.sarif .
       - name: Guardar reporte Semgrep
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4 (SHA fijo: supply chain)

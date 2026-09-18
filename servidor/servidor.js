@@ -25,8 +25,7 @@ const { requiereAuth } = require('./auth');
 //   autentica con JWT Bearer en el header Authorization (Keycloak), sin cookies
 //   de sesion; CSRF explota credenciales ambientales (cookies), por lo que no
 //   hay superficie de ataque. Se suprime la regla con justificacion.
-// nosemgrep: express-check-csurf-middleware-usage
-const app = express();
+const app = express(); // nosemgrep: express-check-csurf-middleware-usage
 
 // [FIX-06] Cabeceras de seguridad activas (Helmet): CSP, X-Content-Type-Options,
 //   X-Frame-Options, etc.  Cierra CWE-693 y CWE-942 (CORS abierto restringido).

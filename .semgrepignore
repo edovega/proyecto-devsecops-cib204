@@ -1,0 +1,23 @@
+# ============================================================================
+#  .semgrepignore  -  Acotacion del alcance de SAST (Semgrep)
+#  CIB-204 Seguridad del Software - Universidad Cenfotec
+# ============================================================================
+#
+#  [FIX-18] El SAST escanea SOLO el codigo fuente de la aplicacion y los
+#  workflows (.github).  La carpeta docs/ contiene DOCUMENTACION y ARTEFACTOS
+#  DE EVIDENCIA del propio pipeline: reportes DAST (ZAP HTML apuntando a
+#  http://localhost:3000, que es el target del DAST), SARIF de otras
+#  herramientas, SBOM, capturas.  Esos no son codigo de la app, por lo que
+#  escanearlos con reglas de seguridad de codigo (p.ej. el enlace http
+#  `plaintext-http-link` que ZAP inserta por naturaleza) produce falsos
+#  positivos.  Practica estandar OWASP SAST: el scanner se limita a fuentes.
+#
+#  Esto NO oculta hallazgos reales: servidor/, app-movil/ y .github/ siguen
+#  escaneandose con p/default, p/javascript y p/nodejs (ver workflow).
+#
+#  Formato: patrones de path relativos a la raiz del repo (like .gitignore).
+docs/
+
+# Defensa en profundidad: artefactos generados que nunca son codigo fuente.
+node_modules/
+**/.git/

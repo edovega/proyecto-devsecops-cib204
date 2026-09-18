@@ -248,6 +248,7 @@ Durante la remediación de la Fase 2 el build de la imagen se rompió y el escan
 | `5a9c481` | Base `node:20-bookworm-slim` → `node:22-bookworm-slim` | Intento de cerrar CVEs de util-linux; **no logró el objetivo** (ver detalle 4) |
 | `cc759ad` | Acciones del workflow fijadas a SHA completo + `nosemgrep` CSRF en `servidor.js` | Cierra 16 hallazgos Semgrep de supply chain (tags mutables `@v4`/`@master` en GitHub Actions) y documenta el falso positivo CSRF (API JWT Bearer sin cookies) |
 | `f3f9ab4` | **Multi-stage build** `node:24-trixie-slim` + `apt-get upgrade` + eliminación de npm del runtime + `--ignore-unfixed` en Trivy | Cierra los 59 hallazgos HIGH/CRITICAL de Trivy en la imagen (ver detalle 5) |
+| `b729322` | **FIX-18:** `nosemgrep` CSRF movido a **inline** en `servidor.js` (Semgrep solo honra el comentario en la misma línea) + `--exclude 'docs/**'` y `.semgrepignore` en el job SAST | Cierra los 20 hallazgos del run `35392316892` (FIX-17): 1× CSRF (falso positivo API JWT Bearer sin cookies, ahora suprimido inline como exige Semgrep) + 19× `plaintext-http-link` en `EV-C204-011-zap.html` (evidencia DAST ZAP con links `http://localhost`, **no es código de la app**; `docs/` se excluye del SAST con justificación — ver 12.4/12.5) |
 
 Detalles del incidente:
 
@@ -370,7 +371,7 @@ El informe ZAP del run verde (2.17.0) reporta **0 High, 1 Medium, 1 Low** y 5 in
 | Riesgo | Hallazgo | Tratamiento |
 |---|---|---|
 | Medium | CSP: Failure to Define Directive with No Fallback (en `/robots.txt`, 404) | **Falso positivo:** Express 4.22.3 añade `Content-Security-Policy: default-src 'none'` en sus páginas de error/404 (CSP máximamente restrictiva: nada puede cargar, por lo que las directivas "faltantes" `frame-ancestors`/`form-action` no aplican). Las respuestas 200 llevan la CSP completa de Helmet. |
-| Low | Permissions Policy Header Not Set | **Corregido** (FIX-17, commit pendiente): `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()` vía middleware propio (helmet 7 ya no lo incluye). |
+| Low | Permissions Policy Header Not Set | **Corregido** (FIX-17, verificado en el run FIX-18): `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()` vía middleware propio (helmet 7 ya no lo incluye). |
 | Informational | Sec-Fetch-* headers, Storable and Cacheable Content | Sin tratamiento: informativos de ZAP, sin riesgo para una API JSON. |
 
 ---
