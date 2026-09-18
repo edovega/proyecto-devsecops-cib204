@@ -21,7 +21,6 @@ RUN npm ci --only=production
 
 # Copia solo el codigo de la aplicacion (nada de .env, llaves ni datos).
 COPY servidor.js cifrado.js auth.js db.js config.js ./
-COPY public ./public
 
 # [FIX-13] No se ejecuta como root.
 USER node
