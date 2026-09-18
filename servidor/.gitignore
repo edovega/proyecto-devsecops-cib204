@@ -1,0 +1,16 @@
+# ============================================================================
+#  servidor/.gitignore  -  Cosas que NUNCA se versionan
+#  >>> AGREGADO EN FASE 2 (remediacion) <<<
+# ============================================================================
+#
+#  [FIX-11] Secretos y entorno local fuera de git (CWE-538 .env / CWE-212).
+#   .env contiene AWS keys + JWT + DATABASE_URL con password. Versionarlo
+#   lo marcaba Gitleaks (rojo). Cada desarrollador crea su .env desde la
+#   plantilla .env.example (sin secretos).
+.env
+.env.*
+!.env.example
+
+# dependencias y artefactos
+node_modules/
+npm-debug.log*

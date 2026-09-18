@@ -1,15 +1,14 @@
 // ============================================================================
 //  db.js  -  Acceso a datos (bitacora de operaciones)
-//  >>> VERSION INSEGURA <<<
+//  >>> VERSION REMEDIADA (Fase 2 verde) <<<
 // ============================================================================
 //
-//  Este modulo simula una pequena base de datos donde se guarda una bitacora
-//  de las operaciones de cifrado. Se usa el driver 'mysql' (JavaScript puro)
-//  para que el analisis estatico reconozca el "sink" de SQL.
-//
-//  Nota didactica: no se necesita un MySQL real corriendo. Si la conexion
-//  falla, la consulta se atrapa y el servicio sigue vivo; lo importante para
-//  el laboratorio es que SAST/CodeQL detecten la INYECCION SQL en el codigo.
+//  Cambio aplicado:
+//    [H-04 / CWE-89] Se reemplazo la concatenacion directa de la entrada del
+//      usuario en la consulta SQL por una consulta PARAMETRIZADA con
+//      placeholders '?'. Ya no hay buffer de concatenacion, por lo que
+//      Semgrep/CodeQL/SQLi ya no detectan el sink.
+//    El driver mysql reemplaza cada '?' con el valor escapado.
 
 const mysql = require('mysql');
 const config = require('./config');
@@ -21,22 +20,18 @@ try {
   conexion = null;
 }
 
-// [VULN-3] Inyeccion de SQL por concatenacion directa de entrada del usuario.
-//   El parametro 'nombre' viaja SIN sanitizar dentro de la consulta.
-//   Un atacante puede enviar:  ' OR '1'='1  y alterar la logica.
-//   Lo detectan CodeQL (js/sql-injection) y Semgrep.
-//   La solucion son consultas parametrizadas (placeholders '?').
-//   CWE-89 (SQL Injection)
+// [FIX-04] Consulta parametrizada: el valor del usuario viaja como dato,
+//   NO como parte del SQL. CWE-89 (SQL Injection) remediada.
 function buscarBitacora(nombre, callback) {
-  const sql = "SELECT * FROM bitacora WHERE usuario = '" + nombre + "'";
+  const sql = 'SELECT * FROM bitacora WHERE usuario = ?';
   if (!conexion) {
-    return callback(null, { sqlEjecutado: sql, filas: [] });
+    return callback(null, { sqlEjecutado: sql, parametros: [nombre], filas: [] });
   }
-  conexion.query(sql, function (err, filas) {
+  conexion.query(sql, [nombre], function (err, filas) {
     if (err) {
-      return callback(null, { sqlEjecutado: sql, filas: [], nota: err.code });
+      return callback(null, { sqlEjecutado: sql, parametros: [nombre], filas: [], nota: err.code });
     }
-    return callback(null, { sqlEjecutado: sql, filas: filas });
+    return callback(null, { sqlEjecutado: sql, parametros: [nombre], filas: filas });
   });
 }
 

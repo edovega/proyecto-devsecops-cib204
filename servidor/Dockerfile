@@ -1,26 +1,31 @@
 # ============================================================================
 #  Dockerfile  -  Servicio de cifrado
-#  >>> VERSION INSEGURA (rama inseguro) <<<
-#  Contiene malas practicas INTENCIONADAS que Trivy debe reportar.
+#  >>> VERSION REMEDIADA (Fase 2) <<<
 # ============================================================================
+#
+#  [FIX-12] Imagen base con etiqueta FIJA y slim (CWE-1104: reproducibilidad).
+#   node:20-bookworm-slim reduce superficie de ataque y Trivy ya no reporta
+#   cientos de paquetes vulnerables de una imagen "latest" enorme.
+#
+#  [FIX-13] Se usa un usuario NO ROOT (USER node) y se copia SOLO lo
+#   necesario (cifrado.js, servidor.js, auth.js, db.js, config.js, package.json,
+#   public/) en lugar de COPY . (CWE-538: inclusion de secretos en la imagen;
+#   CWE-250: ejecucion con privilegios innecesarios).
 
-# [VULN-11] Imagen base "latest" (no reproducible) y pesada, con muchos
-#   paquetes de sistema vulnerables. La solucion es una etiqueta fija y una
-#   imagen slim (p.ej. node:20-slim).  CWE-1104 / mala practica de imagen.
-FROM node:latest
+FROM node:20-bookworm-slim
 
+# Copia de dependencias primero para cache optimizado.
 WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
 
-# [VULN-12] Se copia TODO el contexto (incluye .env, llaves y node_modules).
-#   Puede filtrar secretos dentro de la imagen.  CWE-538
-COPY . .
+# Copia solo el codigo de la aplicacion (nada de .env, llaves ni datos).
+COPY servidor.js cifrado.js auth.js db.js config.js ./
+COPY public ./public
 
-# Instala dependencias en la imagen (sin fijar el lockfile con npm ci).
-RUN npm install
+# [FIX-13] No se ejecuta como root.
+USER node
 
 EXPOSE 3000
 
-# [VULN-13] El contenedor corre como ROOT (no hay instruccion USER).
-#   Viola el principio de minimo privilegio (NIST SP 800-190). Trivy lo marca.
-#   CWE-250 (Execution with Unnecessary Privileges)
 CMD ["node", "servidor.js"]

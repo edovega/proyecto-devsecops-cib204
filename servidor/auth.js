@@ -1,29 +1,24 @@
 // ============================================================================
-//  auth.js  -  Gestion de identidad y acceso (IAM)
-//  >>> VERSION INSEGURA <<<
+//  auth.js  -  Middleware de autenticacion
+//  >>> VERSION REMEDIADA (Fase 2 verde) <<<
 // ============================================================================
 //
-//  Middleware que deberia exigir un token JWT valido emitido por Keycloak.
-//  En esta version esta debilitado a proposito.
+//  Cambio aplicado:
+//    [H-05 / CWE-347][H-06 / CWE-287] Ya NO se usa jwt.decode() (que no
+//      verifica firma) ni se acepta el algoritmo 'none'. Ahora se verifica
+//      SIEMPRE la firma con el secreto/configuracion (jwt.verify) y se
+//      restringe a HS256. Si el token llega corrupto o con alg:none, el
+//      middleware responde 401.
+//    En produccion real esto se valida contra el JWKS del proveedor (RS256),
+//      pero para el laboratorio basta con la verificacion de firma estricta.
 
 const jwt = require('jsonwebtoken');
 const config = require('./config');
 
-// [VULN-4] Verificacion de JWT insegura.
-//   - No se valida la firma con la llave publica de Keycloak.
-//   - Se acepta el algoritmo 'none' y se decodifica sin verificar.
-//   - El secreto de respaldo esta quemado (config.JWT_SECRET).
-//   Un atacante puede fabricar un token con alg=none y entrar.
-//   La solucion es validar la firma contra el JWKS del emisor y restringir
-//   los algoritmos permitidos (RS256).
-//   CWE-347 (Improper Verification of Cryptographic Signature) / CWE-287
-
 function requiereAuth(req, res, next) {
-  // Si el control de acceso esta apagado, deja pasar a cualquiera.
   if (!config.AUTH_ENABLED) {
     return next();
   }
-
   const cabecera = req.headers['authorization'] || '';
   const token = cabecera.replace('Bearer ', '');
 
@@ -32,9 +27,10 @@ function requiereAuth(req, res, next) {
   }
 
   try {
-    // INSEGURO: decodifica sin verificar la firma y admite 'none'.
-    const payload = jwt.decode(token) ||
-      jwt.verify(token, config.JWT_SECRET, { algorithms: ['none', 'HS256'] });
+    // FIX: se verifica la firma y se restringe el algoritmo (HS256).
+    const payload = jwt.verify(token, config.JWT_SECRET, {
+      algorithms: ['HS256'],
+    });
     req.usuario = payload;
     return next();
   } catch (e) {
