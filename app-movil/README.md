@@ -1,29 +1,26 @@
-# app-movil/ — Aplicación móvil (cliente Expo/React Native)
+# App movil (cliente) - CIB-204
 
-> ⏳ **Carpeta pendiente de material oficial.**
-> Aquí se integra el contenido de `proyecto-devsecops-cib204.zip` cuando esté disponible.
+Cliente Expo/React Native que consume el servicio de cifrado.
 
-## Archivos esperados (según la guía)
-
-| Archivo | Función |
-|---|---|
-| `App.js` | Cifrar/descifrar; maneja el token |
-| `package.json` | Dependencias de Expo/React Native |
-
-## Cómo se ejecuta (cuando el material esté aquí)
+## Ejecutar en modo web (lo mas simple, dentro del Codespace)
 
 ```bash
-# Desde la raíz del proyecto (el lanzador entra a app-movil/ por ti):
-bash iniciar-app.sh
-
-# Equivalente manual:
-cd app-movil && npm install && npx expo start --web
+cd app-movil
+npm install
+npx expo start --web
 ```
 
-La app corre en el **puerto 8081** (Expo web). El puerto 3000 (servicio) debe estar en **Público** para que la app pueda llamarlo desde el navegador.
+Codespaces reenvia el puerto **8081**. Abre la app desde la pestaña *Ports*.
 
-## Flujo de cifrado con identidad
+## Ejecutar en un telefono (opcional)
 
-1. La app pide un token a Keycloak (usuario `demo`).
-2. La app envía el token al servicio (`/cifrar`, `/descifrar`).
-3. El servicio valida el token antes de cifrar/descifrar con RSA.
+1. Instala **Expo Go** en tu telefono.
+2. `npx expo start --tunnel` y escanea el codigo QR.
+3. En la app, en *URL del servicio*, pega la URL publica que Codespaces
+   reenvia para el puerto **3000** (no uses `localhost` desde el telefono).
+
+## Importante (en la nube)
+
+La app corre en el navegador de tu equipo, donde `localhost` es TU
+computadora, no el Codespace. Copia la URL reenviada del puerto 3000 y
+pegala en el campo *URL del servicio* de la app.

@@ -3,7 +3,7 @@
 > 📄 **Tabla a llenar** — Segundo Avance (Fase 1). Recorre cada prueba en rojo y anota los hallazgos.
 > Hay ~12 hallazgos en total. Los reportes se descargan de la sección "Artifacts" de la ejecución.
 >
-> ⚠️ **Estado: PRELIMINAR.** Las filas H-03 a H-12 son los hallazgos **esperados** según la descripción de la guía y el código vulnerable (`// [VULN-n]`). Se **confirman o ajustan** con los reportes reales del pipeline cuando el zip oficial esté integrado (Fase 1).
+> ✅ **Estado: PRE-LLENADA CON CÓDIGO OFICIAL INTEGRADO** (zip `proyecto-devsecops-cib204.zip`). Los hallazgos H-01…H-13 corresponden **uno a uno** a los marcadores `// [VULN-1…VULN-13]` que el propio código vulnerable trae comentados, cada uno con su **CWE exacta** escrita en el fuente. La confirmación en rojo del pipeline (Semgrep/Gitleaks/Trivy/Snyk) valida cada fila en Fase 1; el "Después" se completa en Fase 2.
 
 | ID | Prueba/Herramienta | Dónde (componente) | Hallazgo y CWE | Riesgo |
 |---|---|---|---|---|

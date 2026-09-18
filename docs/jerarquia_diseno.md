@@ -1,98 +1,47 @@
-# Jerarquía de diseño — Sistema de cifrado seguro
-
-> 📄 **Primer Avance.** Muestra la estructura general de la aplicación y la relación entre módulos y componentes.
-
-## Arquitectura de la solución
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        APP MÓVIL (cliente)                          │
-│                        [app-movil/]                                 │
-│              App.js — cifrar/descifrar; maneja el token             │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │ HTTPS (JWT Bearer)
-                               ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                    SERVICIO DE CIFRADO (backend)                    │
-│                        [servidor/]                                  │
-│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌──────────────────┐  │
-│  │ servidor.js│ │ cifrado.js│ │  auth.js  │  │      db.js       │  │
-│  │ API REST   │ │ módulo RSA│ │ valida JWT│  │ bitácora (logs)  │  │
-│  └───────────┘  └───────────┘  └───────────┘  └──────────────────┘  │
-│  ┌──────────────────────────────────────────────────────────────┐   │
-│  │ Dockerfile — imagen del contenedor (no-root en Fase 2)       │   │
-│  └──────────────────────────────────────────────────────────────┘   │
-└──────────────┬──────────────────────────────┬───────────────────────┘
-               │                              │
-               │ valida token                 │ entrega token
-               ▼                              ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                        IAM — KEYCLOAK                               │
-│                    [docker-compose.yml]                             │
-│              Entrega y valida tokens (realm appmovil,               │
-│              cliente servicio-cifrado, usuario demo)                │
-└─────────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────────┐
-│              PIPELINE DevSecOps [.github/workflows/devsecops.yml]   │
-│  sast_semgrep · sast_codeql · secretos · sca · imagen · dast        │
-│  Revisa TODO el sistema en cada cambio (push)                       │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
-## Árbol de carpetas y archivos
+# Jerarquía de diseño del sistema
 
 ```
 Sistema de cifrado seguro
-│
-├─ 1. App móvil (cliente)          [app-movil/]
-│   └─ App.js ......... cifrar/descifrar; maneja el token
-│
-├─ 2. Servicio de cifrado          [servidor/]
-│   ├─ servidor.js ... API (/salud, /cifrar, /descifrar, ...)
-│   ├─ cifrado.js .... módulo RSA
-│   ├─ auth.js ....... revisa el token (identidad)
-│   ├─ db.js ......... consulta la bitácora
-│   └─ Dockerfile .... imagen del contenedor
-│
-├─ 3. IAM                          [docker-compose.yml]
-│   └─ keycloak ...... entrega y valida tokens
-│
-└─ 4. Pipeline DevSecOps           [.github/workflows/]
-    └─ devsecops.yml . las pruebas de seguridad
+|
+|- 1. Aplicacion movil (cliente)            [app-movil/]
+|     |- App.js .............. interfaz: cifrar / descifrar; maneja el token
+|     |- package.json / app.json ... configuracion de Expo
+|
+|- 2. Servicio de cifrado (backend)         [servidor/]
+|     |- servidor.js ......... API REST (/salud, /cifrar, /descifrar, ...)
+|     |- cifrado.js .......... modulo RSA (cifrar, descifrar, generar llaves)
+|     |- auth.js ............. verificacion de identidad (IAM / JWT)
+|     |- db.js ............... acceso a la bitacora (consulta SQL)
+|     |- config.js .......... parametros y secretos del servicio
+|     |- Dockerfile ......... imagen del contenedor
+|
+|- 3. Gestion de identidad (IAM)            [docker-compose.yml]
+|     |- keycloak ........... emite y valida tokens (OIDC / JWT)
+|
+|- 4. Proceso de seguridad (DevSecOps)      [.github/workflows/]
+      |- devsecops.yml ...... SAST, secretos, SCA, imagen y DAST
 ```
 
-## Tabla de subsistemas
+## Relación entre componentes
 
-| Subsistema | Archivos | Función | Datos que maneja | Superficie de ataque | Propensión a fallar |
-|---|---|---|---|---|---|
-| App móvil | `app-movil/App.js` | Cifrar/descifrar; maneja el token | Texto plano, token JWT | Alta (expuesta al usuario) | Media |
-| API de cifrado | `servidor/servidor.js` | Endpoints `/salud`, `/cifrar`, `/descifrar` | Texto cifrado, tokens | **Alta** (expuesta a red) | **Alta** |
-| Módulo RSA | `servidor/cifrado.js` | Cifrado/descifrado RSA-OAEP | Llaves, texto | Media | Media |
-| Autenticación | `servidor/auth.js` | Valida token JWT | Tokens | **Alta** (control de acceso) | **Alta** |
-| Bitácora | `servidor/db.js` | Registra operaciones | Registros | Media | Media |
-| IAM | `docker-compose.yml` / Keycloak | Entrega y valida tokens | Credenciales | **Alta** | Media |
-| Pipeline | `.github/workflows/devsecops.yml` | Pruebas de seguridad | Reportes | Baja | Baja |
+1. La **app móvil** envía el texto al **servicio de cifrado** por HTTP(S).
+2. Si el IAM está activo, la app primero pide un **token** a **Keycloak** y lo
+   adjunta en cada petición.
+3. El **servicio** valida el token (auth.js), cifra/descifra con **RSA**
+   (cifrado.js) y registra la operación (db.js).
+4. El **pipeline** revisa todo el conjunto en cada cambio: código (SAST),
+   secretos, dependencias (SCA), imagen del contenedor y la app en ejecución
+   (DAST).
 
-## Componentes críticos (más propensos a fallar)
+## Subsistemas (para el análisis de riesgo)
 
-Según la rúbrica, se analizan considerando: **complejidad del código, frecuencia de uso, exposición a datos sensibles e interacción con componentes externos**.
-
-| # | Componente | Complejidad | Frecuencia | Datos sensibles | Interacción externa | ¿Crítico? |
-|---|---|---|---|---|---|---|
-| 1 | `servidor.js` (API) | Media | Alta | Sí (texto cifrado) | Sí (red, Keycloak) | ✅ Sí |
-| 2 | `auth.js` (JWT) | Media | Alta | Sí (tokens) | Sí (Keycloak) | ✅ Sí |
-| 3 | `cifrado.js` (RSA) | Alta | Media | Sí (llaves) | No | ✅ Sí |
-| 4 | `db.js` (bitácora) | Baja | Media | Parcial | No | No |
-| 5 | `App.js` (móvil) | Media | Alta | Sí (texto plano) | Sí (servicio) | ✅ Sí |
-| 6 | Keycloak | Alta | Media | Sí (credenciales) | Sí (servicio) | ✅ Sí |
-
-## Modos de fallo por componente
-
-| Componente | Modo de fallo | Consecuencia | Mitigación |
-|---|---|---|---|
-| API | Entrada malformada | 500 / caída | Validación de entrada |
-| API | CORS abierto | Uso por terceros | Restringir orígenes |
-| auth.js | Token no validado | Acceso sin identidad | Verificar firma/expiración |
-| cifrado.js | Llave débil | Cifrado rompible | RSA-2048 mínimo |
-| Contenedor | Ejecuta como root | Escalada | Usuario no-root |
+| Subsistema | Componentes | Datos sensibles |
+|------------|-------------|-----------------|
+| Interfaz | app-movil/App.js | texto del usuario |
+| Comunicación | fetch/HTTP, CORS | texto en tránsito |
+| Cifrado | servidor/cifrado.js | llave privada |
+| Gestión de llaves | generación/almacenamiento | llave privada |
+| IAM | auth.js + Keycloak | tokens, credenciales |
+| Persistencia | db.js | bitácora |
+| Contenedor | Dockerfile | imagen, secretos |
+| Pipeline | devsecops.yml | reportes |
