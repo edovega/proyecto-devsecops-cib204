@@ -237,6 +237,32 @@ El puerto 3000 debe estar en **Público** (Port Visibility → Public) para que 
 
 **Evidencia:** EV-C204-006 (captura con "Cifrado OK" y "Descifrado OK").
 
+### 8.5 Ajustes aplicados al Dockerfile del laboratorio
+
+Durante la remediación de la Fase 2 el build de la imagen se rompió; a continuación se documenta el origen del error y los cambios aplicados (trazables por commit).
+
+| Commit | Cambio | Motivo |
+|---|---|---|
+| `8b8b86e` | Remedición: imagen fija `node:20-bookworm-slim`, `npm ci --only=production`, copia selectiva de archivos, `USER node` | Cierra VULN-11/12/13 del zip (CWE-1104 imagen no reproducible, CWE-538 `COPY . .` filtra secretos, CWE-250 ejecución como root) |
+| `8b8b86e` (introdujo) → `e267ad5` (quitó) | `COPY public ./public` | **Error introducido por la remediación, no por el zip:** `servidor/public` no existe en el material y `servidor.js` no usa `express.static`; Docker abortaba el build con `/public: not found` |
+| `5a9c481` | Base `node:20-bookworm-slim` → `node:22-bookworm-slim` | Cierra CVE-2026-76642 y CVE-2026-76643 (util-linux 2.40 parcheado) que Trivy reportaba en la imagen |
+
+Detalles del incidente:
+
+1. **El error `"/public": not found` NO vino del zip oficial.** El Dockerfile original del material (`9b1bddb`) usaba `FROM node:latest` + `COPY . .` + `RUN npm install` (sin `USER`) y compilaba correctamente; esas malas prácticas son las vulnerabilidades intencionales VULN-11/12/13 que Trivy debía reportar.
+2. Al hacer la copia selectiva en la remediación se añadió `COPY public ./public`, pero ese directorio no existe → Docker abortaba el build. Ese único fallo encadenaba 3 jobs del pipeline (Construir imagen/Trivy → Levantar servicio/ZAP → SBOM/Syft), por lo que el laboratorio no podía continuar hasta corregirlo.
+3. **Corrección (`e267ad5`):** se eliminó el `COPY public` fantasma; no se tocó código JS ni el workflow.
+4. **Actualización de imagen base (`5a9c481`):** `node:22-bookworm-slim` cierra los CVEs de util-linux que Trivy marcaba en `node:20-bookworm-slim`.
+
+> **Nota de transparencia:** el error de build no provino del zip oficial del laboratorio; fue introducido durante la remediación y corregido en `e267ad5`. No requiere notificación a la profesora.
+
+### 8.6 Seguridad del repositorio: CodeQL default setup
+
+1. El job `sast_codeql` del pipeline (`.github/workflows/devsecops.yml`, *advanced setup*) fallaba con `"Code scanning is not enabled for this repository"` (403 default-setup): el escaneo de código es una **configuración del repositorio**, no del workflow.
+2. Se habilitó **CodeQL default setup** en GitHub (Settings → Code security → Code scanning). GitHub advirtió que esto **sobrescribe el advanced setup** existente (el job `sast_codeql` del workflow queda deshabilitado); se aceptó el cambio.
+3. Resultado: el run "Run CodeQL" (default setup) quedó en **verde** con 2 jobs: *Analyze (javascript-typescript)* y *Analyze (actions)*. Run de referencia: **35386648439**.
+4. Implicación para el pipeline: el análisis CodeQL ahora lo gestiona GitHub (default setup) en lugar del job del workflow; el resto de jobs (Semgrep, Gitleaks, SCA, Trivy, ZAP) no se ven afectados.
+
 ---
 
 # PARTE II — IMPLEMENTACIÓN Y ENTORNO
