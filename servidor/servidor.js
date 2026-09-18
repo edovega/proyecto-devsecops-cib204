@@ -21,6 +21,11 @@ const db = require('./db');
 const config = require('./config');
 const { requiereAuth } = require('./auth');
 
+// [FIX-14] CSRF no aplica (falso positivo Semgrep): la API es stateless y
+//   autentica con JWT Bearer en el header Authorization (Keycloak), sin cookies
+//   de sesion; CSRF explota credenciales ambientales (cookies), por lo que no
+//   hay superficie de ataque. Se suprime la regla con justificacion.
+// nosemgrep: express-check-csurf-middleware-usage
 const app = express();
 
 // [FIX-06] Cabeceras de seguridad activas (Helmet): CSP, X-Content-Type-Options,
