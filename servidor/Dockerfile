@@ -12,7 +12,7 @@
 #   public/) en lugar de COPY . (CWE-538: inclusion de secretos en la imagen;
 #   CWE-250: ejecucion con privilegios innecesarios).
 
-FROM node:20-bookworm-slim
+FROM node:22-bookworm-slim
 
 # Copia de dependencias primero para cache optimizado.
 WORKDIR /app
