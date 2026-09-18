@@ -8,7 +8,7 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
-# Permisos minimos; el job de CodeQL necesita escribir eventos de seguridad.
+# Permisos minimos: solo lectura de contenidos (CodeQL corre via default setup).
 permissions:
   contents: read
 
@@ -34,27 +34,13 @@ jobs:
           path: semgrep.sarif
 
   # ==========================================================================
-  # 2) SAST con CodeQL  ->  motor de analisis de GitHub para JavaScript
-  #    NOTA: en repositorios PRIVADOS, el escaneo de codigo (CodeQL) requiere
-  #    GitHub Advanced Security. Con el plan gratuito, haz el repo PUBLICO
-  #    para este laboratorio, o apoyate en Semgrep como SAST principal.
+  # 2) SAST con CodeQL  ->  CUBIERTO POR DEFAULT SETUP DE GITHUB
+  #    El job avanzado (github/codeql-action) NO puede coexistir con el
+  #    default setup habilitado en Settings > Code security > Code scanning:
+  #    "CodeQL analyses from advanced configurations cannot be processed when
+  #    the default setup is enabled". El default setup corre el workflow
+  #    "Run CodeQL" en cada push (ver informe §8.6, run 35386648439 en verde).
   # ==========================================================================
-  sast_codeql:
-    name: SAST - CodeQL
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      actions: read
-      contents: read
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4 (SHA fijo: supply chain)
-      - name: Inicializar CodeQL
-        uses: github/codeql-action/init@3ea06614dafe36dec890db3446326e0d40ce53d4 # v3 (SHA fijo: supply chain)
-        with:
-          languages: javascript
-          queries: security-extended
-      - name: Analizar con CodeQL
-        uses: github/codeql-action/analyze@3ea06614dafe36dec890db3446326e0d40ce53d4 # v3 (SHA fijo: supply chain)
 
   # ==========================================================================
   # 3) Deteccion de secretos con Gitleaks  ->  .env, llave privada, claves AWS
@@ -119,6 +105,11 @@ jobs:
           scan-type: image
           image-ref: cifrado:${{ github.sha }}
           severity: HIGH,CRITICAL
+          # [FIX-16] --ignore-unfixed: los CVEs de util-linux (CVE-2026-53613/
+          # 76642/78408/78409/78410) no tienen version fija en ninguna distro
+          # (afectan hasta 2.41.5); se documentan como riesgo residual en el
+          # informe (§8.5). El resto de paquetes se actualiza en el Dockerfile.
+          ignore-unfixed: true
           exit-code: '1'
           format: table
       - name: Generar SBOM (Syft)
