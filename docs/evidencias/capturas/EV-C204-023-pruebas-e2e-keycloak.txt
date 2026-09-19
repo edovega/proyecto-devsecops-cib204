@@ -1,0 +1,67 @@
+# Fecha: 2026-09-19T12:19:06Z
+# Keycloak: quay.io/keycloak/keycloak:24.0 (docker local, puerto 18080)
+# Commit del servicio: 0fc1c11
+# Node: v18.19.1
+
+## Configuracion de Keycloak (guia, seccion 7)
+crear realm appmovil:            HTTP 201
+crear cliente servicio-cifrado:  HTTP 201
+crear usuario demo:              HTTP 201
+encabezado del token real: {"alg":"RS256","typ":"JWT","kid":"lJx_5IWAkvXK9DTcV9LJdP2qMMQ3_wewoX7A6THjagE"}
+
+## Pruebas funcionales (Tabla 6)
+P-09      GET /salud                                                 esperado=200  real=200  PASA
+          cuerpo: {"estado":"ok","version":"remediado-2.0"}
+P-04      POST /cifrar sin token                                     esperado=401  real=401  PASA
+P-01/P-03 POST /cifrar con token real de Keycloak                    esperado=200  real=200  PASA
+          cifrado (base64, 40 car.): HE9KuDMWdmgts/dUmSQwcMaVoXMT7kQ3vVsU2hQU...
+P-02      POST /descifrar (ciclo completo)                           esperado=200  real=200  PASA
+          cuerpo: {"descifrado":"Hola mundo"}
+P-05/P-17 descifrar dato manipulado (1 caracter)                     esperado=500  real=500  PASA
+          cuerpo: {"error":"Error interno"} (error generico, sin pila)
+P-06      entrada vacia                                              esperado=400  real=400  PASA
+P-07      entrada de 20 KB (limite 10 KB)                            esperado=413  real=413  PASA
+P-08      entrada no texto (numero)                                  esperado=400  real=400  PASA
+P-07b     borde: 190 bytes (maximo de RSA-OAEP)                      esperado=200  real=200  PASA
+P-07c     borde: 191 bytes (rechazo controlado, no 500)              esperado=400  real=400  PASA
+P-25      UTF-8, emoji y salto de linea (cifrar)                     esperado=200  real=200  PASA
+P-25      roundtrip UTF-8 (descifrar)                                esperado=200  real=200  PASA
+          cuerpo: {"descifrado":"Ñandú 你好 😀\nlinea2"}
+
+## Pruebas de token (Tabla 6, P-10 / P-18)
+P-18      token firma_falsa                                          esperado=401  real=401  PASA
+P-18      token hs256                                                esperado=401  real=401  PASA
+P-18      token none                                                 esperado=401  real=401  PASA
+P-18      token real con un caracter de la firma alterado            esperado=401  real=401  PASA
+P-10b     token valido de OTRO cliente (audiencia)                   esperado=401  real=401  PASA
+P-10      token de Keycloak EXPIRADO (vida 5 s, espera 12 s)         esperado=401  real=401  PASA
+P-03b     token nuevo tras expirar el anterior                       esperado=200  real=200  PASA
+
+## Cabeceras y CORS (P-19 / P-20)
+Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src '
+Cross-Origin-Opener-Policy: same-origin
+Referrer-Policy: no-referrer
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+RateLimit-Policy: 100;w=60
+RateLimit: limit=100, remaining=80, reset=47
+CORS origen permitido:    Access-Control-Allow-Origin: http://localhost:3000
+CORS origen NO permitido: 0 cabecera(s) access-control-allow-origin (esperado 0)
+
+## Disponibilidad tras entradas malformadas (P-23)
+P-23      /salud responde tras JSON malformado                       esperado=200  real=200  PASA
+
+## Bitacora de operaciones - no repudio (P-24 / FIX-21)
+P-24      operaciones cifrar registradas en la bitacora del servicio esperado=si   real=si   PASA
+          ejemplo: {"ts":"2026-09-19T12:19:17.765Z","accion":"cifrar","resultado":"ok","usuario":"demo","ip":"::1"}
+P-24b     el texto plano NO aparece en la bitacora                   esperado=0    real=0    PASA
+
+## Endpoints eliminados (FIX-09 / FIX-10)
+FIX-09    POST /calcular (eval eliminado)                            esperado=404  real=404  PASA
+FIX-10    GET /diagnostico (exec eliminado)                          esperado=404  real=404  PASA
+
+## Limite de peticiones por IP (P-21 / FIX-19): 130 peticiones seguidas a /salud
+codigos HTTP obtenidos:      74 200      56 429 
+P-21      hay respuestas 429 al superar 100 peticiones/min           esperado=si   real=si   PASA

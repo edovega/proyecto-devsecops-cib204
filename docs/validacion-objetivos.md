@@ -13,7 +13,7 @@
 
 | Resultado de aprendizaje | Dónde se desarrolla | Estado | Cómo se excede |
 |---|---|---|---|
-| **RA1.** Desarrolla un procedimiento de seguridad para aplicaciones móviles durante la fase de programación, empleando técnicas de encriptación y pruebas de código que maximicen la calidad | `servidor/cifrado.js` (RSA-OAEP), `servidor/servidor.js` (API), `app-movil/App.js`, `docs/informe-maestro.md` §9–10 | ⏳ zip | Cifrado RSA-2048 OAEP-SHA256 + pruebas automatizadas + verificación por SAST/DAST (no solo pruebas funcionales) |
+| **RA1.** Desarrolla un procedimiento de seguridad para aplicaciones móviles durante la fase de programación, empleando técnicas de encriptación y pruebas de código que maximicen la calidad | `servidor/cifrado.js` (RSA-OAEP), `servidor/servidor.js` (API), `app-movil/App.js`, `docs/informe-maestro.md` §9–10 | ✅ | Cifrado RSA-2048 OAEP-SHA256 + pruebas automatizadas + verificación por SAST/DAST (no solo pruebas funcionales) |
 | **RA2.** Realiza prácticas para el diagnóstico de la seguridad de un programa informático, aplicando la jerarquía de diseño y los métodos probabilísticos para el análisis de riesgos y vulnerabilidades | `docs/jerarquia_diseno.md`, `docs/plantilla-diagnostico.md`, `docs/tablas/tabla-5-riesgo.md` | ✅ estructura / 📝 completar | Jerarquía con componentes críticos + riesgo probabilístico (P×I) + análisis gerencial ALE (pérdida anual esperada) |
 | **RA3.** Resuelve el estudio de casos relacionados con la implementación de técnicas de seguridad | *(no aplica a este proyecto — es otra estrategia de evaluación, 30%)* | — | — |
 
@@ -22,12 +22,12 @@
 | Criterio de desempeño | Dónde se desarrolla | Estado | Cómo se excede |
 |---|---|---|---|
 | Analiza los requerimientos de seguridad según la problemática planteada | `docs/tablas/tabla-1-requisitos.md` + informe §5 | 🔄 completar | Justificación por propiedad + mapeo a OWASP SAMM, NIST SSDF, OWASP ASVS y OWASP MASVS |
-| Configura el entorno de programación Node.js | `.devcontainer/devcontainer.json`, informe §8, EV-C204-001 | ✅ estructura / ⏳ evidencia | Entorno reproducible en la nube (Codespace) + documentación paso a paso + verificación de versiones |
-| Desarrolla un módulo para las funciones de encriptación y desencriptación | `servidor/cifrado.js`, informe §9 | ⏳ zip | Módulo con RSA-OAEP + pruebas de roundtrip + resistencia a manipulación |
-| Desarrolla las funciones de utilidad dentro del módulo creado | `servidor/` (validación, errores, bitácora), informe §10 | ⏳ zip | Validación de entrada (tipo/tamaño), errores genéricos, bitácora con integridad |
-| Implementa el algoritmo criptográfico RSA como mecanismo de seguridad | `servidor/cifrado.js`, informe §9 | ⏳ zip | RSA-2048 con OAEP-SHA256 (padding seguro, nunca PKCS#1 v1.5 sin OAEP) |
-| Realiza una revisión del código utilizando áreas de análisis estático | `.github/workflows/devsecops.yml` (Semgrep + CodeQL), informe §13 | ✅ pipeline / ⏳ ejecución | **3 herramientas SAST** (Semgrep, CodeQL, ESLint) + reportes descargados como evidencia |
-| Ejecuta pruebas de código para validar el funcionamiento | `servidor/` (npm test), informe §17 | ⏳ zip | Pruebas unitarias + funcionales + de integración + de sistema + pentest |
+| Configura el entorno de programación Node.js | `.devcontainer/devcontainer.json`, informe §8, EV-C204-001 | ✅ (EV-C204-043 a 046) | Entorno reproducible en la nube (Codespace) + documentación paso a paso + verificación de versiones |
+| Desarrolla un módulo para las funciones de encriptación y desencriptación | `servidor/cifrado.js`, informe §9 | ✅ | Módulo con RSA-OAEP + pruebas de roundtrip + resistencia a manipulación |
+| Desarrolla las funciones de utilidad dentro del módulo creado | `servidor/` (validación, errores, bitácora), informe §10 | ✅ | Validación de entrada (tipo/tamaño), errores genéricos, bitácora con integridad |
+| Implementa el algoritmo criptográfico RSA como mecanismo de seguridad | `servidor/cifrado.js`, informe §9 | ✅ | RSA-2048 con OAEP-SHA256 (padding seguro, nunca PKCS#1 v1.5 sin OAEP) |
+| Realiza una revisión del código utilizando áreas de análisis estático | `.github/workflows/devsecops.yml` (Semgrep + CodeQL), informe §13 | ✅ | **3 herramientas SAST** (Semgrep, CodeQL, ESLint) + reportes descargados como evidencia |
+| Ejecuta pruebas de código para validar el funcionamiento | `servidor/` (npm test), informe §17 | ✅ | Pruebas unitarias + funcionales + de integración + de sistema + pentest |
 | Realiza ajustes en los escenarios de las pruebas | `docs/tablas/tabla-6-pruebas.md` (sección ajustes) | 📝 completar | Documentar qué se ajustó, por qué y el resultado del ajuste |
 | Documenta todas las pruebas y resultados obtenidos | `docs/tablas/tabla-6-pruebas.md` | 📝 completar | Tabla 6 con datos de entrada, esperado, real y estado por prueba |
 | Presenta un informe con resumen de resultados, conclusiones y recomendaciones | `docs/informe-maestro.md` §19–21 | 📝 completar | Informe integrado con evidencias SHA-256, análisis gerencial y trazabilidad |
@@ -41,10 +41,10 @@
 | Entregable solicitado | Dónde se desarrolla | Estado | Cómo se excede |
 |---|---|---|---|
 | Análisis de requerimientos de seguridad (confidencialidad, integridad, disponibilidad, autenticación) | `docs/tablas/tabla-1-requisitos.md` + informe §5 | 🔄 | 4 propiedades + **no repudio** (5.ª) + justificación del porqué + mapeo a 4 estándares |
-| Configuración del entorno de programación Node.js (instalación paso a paso) | informe §8 + `.devcontainer/devcontainer.json` | ✅ estructura / ⏳ evidencia | Entorno en la nube reproducible + verificación de versiones + captura EV-C204-001 |
-| Desarrollo del módulo de encriptación/desencriptación | `servidor/cifrado.js`, informe §9 | ⏳ zip | Funciones definidas + selección de algoritmo justificada + utilidades |
-| Implementación del algoritmo RSA | `servidor/cifrado.js`, informe §9 | ⏳ zip | RSA-2048 OAEP-SHA256 + pruebas de manipulación |
-| Jerarquía de diseño (estructura general y relación entre módulos) | `docs/jerarquia_diseno.md` + informe §7 | ✅ estructura / 📝 figuras | Árbol de archivos + tabla de subsistemas + componentes críticos + figuras SVG |
+| Configuración del entorno de programación Node.js (instalación paso a paso) | informe §8 + `.devcontainer/devcontainer.json` | ✅ (EV-C204-043 a 046) | Entorno en la nube reproducible + verificación de versiones + captura EV-C204-001 |
+| Desarrollo del módulo de encriptación/desencriptación | `servidor/cifrado.js`, informe §9 | ✅ | Funciones definidas + selección de algoritmo justificada + utilidades |
+| Implementación del algoritmo RSA | `servidor/cifrado.js`, informe §9 | ✅ | RSA-2048 OAEP-SHA256 + pruebas de manipulación |
+| Jerarquía de diseño (estructura general y relación entre módulos) | `docs/jerarquia_diseno.md` + informe §7 | ✅ (figuras EV-C204-015 a 017) | Árbol de archivos + tabla de subsistemas + componentes críticos + figuras SVG |
 
 ### B.2 Segundo Avance (15%)
 
@@ -54,7 +54,7 @@
 | Análisis de componentes propensos a fallar | `docs/jerarquia_diseno.md` (componentes críticos) | ✅ | 4 factores de la rúbrica: complejidad, frecuencia, datos sensibles, interacción externa |
 | Diagnóstico de seguridad (plantilla) | `docs/plantilla-diagnostico.md` + `docs/tablas/tabla-3-diagnostico.md` | 📝 completar | ~12 hallazgos con CWE + severidad + consecuencia de explotación |
 | Cálculo de riesgos (probabilístico) | `docs/tablas/tabla-5-riesgo.md` | 📝 completar | P×I documentado + **ALE/SLE** (análisis gerencial) + priorización justificada |
-| Revisión de código (análisis estático) | `.github/workflows/devsecops.yml` + informe §13 | ✅ pipeline / ⏳ ejecución | 3 SAST + reportes descargados + alertas CodeQL revisadas |
+| Revisión de código (análisis estático) | `.github/workflows/devsecops.yml` + informe §13 | ✅ | 3 SAST + reportes descargados + alertas CodeQL revisadas |
 | Pruebas de código (unitarias, integración, sistema) | `docs/tablas/tabla-6-pruebas.md` | 📝 completar | Clasificación de tipos de prueba (Atlassian) + 20+ pruebas documentadas |
 | Ajuste de pruebas | `docs/tablas/tabla-6-pruebas.md` (sección ajustes) | 📝 completar | Ajustes documentados con justificación y resultado |
 | Documentación de pruebas | `docs/tablas/tabla-6-pruebas.md` | 📝 completar | Datos de entrada, esperado, real y estado por prueba |
@@ -77,19 +77,19 @@
 | # | Paso de la guía | Dónde se desarrolla | Estado |
 |---|---|---|---|
 | 1 | Crear cuenta de GitHub | — | ✅ (`edovega`) |
-| 2 | Crear repo + subir material | Repositorio | ✅ estructura / ⏳ zip |
-| 3 | Entorno en la nube (Codespace) | `.devcontainer/devcontainer.json` | ✅ estructura / ⏳ evidencia |
+| 2 | Crear repo + subir material | Repositorio | ✅ |
+| 3 | Entorno en la nube (Codespace) | `.devcontainer/devcontainer.json` | ✅ (EV-C204-043 a 046) |
 | 4 | Tabla 1 (requisitos) | `docs/tablas/tabla-1-requisitos.md` | 🔄 |
 | 5 | Tabla 2 (STRIDE) | `docs/tablas/tabla-2-stride.md` | 🔄 |
-| 6 | Jerarquía de diseño | `docs/jerarquia_diseno.md` | ✅ estructura / 📝 figuras |
-| 7 | Levantar servicio + Keycloak | `docker-compose.yml` | ✅ provisional / ⏳ oficial |
-| 8 | Configurar IAM en Keycloak | informe §8.3 | ⏳ zip |
-| 9 | Probar app móvil | informe §8.4 | ⏳ zip |
-| 10 | FASE 1: pipeline en rojo | `docs/tablas/tabla-3-diagnostico.md` | ⏳ zip |
-| 11 | FASE 2: corregir a verde | `docs/tablas/tabla-4-evidencias.md` + `docs/remediacion-playbook.md` | ⏳ zip (playbook ✅) |
-| 12 | Pentest + pruebas | `docs/tablas/tabla-5-riesgo.md` + `tabla-6-pruebas.md` | 📝 |
-| 13 | Proteger rama principal | GitHub Settings (branch protection) | ⏳ al final |
-| 14 | Informe final en PDF | `docs/informe-maestro.md` → PDF | 📝 |
+| 6 | Jerarquía de diseño | `docs/jerarquia_diseno.md` | ✅ (figuras EV-C204-015 a 017) |
+| 7 | Levantar servicio + Keycloak | `docker-compose.yml` | ✅ (probado con Keycloak 24.0 real) |
+| 8 | Configurar IAM en Keycloak | informe §8.3 y §11.3 | ✅ por API; captura de la consola: ⏳ pendiente del equipo |
+| 9 | Probar app móvil | informe §8.4 | ⏳ pendiente del equipo (EV-C204-006) |
+| 10 | FASE 1: pipeline en rojo | `docs/tablas/tabla-3-diagnostico.md` | ✅ |
+| 11 | FASE 2: corregir a verde | `docs/tablas/tabla-4-evidencias.md` + `docs/remediacion-playbook.md` | ✅ |
+| 12 | Pentest + pruebas | `docs/tablas/tabla-5-riesgo.md` + `tabla-6-pruebas.md` | ✅ |
+| 13 | Proteger rama principal | GitHub Settings (branch protection), informe §15 | ⏳ pendiente del equipo (EV-C204-014) |
+| 14 | Informe final en PDF | `docs/informe-maestro.md` → PDF | ✅ |
 
 ---
 
@@ -141,7 +141,7 @@
 
 1. **Rotación de llaves RSA** — política de rotación periódica y revocación.
 2. **TLS obligatorio** — el servicio debe servirse solo por HTTPS en producción (hoy el Codespace lo provee).
-3. **Rate limiting** — límite de intentos por IP/usuario para mitigar fuerza bruta sobre el token.
+3. ~~**Rate limiting**~~ — **implementado** (FIX-19, `express-rate-limit`, 100 peticiones/min por IP); queda como mejora un límite por usuario.
 4. **Monitoreo y alertas** — correlación de la bitácora con un SIEM.
 5. **Pruebas continuas** — el pipeline ya las ejecuta en cada push; agregar programación semanal (Automation).
 6. **Actualización de dependencias automatizada** — Dependabot para mantener el SCA en verde.
@@ -157,9 +157,9 @@
 | Tabla 1 | Cada propiedad tiene requisito, control, verificación y justificación | Revisión cruzada con ASVS/MASVS |
 | Tabla 2 | 6 amenazas con componente, ataque, control, severidad y prueba | Revisión cruzada con STRIDE |
 | Jerarquía | Árbol + subsistemas + componentes críticos + figuras | Revisión visual de figuras SVG |
-| Tabla 3 | ~12 hallazgos con CWE y riesgo | Cruzar con reportes del pipeline |
+| Tabla 3 | 16 hallazgos con CWE y riesgo | Cruzar con reportes del pipeline |
 | Tabla 4 | Cada hallazgo con antes/después y commit | Cruzar con git log |
 | Tabla 5 | Riesgo P×I + ALE documentado | Revisión de cálculos |
-| Tabla 6 | 20+ pruebas con entrada/esperado/real | Revisión de resultados |
+| Tabla 6 | 30+ pruebas con entrada/esperado/real | Revisión de resultados |
 | Informe | 5 partes + evidencias SHA-256 | `sha256sum -c manifiesto` |
 | Pipeline | 6/6 jobs en verde | Actions → última ejecución |

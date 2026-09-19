@@ -143,31 +143,31 @@
 - [x] Cuenta GitHub (`edovega`)
 - [x] Repo público `proyecto-devsecops-cib204` creado
 - [x] Estructura del repo + documentación base
-- [ ] **Integrar zip oficial** (servidor/, app-movil/, workflows oficiales) — *bloqueado hasta recibir el zip*
-- [ ] Confirmar datos del curso con la docente (fechas, carné, equipo)
+- [x] Integrar zip oficial (servidor/, app-movil/, workflows oficiales) — commit `9b1bddb`
+- [ ] Confirmar datos del curso con la docente (fechas de entrega) — **pendiente del equipo**; integrantes ya confirmados
 
 ### Primer Avance
-- [ ] Tabla 1 (requisitos) — completar
-- [ ] Tabla 2 (STRIDE) — completar
-- [ ] Jerarquía de diseño — completar
-- [ ] Entorno verificado (EV-C204-001)
-- [ ] Servicio + Keycloak corriendo (EV-C204-002 a 005)
-- [ ] App cifrando/descifrando (EV-C204-006)
+- [x] Tabla 1 (requisitos)
+- [x] Tabla 2 (STRIDE)
+- [x] Jerarquía de diseño
+- [x] Entorno verificado (EV-C204-001 = captura EV-C204-046)
+- [x] Servicio + Keycloak corriendo (EV-C204-002 a 005, por API con Keycloak 24.0; capturas de la consola del Codespace: pendiente del equipo)
+- [ ] App cifrando/descifrando (EV-C204-006) — **pendiente del equipo**
 
 ### Segundo Avance
-- [ ] Fase 1: pipeline en rojo documentado (EV-C204-007 a 012)
-- [ ] Tabla 3 (diagnóstico, ~12 hallazgos)
-- [ ] Fase 2: correcciones hasta verde (EV-C204-013)
-- [ ] Tabla 4 (antes/después con commits)
-- [ ] Tabla 5 (riesgo con ALE)
-- [ ] Tabla 6 (pruebas completas)
-- [ ] Rama main protegida (EV-C204-014)
+- [x] Fase 1: pipeline en rojo documentado (EV-C204-007, 020 a 022, 027, 028)
+- [x] Tabla 3 (diagnóstico, 16 hallazgos)
+- [x] Fase 2: correcciones hasta verde (EV-C204-013 = EV-C204-026)
+- [x] Tabla 4 (antes/después con commits)
+- [x] Tabla 5 (riesgo con ALE)
+- [x] Tabla 6 (pruebas completas)
+- [ ] Rama main protegida (EV-C204-014) — **pendiente del equipo** (informe §15)
 
 ### Informe Final
-- [ ] Informe integrado completo
-- [ ] PDF generado
-- [ ] Manifiesto SHA-256 verificado
-- [ ] Entrega
+- [x] Informe integrado completo
+- [x] PDF generado
+- [x] Manifiesto SHA-256 verificado
+- [ ] Entrega a la docente — **pendiente del equipo**
 
 ---
 
@@ -175,7 +175,7 @@
 
 El proyecto está **100% completo** cuando:
 
-1. ✅ El pipeline muestra **6/6 jobs en verde** en la última ejecución de `main`
+1. ✅ El pipeline muestra **5/5 jobs en verde** más **CodeQL (default setup) sin alertas abiertas** en la última ejecución de `main` (desviación documentada de los 6 jobs, informe §12.1)
 2. ✅ Las **6 tablas** están completas con datos reales (no placeholders)
 3. ✅ Los **14+ evidencias** (EV-C204-001 a 014) existen y el manifiesto SHA-256 verifica
 4. ✅ La **rama `main` está protegida** (PR + status checks)
@@ -188,7 +188,7 @@ El proyecto está **100% completo** cuando:
 
 | Riesgo | Impacto | Mitigación |
 |---|---|---|
-| ⏳ Zip oficial no ha llegado | No se puede ejecutar Fase 1 real | Estructura lista; al llegar el zip se integra en minutos |
+| ✅ Zip oficial integrado (`9b1bddb`) | — | Fase 1 real ejecutada y documentada (Tabla 3) |
 | CodeQL requiere repo público | Job sin resultados mientras esté privado | Repo **privado durante el desarrollo** (Semgrep es la prueba SAST principal); se hace **público al finalizar** — acción: `gh repo edit edovega/proyecto-devsecops-cib204 --visibility public --accept-visibility-change-consequences` |
 | Horas de Codespace limitadas | Tiempo de trabajo | Detener Codespace al terminar; plan gratuito alcanza |
 | Fechas de entrega no confirmadas | Informe con fechas incorrectas | Confirmar con la docente (sección 4 de datos-del-curso) |

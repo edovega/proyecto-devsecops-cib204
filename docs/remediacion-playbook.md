@@ -1,6 +1,6 @@
 # Playbook de remediación — Fase 2 (de rojo a verde)
 
-> Guía de corrección para cada tipo de hallazgo esperado en la Fase 1. Cuando el zip oficial llegue, se cruza cada hallazgo real de la Tabla 3 con el patrón correspondiente y se aplica la corrección. **Un commit por corrección**, con mensaje descriptivo, y verificación en Actions.
+> Guía de corrección para cada tipo de hallazgo esperado en la Fase 1. Con el zip oficial ya integrado, cada hallazgo real de la Tabla 3 se cruzó con el patrón correspondiente y se aplica la corrección. **Un commit por corrección**, con mensaje descriptivo, y verificación en Actions.
 
 ---
 

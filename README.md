@@ -73,7 +73,7 @@ proyecto-devsecops-cib204
 | `imagen` | Contenedor | Fallas de la imagen Docker; genera el SBOM | Trivy + Syft |
 | `dast` | DAST | Ataca la app viva (cabeceras, CORS) | OWASP ZAP |
 
-> ⚠️ **CodeQL necesita repo público.** Este repositorio está **privado durante el desarrollo** y se hará **público al finalizar** (para que CodeQL sea gratis y el docente pueda revisar). Mientras esté privado, el paso de CodeQL no dará resultados y **Semgrep es la prueba SAST principal** (el pipeline funciona igual). Los secretos incluidos son ficticios, de práctica; nunca subas secretos reales a un repo público.
+> ℹ️ **CodeQL corre por «default setup» de GitHub**, no como job del workflow (los dos modos no pueden coexistir). Por eso el workflow tiene **5 jobs** y CodeQL analiza `javascript-typescript` y `actions` en cada push desde *Settings → Code security*. Detalle y justificación en el informe §8.6 y §12.1. El repositorio es **público** (requisito de CodeQL gratuito).
 
 ## 🚀 Inicio rápido (en el Codespace)
 
@@ -107,7 +107,7 @@ bash iniciar-app.sh
 
 ## 📄 Nota sobre el material oficial
 
-El material oficial del laboratorio (`proyecto-devsecops-cib204.zip`) se integra en `servidor/`, `app-movil/` y los archivos de configuración cuando esté disponible. La documentación, las tablas y el sistema de evidencias ya están listos en `docs/`.
+El material oficial del laboratorio (`proyecto-devsecops-cib204.zip`) ya está integrado en `servidor/`, `app-movil/` y los archivos de configuración (commit `9b1bddb`), y el servicio fue remediado en la Fase 2. La documentación, las tablas y el sistema de evidencias ya están listos en `docs/`.
 
 ## Licencia
 

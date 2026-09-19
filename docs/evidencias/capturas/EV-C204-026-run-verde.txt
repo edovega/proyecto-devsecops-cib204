@@ -1,0 +1,20 @@
+# Run verde de referencia (Fase 2) - gh run view 35442482331
+# Generado: 2026-09-19T12:21:00Z
+run 35442482331 | Pipeline DevSecOps CIB-204 | commit 0fc1c11b2a63f8ef34fc6c8fbba10a7480170346 | completed/success | evento push | 2026-09-19T12:18:26Z | https://github.com/edovega/proyecto-devsecops-cib204/actions/runs/35442482331
+
+success	DAST - OWASP ZAP	2026-09-19T12:18:29Z -> 2026-09-19T12:19:54Z
+success	Imagen - Trivy + SBOM	2026-09-19T12:18:29Z -> 2026-09-19T12:19:15Z
+success	SCA - Dependencias	2026-09-19T12:18:28Z -> 2026-09-19T12:18:50Z
+success	Secretos - Gitleaks	2026-09-19T12:18:29Z -> 2026-09-19T12:18:39Z
+success	SAST - Semgrep	2026-09-19T12:18:29Z -> 2026-09-19T12:18:57Z
+
+# Artefactos (nombre y tamano)
+reporte-gitleaks	9202 bytes
+reporte-zap	14940 bytes
+sbom	307952 bytes
+cifrado_0fc1c11b2a63f8ef34fc6c8fbba10a7480170346.spdx.json	308040 bytes
+reporte-semgrep	190522 bytes
+
+# CodeQL (default setup) sobre el mismo commit
+/language:javascript-typescript	resultados=0	reglas=87
+/language:actions	resultados=0	reglas=17

@@ -37,7 +37,7 @@ Plan completo del laboratorio con **mapeo explícito a la rúbrica del curso** (
 
 ### Paso 2. Repositorio y material
 - [ ] Repo `proyecto-devsecops-cib204` **público** (creado ✅)
-- [ ] Material oficial (`proyecto-devsecops-cib204.zip`) integrado en `servidor/` y `app-movil/`
+- [x] Material oficial (`proyecto-devsecops-cib204.zip`) integrado en `servidor/` y `app-movil/`
 - [ ] Subir material con `git add -A && git commit && git push` (conserva `.github/` y `.devcontainer/`)
 - [ ] Verificar en Actions que el pipeline arrancó (6 jobs)
 

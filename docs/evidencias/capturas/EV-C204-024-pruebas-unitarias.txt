@@ -1,0 +1,92 @@
+# Pruebas unitarias e integracion (Jest) y analisis estatico (ESLint) - servidor/
+# Fecha: 2026-09-19T12:18:36Z  Commit: 0fc1c11  Node: v18.19.1
+
+$ npm test
+  console.log
+    {"ts":"2026-09-19T12:18:37.544Z","accion":"cifrar","resultado":"ok","ip":"::ffff:127.0.0.1"}
+
+      at log (servidor.js:66:11)
+
+PASS ./auth.test.js
+  Autenticacion con Keycloak (RS256 + JWKS)
+    ✓ sin token -> 401 (18 ms)
+    ✓ token valido de Keycloak -> 200 (14 ms)
+    ✓ token expirado -> 401 (2 ms)
+    ✓ firma de otra llave -> 401 (3 ms)
+    ✓ algoritmo HS256 (confusion de algoritmo) -> 401 (2 ms)
+    ✓ alg:none -> 401 (1 ms)
+    ✓ audiencia/cliente incorrecto -> 401 (2 ms)
+    ✓ kid desconocido -> 401 (1 ms)
+    ✓ basura como token -> 401 (2 ms)
+
+  console.log
+    {"ts":"2026-09-19T12:18:37.913Z","accion":"cifrar","resultado":"ok","usuario":"anonimo","ip":"::ffff:127.0.0.1"}
+
+      at log (servidor.js:66:11)
+
+  console.log
+    {"ts":"2026-09-19T12:18:37.916Z","accion":"descifrar","resultado":"ok","usuario":"anonimo","ip":"::ffff:127.0.0.1"}
+
+      at log (servidor.js:66:11)
+
+  console.log
+    {"ts":"2026-09-19T12:18:37.920Z","accion":"cifrar","resultado":"ok","usuario":"anonimo","ip":"::ffff:127.0.0.1"}
+
+      at log (servidor.js:66:11)
+
+  console.log
+    {"ts":"2026-09-19T12:18:37.923Z","accion":"descifrar","resultado":"ok","usuario":"anonimo","ip":"::ffff:127.0.0.1"}
+
+      at log (servidor.js:66:11)
+
+  console.log
+    {"ts":"2026-09-19T12:18:37.925Z","accion":"cifrar","resultado":"rechazado","usuario":"anonimo","ip":"::ffff:127.0.0.1","detalle":"entrada invalida"}
+
+      at log (servidor.js:66:11)
+
+  console.log
+    {"ts":"2026-09-19T12:18:37.927Z","accion":"cifrar","resultado":"ok","usuario":"anonimo","ip":"::ffff:127.0.0.1"}
+
+      at log (servidor.js:66:11)
+
+  console.log
+    {"ts":"2026-09-19T12:18:37.929Z","accion":"cifrar","resultado":"rechazado","usuario":"anonimo","ip":"::ffff:127.0.0.1","detalle":"entrada invalida"}
+
+      at log (servidor.js:66:11)
+
+PASS ./integracion.test.js
+  API del servicio de cifrado
+    ✓ GET /salud responde estado ok (7 ms)
+    ✓ GET /llave entrega la llave publica (1 ms)
+    ✓ ciclo completo: /cifrar y luego /descifrar recupera el texto (9 ms)
+    ✓ cada operacion queda en la bitacora (no repudio) sin registrar el texto (2 ms)
+    ✓ borde de RSA-OAEP: 190 bytes se cifran; 191 se rechazan con 400 (no 500) (7 ms)
+    ✓ el limite cuenta bytes UTF-8, no caracteres (47 emojis = 188 B ok; 48 = 192 B rechazo) (4 ms)
+
+PASS ./oaep.test.js
+  RSA-OAEP con SHA-256
+    ✓ un texto cifrado por el modulo se descifra con OAEP-SHA256 (2 ms)
+    ✓ con OAEP-SHA1 el descifrado falla (no se usa el hash por defecto) (1 ms)
+    ✓ la llave generada es de 2048 bits
+
+PASS ./limite.test.js
+  Limite de peticiones por IP
+    ✓ la peticion 4 dentro de la ventana responde 429 (8 ms)
+
+PASS ./cifrado.test.js
+  Modulo de cifrado RSA
+    ✓ cifrar devuelve un texto distinto del original (base64) (1 ms)
+    ✓ descifrar recupera el texto original (round-trip) (1 ms)
+    ✓ genera un par de llaves en formato PEM (1 ms)
+
+Test Suites: 5 passed, 5 total
+Tests:       22 passed, 22 total
+Snapshots:   0 total
+Time:        1.452 s, estimated 2 s
+Ran all test suites.
+
+$ npm run lint
+ESLint: 0 errores, 0 advertencias
+
+$ npm audit --omit=dev
+found 0 vulnerabilities
