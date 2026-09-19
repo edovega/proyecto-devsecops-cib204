@@ -151,8 +151,8 @@
 - [x] Tabla 2 (STRIDE)
 - [x] Jerarquía de diseño
 - [x] Entorno verificado (EV-C204-001 = captura EV-C204-046)
-- [x] Servicio + Keycloak corriendo (EV-C204-002 a 005, por API con Keycloak 24.0; capturas de la consola del Codespace: pendiente del equipo)
-- [ ] App cifrando/descifrando (EV-C204-006) — **pendiente del equipo**
+- [x] Servicio + Keycloak corriendo (EV-C204-002 a 005, por API con Keycloak 24.0; captura del usuario EV-C204-005; faltan EV-C204-002 a 004)
+- [x] App cifrando/descifrando (EV-C204-006)
 
 ### Segundo Avance
 - [x] Fase 1: pipeline en rojo documentado (EV-C204-007, 020 a 022, 027, 028)

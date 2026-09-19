@@ -69,4 +69,4 @@ cd .. && bash scripts/prueba-e2e-keycloak.sh | grep -c PASA    # 25 (requiere Do
 1. **Convergencia (SÍ/NO + prueba):** run verde, hashes byte-idénticos y manifiesto.
 2. **Discrepancias:** lista numerada con el comando que las reproduce.
 3. **Cobertura de la guía y la rúbrica:** cumple / cumple con desviación / no cumple, por criterio.
-4. **Pendientes conocidos del equipo:** EV-C204-006 (app móvil), capturas de la consola de Keycloak, confirmar que el Codespace con Docker funciona y confirmación de fechas con la docente.
+4. **Pendientes conocidos del equipo:** capturas EV-C204-002 (`/salud`), 003 (realm) y 004 (cliente), la captura de `docker --version` y la confirmación de fechas con la docente.

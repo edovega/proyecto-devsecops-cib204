@@ -24,12 +24,8 @@ Es normal: el Codespace actual no trae Docker (se quitó para evitar el modo de 
 6. **Users → Create new user** → *Username* `demo`, email, nombre y apellido, active **Email verified** → Create. Pestaña **Credentials → Set password** (desactive *Temporary*). **Captura 4** (`EV-C204-005-usuario.png`).
 7. Para probar el servicio con identidad, en `docker-compose.yml` el control de acceso arranca apagado; se enciende con `AUTH_ENABLED=true`. Puede dejarlo apagado para la captura de la app.
 
-## 3. EV-C204-006 — la app móvil cifrando y descifrando
-1. En la Terminal: `bash iniciar-app.sh` (espere a que diga que Expo está en el puerto 8081).
-2. Pestaña **Ports**: fila **3000** → clic derecho → *Port Visibility* → **Public**. Fila **8081** → globo 🌐.
-3. En la app: pegue la dirección del puerto 3000, escriba un texto corto (**menos de 190 letras**), pulse **Cifrar** y luego **Descifrar**.
-   - Si activó `AUTH_ENABLED=true`, necesita pegar un token: solo el valor de `access_token`, **sin** la palabra «Bearer».
-4. **Captura** (`EV-C204-006-app.png`): deben verse «Cifrado OK» y «Descifrado OK».
+## 3. EV-C204-006 — la app móvil
+**Hecho** (EV-C204-006). Para probar la app **con token**, antes quite la acción «Update Password» del usuario `demo` (Keycloak → Users → demo → campo *Required user actions*).
 
 ## 4. EV-C204-014 — proteger la rama `main`
 **Hecho el 19-sep-2026** (ruleset `proteger-main`; capturas EV-C204-012, 013 y 014 ya incorporadas al informe).
