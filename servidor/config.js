@@ -21,6 +21,9 @@ const config = {
   KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID || 'servicio-cifrado',
   KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER || '',
   PUERTO: process.env.PORT || 3000,
+  // Limite de peticiones por IP y ventana (FIX-19, CWE-770).
+  RATE_LIMIT_MAX: Number(process.env.RATE_LIMIT_MAX) || 100,
+  RATE_LIMIT_VENTANA_MS: Number(process.env.RATE_LIMIT_VENTANA_MS) || 60000,
   // [FIX-06] CORS restringido: lista blanca en .env.
   ORIGENES_PERMITIDOS: (process.env.ORIGENES_PERMITIDOS || 'http://localhost:3000').split(','),
 };

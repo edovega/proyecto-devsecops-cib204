@@ -16,6 +16,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const cifrado = require('./cifrado');
 const db = require('./db');
 const config = require('./config');
@@ -40,6 +41,19 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({ origin: config.ORIGENES_PERMITIDOS }));
+
+// [FIX-19] Limite de peticiones por IP (CWE-770; alerta CodeQL js/missing-rate-limiting):
+//   frena la fuerza bruta de tokens y el abuso de /cifrar, /descifrar y /buscar.
+//   Excedido el limite responde 429. Ajustable con RATE_LIMIT_MAX / RATE_LIMIT_VENTANA_MS.
+app.use(
+  rateLimit({
+    windowMs: config.RATE_LIMIT_VENTANA_MS,
+    limit: config.RATE_LIMIT_MAX,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { error: 'Demasiadas peticiones' },
+  })
+);
 
 app.use(express.json({ limit: '10kb' })); // [FIX-05] CWE-20: tamano de cuerpo acotado
 
