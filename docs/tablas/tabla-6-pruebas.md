@@ -1,6 +1,6 @@
 # Tabla 6 — Documentación de pruebas
 
-> **Estado: COMPLETA con resultados reales**, salvo lo marcado «pendiente del equipo» (requiere el Codespace y la app móvil). Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
+> **Estado: COMPLETA con resultados reales**, salvo la captura de `docker --version` (opcional). Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
 
 ## Pruebas funcionales del servicio
 
@@ -68,12 +68,14 @@ Estos son los ajustes que **se hicieron y verificaron** para cubrir más casos d
 6. **Corrección de una prueba defectuosa:** la primera versión de «token con la firma alterada» cambiaba el **último** carácter de la firma y a veces daba 200; en base64 los últimos bits del último carácter no cambian los bytes. Se cambió a alterar un carácter central y se repitió 3 veces seguidas (23/23 cada vez).
 7. **Sensibilidad al reloj:** la primera prueba de expiración esperó 8 s con tokens de 5 s y aceptó el token, porque el servicio tolera 5 s de desfase de reloj. No era un fallo del servicio: se ajustó la espera a 12 s.
 
-## Pendiente del equipo (no se pudo ejecutar aquí)
+## Pruebas ejecutadas por el equipo en el Codespace
 
-| ID | Prueba | Por qué falta | Cómo hacerla |
-|---|---|---|---|
-| P-27 | Cifrar/descifrar desde la **app móvil** (Expo) en el Codespace | Requiere el navegador y el Codespace del equipo | Guía de laboratorio §8 (ver `docs/evidencias/INSTRUCCIONES-CAPTURA.md`, EV-C204-006) |
-| P-28 | Keycloak en el **Codespace** (consola web) | Se probó Keycloak 24.0 local por API; la guía pide capturas de la consola | `INSTRUCCIONES-CAPTURA.md`, EV-C204-003 a EV-C204-005 |
+| ID | Prueba | Datos de entrada | Resultado esperado | Resultado real | Estado |
+|---|---|---|---|---|---|
+| P-27 | Cifrar/descifrar desde la **app móvil** (Expo) en el Codespace | Texto «Hola CIB-204», URL pública del puerto 3000, sin token (`AUTH_ENABLED=false`) | Cifrado y descifrado correctos | «Descifrado OK»: la app mostró el cifrado en base64 y recuperó «Hola CIB-204» (EV-C204-006) | ✅ |
+| P-28 | Keycloak en el **Codespace** (consola web) | Usuario `demo` en el realm `appmovil` | Usuario creado y habilitado | Realm `appmovil`, cliente `servicio-cifrado` y usuario `demo` habilitado con email verificado, todos en la consola del Codespace (EV-C204-003, 004 y 005) | ✅ |
+
+> **Observación sobre EV-C204-005:** el usuario aparece con la acción requerida «**Update Password**». Con esa acción pendiente, `demo` **no puede obtener un token** por contraseña directa (Keycloak exige cambiar la clave primero). La prueba de la app (P-27) no lo necesita porque se hizo con el acceso apagado. Para probar la app **con token** hay que quitar esa acción del usuario (campo «Required user actions») o crear la contraseña con «Temporary» desactivado.
 
 ## Nota de trazabilidad
 

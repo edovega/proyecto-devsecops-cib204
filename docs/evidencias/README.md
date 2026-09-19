@@ -38,9 +38,10 @@ bash scripts/generar-manifiesto.sh            # regenera el manifiesto SHA-256
 | ID | Evidencia | Estado |
 |---|---|---|
 | EV-C204-001 | Versiones del entorno (node, npm) | ✅ `consola-git/EV-C204-046-…png` |
-| EV-C204-002 | Servicio `/salud` respondiendo | ✅ transcripción EV-C204-023 · captura del navegador: ⏳ equipo |
-| EV-C204-003 a 005 | Keycloak: realm, cliente y usuario | ✅ por API (EV-C204-023) · capturas de la consola: ⏳ equipo |
-| EV-C204-006 | App móvil cifrando/descifrando | ⏳ **pendiente del equipo** |
+| EV-C204-002 | Servicio `/salud` respondiendo | ✅ captura (`.jpeg`) + transcripción EV-C204-023 |
+| EV-C204-003 a 004 | Keycloak: realm y cliente | ✅ capturas de la consola + API (EV-C204-023) |
+| EV-C204-005 | Keycloak: usuario `demo` | ✅ captura + API |
+| EV-C204-006 | App móvil cifrando/descifrando | ✅ captura |
 | EV-C204-007 | Pipeline Fase 1 (jobs en rojo) | ✅ `consola-git/` (informe §13) |
 | EV-C204-008 a 011 | Reportes Semgrep, Gitleaks, SBOM y ZAP del **run verde** | ✅ |
 | EV-C204-012 | Alertas CodeQL | ✅ captura + EV-C204-025 |

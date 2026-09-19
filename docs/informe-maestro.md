@@ -30,11 +30,11 @@
 | ID | Evidencia | Archivo (en `docs/evidencias/`) | Estado |
 |---|---|---|---|
 | EV-C204-001 | Versiones del entorno: `node v20.20.2`, `npm 10.8.2` en el Codespace | `capturas/consola-git/EV-C204-046-screenshot-image4.png` | ✅ (`docker --version` no aparece en la captura) |
-| EV-C204-002 | Servicio `/salud` respondiendo | `capturas/EV-C204-023-pruebas-e2e-keycloak.txt` (P-09) | ✅ transcripción; captura del navegador: pendiente del equipo |
-| EV-C204-003 | Keycloak: realm `appmovil` | `capturas/EV-C204-023-pruebas-e2e-keycloak.txt` (HTTP 201) | ✅ por API en Keycloak 24.0 local; captura de la consola: pendiente del equipo |
-| EV-C204-004 | Keycloak: cliente `servicio-cifrado` | ídem | ✅ por API; captura de la consola: pendiente del equipo |
-| EV-C204-005 | Keycloak: usuario `demo` | ídem | ✅ por API; captura de la consola: pendiente del equipo |
-| EV-C204-006 | App móvil cifrando/descifrando | — | ⏳ **pendiente del equipo** (`INSTRUCCIONES-CAPTURA.md`) |
+| EV-C204-002 | Servicio `/salud` respondiendo en el Codespace | `capturas/EV-C204-002-salud.jpeg` y resumen `EV-C204-002b-resumen-chatgpt.png` (+ transcripción: `EV-C204-023-pruebas-e2e-keycloak.txt`, P-09) | ✅ |
+| EV-C204-003 | Keycloak: realm `appmovil` (consola web del Codespace) | `capturas/EV-C204-003-realm.jpeg` (+ datos: `EV-C204-023-pruebas-e2e-keycloak.txt`) | ✅ |
+| EV-C204-004 | Keycloak: cliente `servicio-cifrado` (consola web del Codespace) | `capturas/EV-C204-004-cliente.png` (+ datos, ídem) | ✅ |
+| EV-C204-005 | Keycloak: usuario `demo` (consola web del Codespace) | `capturas/EV-C204-005-usuario.png` (+ datos: `EV-C204-023-pruebas-e2e-keycloak.txt`) | ✅ |
+| EV-C204-006 | App móvil cifrando/descifrando en el Codespace | `capturas/EV-C204-006-app.png` | ✅ |
 | EV-C204-007 | Pipeline Fase 1 (jobs en rojo) | `capturas/consola-git/EV-C204-047…051, 033…036` (ver §13 y Anexo I) | ✅ |
 | EV-C204-008 | Reporte Semgrep del **run verde** (Fase 2) | `capturas/EV-C204-008-semgrep.json` | ✅ |
 | EV-C204-009 | Reporte Gitleaks del **run verde** (Fase 2) | `capturas/EV-C204-009-gitleaks.json` | ✅ |
@@ -241,6 +241,8 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
 
 *Causa (confirmada para la variante con `docker-outside-of-docker`, inferida para la del zip).* Al reproducir el fallo con la configuración alternativa, el registro de creación del Codespace muestra: `The 'moby' option is not supported on debian 'trixie' because 'moby-cli' and related system packages are not available in that distribution` y `Feature "Docker (docker-outside-of-docker)" failed to install`. La imagen `javascript-node:20` es hoy **Debian 13 «trixie»** (verificado: `PRETTY_NAME="Debian GNU/Linux 13 (trixie)"`, Node 20.20.2, igual que la captura EV-C204-046) y las características de Docker instalan por defecto el paquete `moby`, que no existe en trixie. La característica `docker-in-docker:2` del zip tiene la misma opción por defecto y la misma imagen base, por lo que es **muy probable** que la causa sea la misma; no se conservó el texto exacto del error de la configuración original, solo su síntoma (modo de recuperación). Nota: una versión anterior de este informe atribuía el fallo al plan gratuito de 2 núcleos; esa hipótesis no tiene respaldo en los registros y se descarta.
 
+*Reporte a la docente.* El incidente fue reportado a la docente el 19 de septiembre de 2026 (`reporte-docente-devcontainer.md`). Según lo comunicado por el estudiante, la docente indicó que no había experimentado el error, el cual podría obedecer a diferencias en el tipo de cuenta de GitHub, consideró correcto el reporte y aprobó la modificación propuesta al `devcontainer.json`. La respuesta fue verbal y no se adjunta constancia escrita; la hipótesis sobre el tipo de cuenta no ha sido verificada.
+
 *Solución.* La configuración alternativa `.devcontainer/con-docker/devcontainer.json` usa `docker-outside-of-docker` con `"moby": false`, que es lo que indica el propio mensaje de error (usar el Docker CLI de Docker en lugar de `moby`).
 
 ![EV-C204-043 — Registro de creación del Codespace (`creation.log`) y mensaje de modo de recuperación](evidencias/capturas/consola-git/EV-C204-043-screenshot-image1.png){width=95%}
@@ -251,7 +253,7 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
 
 ![EV-C204-046 — Versiones reales del entorno: `node v20.20.2` y `npm 10.8.2`](evidencias/capturas/consola-git/EV-C204-046-screenshot-image4.png){width=95%}
 
-> **Limitación conocida (pendiente del equipo):** la configuración por defecto (sin Docker) no permite los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak). Para eso se creó la configuración alternativa `con-docker` (*Code → Codespaces → New with options… → CIB-204 DevSecOps (Node 20 + Docker)*) con `"moby": false`; **no se pudo probar en este entorno** y debe verificarse con `docker --version`. El pipeline de GitHub Actions no depende de esto.
+> **Docker en el Codespace:** la configuración por defecto (sin Docker) no permite los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak). Para eso se creó la configuración alternativa `con-docker` (*Code → Codespaces → New with options… → CIB-204 DevSecOps (Node 20 + Docker)*) con `"moby": false`; fue probada por el equipo: en su Codespace la consola de Keycloak (contenedor Docker) responde en el puerto 8080 y el servicio en el 3000 (EV-C204-005 y EV-C204-006), lo que indica que Docker está disponible; falta solo la captura de `docker --version`. El pipeline de GitHub Actions no depende de esto.
 
 **Evidencia:** EV-C204-043 a EV-C204-046 (EV-C204-001 = 046).
 
@@ -264,7 +266,11 @@ El servicio responde en el puerto 3000; Keycloak en el 8080. Verificación: abri
 
 El `docker-compose.yml` arranca con el control de acceso **apagado** (`AUTH_ENABLED=false`) para el primer ensayo; se activa con `AUTH_ENABLED=true` (sección 8.3).
 
-**Evidencia:** EV-C204-002 (transcripción en EV-C204-023; captura del navegador pendiente del equipo).
+**Evidencia:** EV-C204-002 (captura del navegador en el Codespace; transcripción de la misma prueba en EV-C204-023).
+
+![EV-C204-002 — Respuesta de `/salud` en el Codespace: `{"estado":"ok","version":"remediado-2.0"}`](evidencias/capturas/EV-C204-002-salud.jpeg){width=90%}
+
+![EV-C204-002b — Resumen de la misma consulta elaborado por el asistente de navegador (ChatGPT): URL, HTTP 200 y hora (12:32 CST). **No es una captura directa del navegador**; la evidencia principal es la imagen anterior](evidencias/capturas/EV-C204-002b-resumen-chatgpt.png){width=80%}
 
 ### 8.3 Configurar Keycloak (IAM)
 1. Abrir la consola de administración (puerto 8080).
@@ -275,7 +281,15 @@ El `docker-compose.yml` arranca con el control de acceso **apagado** (`AUTH_ENAB
 
 **Verificación real.** Estos cuatro pasos se ejecutaron por la API de administración de un **Keycloak 24.0 real** (realm → HTTP 201, cliente → 201, usuario → 201), se obtuvo un token RS256 con el usuario `demo` y se probó el servicio completo con él (25 comprobaciones, todas correctas; ver §11.3). Fuente: EV-C204-023.
 
-**Evidencia:** EV-C204-003, EV-C204-004, EV-C204-005 (por API). Las capturas de la consola web del Codespace: **pendiente del equipo**.
+**Evidencia:** EV-C204-003 a EV-C204-005 (capturas de la consola web de Keycloak en el Codespace) y, además, por API (EV-C204-023).
+
+![EV-C204-003 — Consola de Keycloak: realm `appmovil` («Welcome to appmovil»)](evidencias/capturas/EV-C204-003-realm.jpeg){width=95%}
+
+![EV-C204-004 — Cliente `servicio-cifrado` (OpenID Connect, habilitado)](evidencias/capturas/EV-C204-004-cliente.png){width=95%}
+
+![EV-C204-005 — Consola de Keycloak en el Codespace: realm `appmovil`, usuario `demo` habilitado, email verificado, creado el 19-sep-2026](evidencias/capturas/EV-C204-005-usuario.png){width=95%}
+
+> **Observación:** el usuario tiene pendiente la acción «Update Password», lo que impide que `demo` obtenga un token por contraseña directa hasta que se quite. Ver la nota de la Tabla 6 (P-28).
 
 ### 8.4 Probar la app móvil
 ```bash
@@ -283,7 +297,9 @@ bash iniciar-app.sh   # entra a app-movil/, instala y arranca Expo (puerto 8081)
 ```
 El puerto 3000 debe estar en **Público** (Port Visibility → Public) para que la app pueda llamar al servicio. En la app: pegar la URL del puerto 3000, pegar el **token** (solo el valor de `access_token`, sin la palabra «Bearer»: la app la antepone), escribir un texto, pulsar «Cifrar» y luego «Descifrar». Si el texto pasa de 190 bytes el servicio responde 400.
 
-**Evidencia:** EV-C204-006 (captura con «Cifrado OK» y «Descifrado OK»): **pendiente del equipo**. No se pudo ejecutar la app móvil en este entorno.
+**Evidencia:** EV-C204-006. La app se ejecutó en el Codespace del equipo con el acceso apagado (sin token): cifró «Hola CIB-204» y lo descifró de vuelta («Estado: Descifrado OK»). Se probó la app **sin** identidad; el flujo con token de Keycloak se probó por separado en las 25 comprobaciones de EV-C204-023.
+
+![EV-C204-006 — App móvil (Expo web) en el Codespace: URL del servicio, texto «Hola CIB-204», cifrado en base64 y descifrado correcto](evidencias/capturas/EV-C204-006-app.png){width=95%}
 
 ### 8.5 Ajustes aplicados al Dockerfile del laboratorio
 
@@ -619,7 +635,7 @@ Riesgo residual aceptado: CVEs de util-linux sin parche, falso positivo de ZAP e
 
 **Ajustes de pruebas** (criterio «pruebas y ajustes de código»): la Tabla 6 documenta siete ajustes reales, entre ellos la ampliación de P-10 y P-07, la corrección de una prueba de firma alterada que a veces daba un falso resultado, y la sensibilidad al reloj de la expiración de tokens.
 
-**Pendiente del equipo:** P-27 (app móvil) y P-28 (consola de Keycloak en el Codespace).
+**Ejecutadas por el equipo en el Codespace:** P-27 (app móvil, EV-C204-006) y P-28 (Keycloak, EV-C204-003 a 005).
 
 ## 18. Plantilla de diagnóstico del curso
 
@@ -657,7 +673,7 @@ Riesgo residual aceptado: CVEs de util-linux sin parche, falso positivo de ZAP e
 4. **Cada herramienta produce ruido que hay que juzgar.** Se documentaron dos falsos positivos (CSRF de Semgrep en una API con Bearer sin cookies; CSP en respuestas 404 de ZAP) en lugar de suprimirlos sin explicación, y un riesgo residual real (util-linux sin parche).
 5. **Corregir puede romper.** La remediación introdujo por sí misma un error de construcción (`COPY public`), y dos correcciones nuevas volvieron a poner Semgrep en rojo. Verificar después de cada cambio no es opcional.
 6. **Evaluación de seguridad de la aplicación.** En el estado final, el servicio exige identidad de Keycloak, cifra con RSA-2048 OAEP-SHA256, valida la entrada según su capacidad real, limita las peticiones, falla cerrado, no filtra detalles internos, registra las operaciones sin datos sensibles y corre como usuario sin privilegios; el riesgo agregado bajó ≈ 58 % y no quedan riesgos Altos.
-7. **Alcance y límites.** La app móvil y la consola de Keycloak del Codespace no se pudieron verificar en este entorno (pendiente del equipo) y el Codespace con Docker aún debe confirmarse; las llaves RSA se generan en memoria y se pierden al reiniciar (adecuado para un laboratorio, no para producción).
+7. **Alcance y límites.** La app móvil y Keycloak funcionaron en el Codespace del equipo (EV-C204-005 y 006); solo falta la captura de `docker --version`; las llaves RSA se generan en memoria y se pierden al reiniciar (adecuado para un laboratorio, no para producción).
 
 ## 21. Recomendaciones
 
@@ -1027,7 +1043,7 @@ Esta tabla alimenta: informe §16, la plantilla de diagnóstico y la Tabla 4.
 
 ### Tabla 6 — Documentación de pruebas
 
-> **Estado: COMPLETA con resultados reales**, salvo lo marcado «pendiente del equipo» (requiere el Codespace y la app móvil). Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
+> **Estado: COMPLETA con resultados reales**, salvo la captura de `docker --version` (opcional). Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
 
 #### Pruebas funcionales del servicio
 
@@ -1095,14 +1111,16 @@ Estos son los ajustes que **se hicieron y verificaron** para cubrir más casos d
 6. **Corrección de una prueba defectuosa:** la primera versión de «token con la firma alterada» cambiaba el **último** carácter de la firma y a veces daba 200; en base64 los últimos bits del último carácter no cambian los bytes. Se cambió a alterar un carácter central y se repitió 3 veces seguidas (23/23 cada vez).
 7. **Sensibilidad al reloj:** la primera prueba de expiración esperó 8 s con tokens de 5 s y aceptó el token, porque el servicio tolera 5 s de desfase de reloj. No era un fallo del servicio: se ajustó la espera a 12 s.
 
-#### Pendiente del equipo (no se pudo ejecutar aquí)
+#### Pruebas ejecutadas por el equipo en el Codespace
 
-| ID | Prueba | Por qué falta | Cómo hacerla |
-|---|---|---|---|
-| P-27 | Cifrar/descifrar desde la **app móvil** (Expo) en el Codespace | Requiere el navegador y el Codespace del equipo | Guía de laboratorio §8 (ver `docs/evidencias/INSTRUCCIONES-CAPTURA.md`, EV-C204-006) |
-| P-28 | Keycloak en el **Codespace** (consola web) | Se probó Keycloak 24.0 local por API; la guía pide capturas de la consola | `INSTRUCCIONES-CAPTURA.md`, EV-C204-003 a EV-C204-005 |
+| ID | Prueba | Datos de entrada | Resultado esperado | Resultado real | Estado |
+|---|---|---|---|---|---|
+| P-27 | Cifrar/descifrar desde la **app móvil** (Expo) en el Codespace | Texto «Hola CIB-204», URL pública del puerto 3000, sin token (`AUTH_ENABLED=false`) | Cifrado y descifrado correctos | «Descifrado OK»: la app mostró el cifrado en base64 y recuperó «Hola CIB-204» (EV-C204-006) | ✅ |
+| P-28 | Keycloak en el **Codespace** (consola web) | Usuario `demo` en el realm `appmovil` | Usuario creado y habilitado | Realm `appmovil`, cliente `servicio-cifrado` y usuario `demo` habilitado con email verificado, todos en la consola del Codespace (EV-C204-003, 004 y 005) | ✅ |
 
-#### Nota de trazabilidad
+> **Observación sobre EV-C204-005:** el usuario aparece con la acción requerida «**Update Password**». Con esa acción pendiente, `demo` **no puede obtener un token** por contraseña directa (Keycloak exige cambiar la clave primero). La prueba de la app (P-27) no lo necesita porque se hizo con el acceso apagado. Para probar la app **con token** hay que quitar esa acción del usuario (campo «Required user actions») o crear la contraseña con «Temporary» desactivado.
+
+## Nota de trazabilidad
 
 Esta tabla alimenta: informe §17, la plantilla de diagnóstico y la verificación de los requisitos de la Tabla 1 (cada requisito tiene su prueba aquí).
 
@@ -1180,7 +1198,7 @@ Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian docu
 |---|---|---|---|
 | 1 | Lectura de la guía y la rúbrica; creación del repositorio | Repo + estructura | ✅ |
 | 2 | Datos del curso, plan de acción, validación de objetivos | `docs/` | ✅ |
-| 3 | **Primer Avance (10 %)**: contexto, diseño, Tablas 1–2, entorno | Informe Parte I–II | ✅ (capturas de Keycloak y de la app: pendientes del equipo) |
+| 3 | **Primer Avance (10 %)**: contexto, diseño, Tablas 1–2, entorno | Informe Parte I–II | ✅ |
 | 4–5 | Integración del material oficial; Fase 1 (pipeline en rojo) | Tabla 3 + reportes | ✅ |
 | 6–7 | Fase 2: remediación (un commit por hallazgo) | Tabla 4 + pipeline verde | ✅ |
 | 8 | Pentest, riesgos (Tabla 5), pruebas (Tabla 6) | Tablas 5–6 | ✅ |
@@ -1220,7 +1238,7 @@ Cada evidencia tiene un ID único **EV-C204-XXX** (ver índice de evidencias, se
 | `docs/tablas/tabla-1..6` | Tablas de entrega del laboratorio |
 | `docs/plantilla-diagnostico.md` | Plantilla de diagnóstico del curso, completa |
 | `docs/validacion-objetivos.md` | Trazabilidad objetivos → dónde → cómo excede |
-| `docs/reporte-docente-devcontainer.md` | Reporte a la docente sobre el `devcontainer.json` del zip oficial |
+| `docs/reporte-docente-devcontainer.md` | Reporte a la docente sobre el `devcontainer.json` del zip oficial (remitido; modificación aprobada) |
 | `docs/remediacion-playbook.md` | Patrones de corrección de la Fase 2 |
 | `.github/workflows/devsecops.yml` | Pipeline (5 jobs + CodeQL por default setup) |
 | `.devcontainer/devcontainer.json` | Configuración del Codespace |
