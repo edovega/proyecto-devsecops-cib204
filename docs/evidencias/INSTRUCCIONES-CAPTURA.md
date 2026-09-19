@@ -3,13 +3,16 @@
 > Esta lista tiene **solo lo que no se pudo hacer desde fuera de su Codespace**. Todo lo demás ya está en el repositorio. Cada captura es una imagen PNG; después de guardarla, avise para que se agregue al informe y al manifiesto.
 
 ## Antes de empezar
-- Abra su repositorio en el navegador y presione **Code → Codespaces →** el Codespace que ya existe (si no aparece, «Create codespace on main»).
+- Para los puntos 2 y 3 use el Codespace nuevo del punto 1. Para el punto 4 basta el navegador.
 - En cada captura debe verse **la fecha y la hora** (por ejemplo, el reloj de su pantalla) y **no debe verse ninguna contraseña real**.
 
-## 1. Verificar si Docker existe en el Codespace (30 segundos)
-1. En el panel de abajo (**Terminal**) escriba: `docker --version` y pulse Enter.
-2. Si sale una versión (por ejemplo `Docker version 27...`), siga al punto 2.
-3. Si sale «command not found»: el Codespace actual no trae Docker (se quitó para evitar el modo de recuperación). Avise y se decide entre reactivarlo con otra configuración o hacer los puntos 2 y 3 en su computadora con Docker Desktop.
+## 1. Conseguir un Codespace que tenga Docker (pasa `docker: command not found`)
+Es normal: el Codespace actual no trae Docker (se quitó para evitar el modo de recuperación). Hay una segunda configuración que sí lo trae y **no cambia la actual**:
+1. En GitHub, su repositorio → botón verde **Code** → pestaña **Codespaces**.
+2. Junto al botón **+** pulse **… → New with options…**.
+3. En **Dev container configuration** elija **CIB-204 DevSecOps (Node 20 + Docker)**. Máquina: **2-core**. Pulse **Create codespace**.
+4. Cuando abra, en la Terminal escriba `docker --version`. Debe salir una versión.
+5. Si el nuevo Codespace entra en «modo de recuperación» (aviso «running in recovery mode»), **deténgalo y bórrelo** (github.com/codespaces → … → Delete), y avise: en ese caso los puntos 2 y 3 se hacen en una computadora con Docker Desktop. Su Codespace original no se afecta.
 
 ## 2. EV-C204-002 a 005 — servicio y Keycloak (solo si el punto 1 funcionó)
 1. En la Terminal: `docker compose up -d --build` (tarda unos minutos) y luego `docker compose ps`; ambos deben decir *running*.

@@ -246,7 +246,7 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
 
 ![EV-C204-046 — Versiones reales del entorno: `node v20.20.2` y `npm 10.8.2`](evidencias/capturas/consola-git/EV-C204-046-screenshot-image4.png){width=95%}
 
-> **Limitación conocida (pendiente del equipo):** al quitar `docker-in-docker`, la imagen del Codespace ya no incluye Docker, y los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak) requieren Docker. Verifique con `docker --version` en el Codespace; si no está disponible, esos pasos se pueden reproducir con Docker en un equipo local (el script `scripts/prueba-e2e-keycloak.sh` lo hace de forma automática). El pipeline de GitHub Actions no depende de esto.
+> **Limitación conocida (pendiente del equipo):** al quitar `docker-in-docker`, la imagen del Codespace ya no incluye Docker, y los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak) requieren Docker. Para tener Docker se agregó la configuración alternativa `.devcontainer/con-docker/devcontainer.json` (*New with options… → CIB-204 DevSecOps (Node 20 + Docker)*), que añade `docker-outside-of-docker` sin alterar la configuración por defecto; **no se pudo probar en este entorno**. Verifique con `docker --version`; si no está disponible, esos pasos se pueden reproducir con Docker en un equipo local (el script `scripts/prueba-e2e-keycloak.sh` lo hace de forma automática). El pipeline de GitHub Actions no depende de esto.
 
 **Evidencia:** EV-C204-043 a EV-C204-046 (EV-C204-001 = 046).
 
