@@ -60,9 +60,10 @@
 | EV-C204-029 | Historial de las 22+ ejecuciones del pipeline | `capturas/EV-C204-029-historial-runs.txt` | ✅ |
 | EV-C204-033 … 051 | 19 capturas de pantalla del equipo, individualizadas | `capturas/consola-git/` (Anexo I) | ✅ |
 | EV-C204-030 | Configuración real del ruleset `proteger-main` (API de GitHub) | `capturas/EV-C204-030-ruleset-main.json` | ✅ |
+| EV-C204-031 | Contribuidores del repositorio (Insights → Contributors, 19-sep-2026) | `capturas/EV-C204-031-contribuidores.png` | ✅ |
 | EV-C204-052 / 053 | Copias del PPTX y PDF dentro de `consola-git/` | `capturas/consola-git/` | ✅ (duplicados de 018 y 019) |
 
-> Los identificadores 031–032 no se usan. Las etiquetas «EV-C204-006 … 011» que aparecen dentro de las diapositivas del PPTX original son notas internas del equipo y **no** corresponden a este índice; la equivalencia está en el Anexo I.
+> El identificador 032 no se usa. Las etiquetas «EV-C204-006 … 011» que aparecen dentro de las diapositivas del PPTX original son notas internas del equipo y **no** corresponden a este índice; la equivalencia está en el Anexo I.
 
 ---
 
@@ -1275,9 +1276,13 @@ Cada evidencia tiene un ID único **EV-C204-XXX** (ver índice de evidencias, se
 
 ---
 
-## Anexo H — Nota de transparencia IA
+## Anexo H — Nota de transparencia sobre el uso de IA
 
-Este proyecto se desarrolló con asistencia de herramientas de IA: un asistente de codificación en el entorno OpenWork (estructura de la documentación, redacción inicial, figuras y remediación inicial del pipeline) y, en la revisión final, **Claude (Anthropic) con Claude Code**, que auditó el repositorio contra la guía y la rúbrica, corrigió el código y los documentos (autenticación con Keycloak, límite de peticiones, OAEP-SHA256, bitácora, límite de entrada, tablas 3 a 6, plantilla de diagnóstico, secciones 13 a 21 de este informe) y ejecutó las pruebas. Cada cambio de código quedó en un commit con su propia ejecución del pipeline, y los resultados de las pruebas están en los archivos de evidencia, no solo en el texto. **Adicionalmente, en la validación del Codespace el equipo utilizó **ChatGPT con acceso al navegador** para ejecutar los pasos y tomar las capturas EV-C204-002 a 006, 012, 013 y 014 (incluida la creación del ruleset de la rama `main`, confirmada previamente por el titular); ese asistente elaboró además la imagen de resumen EV-C204-002b, rotulada como tal, y modificó localmente `servidor/config.js` (ver §8.4). Las decisiones de seguridad, la validación en el Codespace, las capturas de la app móvil y de la consola de Keycloak, la protección de la rama y la entrega a la docente son responsabilidad de los integrantes del equipo.** El código fuente base es el material oficial del curso.
+En el desarrollo de este proyecto se utilizaron herramientas de inteligencia artificial (asistentes de codificación y de navegador) como apoyo auxiliar en la depuración de código, la revisión de estándares de seguridad, la elaboración de documentación y la auditoría de consistencia entre el código, las pruebas y el informe. Las decisiones técnicas y de seguridad, la ejecución y validación del laboratorio en el Codespace, la toma de evidencias y la entrega son responsabilidad de los integrantes del equipo. El código fuente base es el material oficial del curso.
+
+Como evidencia de la proporción de esta participación, la sección *Insights → Contributors* del repositorio (rama `main`, sin commits de fusión; captura del 19 de septiembre de 2026) registra **38 commits a nombre del estudiante** (23 223 líneas añadidas y 2 677 eliminadas), frente a **14 commits asociados a la herramienta de IA** (9 788 líneas añadidas y 721 eliminadas).
+
+![EV-C204-031 — GitHub, Insights → Contributors: 38 commits del estudiante (edovega) y 14 asociados a la herramienta de IA](evidencias/capturas/EV-C204-031-contribuidores.png){width=95%}
 
 ---
 
