@@ -15,14 +15,8 @@ Es normal: el Codespace actual no trae Docker (se quitó para evitar el modo de 
 5. **Si ya probó una versión anterior y falló** (mensaje «moby … not supported on debian trixie»): era un error de esa configuración, ya corregido. Borre ese Codespace (github.com/codespaces → … → Delete) y repita desde el paso 1 con el repositorio actualizado.
 6. Si el nuevo Codespace entra en «modo de recuperación» (aviso «running in recovery mode»), **deténgalo y bórrelo** (github.com/codespaces → … → Delete), y avise: en ese caso los puntos 2 y 3 se hacen en una computadora con Docker Desktop. Su Codespace original no se afecta.
 
-## 2. EV-C204-002 a 005 — servicio y Keycloak (solo si el punto 1 funcionó)
-1. En la Terminal: `docker compose up -d --build` (tarda unos minutos) y luego `docker compose ps`; ambos deben decir *running*.
-2. Pestaña **Ports** (abajo): en la fila del puerto **3000** pulse el globo 🌐; agregue `/salud` al final de la dirección. **Captura 1** (`EV-C204-002-salud.png`): debe verse `{"estado":"ok",…}`.
-3. En la fila del puerto **8080** pulse el globo 🌐 → **Administration Console** → usuario `admin`, contraseña `admin`.
-4. Menú desplegable superior izquierdo → **Create realm** → nombre `appmovil` → **Create**. **Captura 2** (`EV-C204-003-realm.png`).
-5. **Clients → Create client** → *Client ID* `servicio-cifrado` → Next → active **Direct access grants** → Save. **Captura 3** (`EV-C204-004-cliente.png`).
-6. **Users → Create new user** → *Username* `demo`, email, nombre y apellido, active **Email verified** → Create. Pestaña **Credentials → Set password** (desactive *Temporary*). **Captura 4** (`EV-C204-005-usuario.png`).
-7. Para probar el servicio con identidad, en `docker-compose.yml` el control de acceso arranca apagado; se enciende con `AUTH_ENABLED=true`. Puede dejarlo apagado para la captura de la app.
+## 2. EV-C204-002 a 005 — servicio y Keycloak
+**Hecho** (capturas del Codespace del equipo).
 
 ## 3. EV-C204-006 — la app móvil
 **Hecho** (EV-C204-006). Para probar la app **con token**, antes quite la acción «Update Password» del usuario `demo` (Keycloak → Users → demo → campo *Required user actions*).

@@ -83,7 +83,7 @@
 | 5 | Tabla 2 (STRIDE) | `docs/tablas/tabla-2-stride.md` | 🔄 |
 | 6 | Jerarquía de diseño | `docs/jerarquia_diseno.md` | ✅ (figuras EV-C204-015 a 017) |
 | 7 | Levantar servicio + Keycloak | `docker-compose.yml` | ✅ (probado con Keycloak 24.0 real) |
-| 8 | Configurar IAM en Keycloak | informe §8.3 y §11.3 | ✅ por API y captura del usuario (EV-C204-005); faltan realm y cliente |
+| 8 | Configurar IAM en Keycloak | informe §8.3 y §11.3 | ✅ capturas de realm, cliente y usuario (EV-C204-003 a 005) y por API |
 | 9 | Probar app móvil | informe §8.4 | ✅ (EV-C204-006) |
 | 10 | FASE 1: pipeline en rojo | `docs/tablas/tabla-3-diagnostico.md` | ✅ |
 | 11 | FASE 2: corregir a verde | `docs/tablas/tabla-4-evidencias.md` + `docs/remediacion-playbook.md` | ✅ |
