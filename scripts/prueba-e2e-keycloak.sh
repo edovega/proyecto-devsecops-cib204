@@ -63,7 +63,9 @@ const e=o=>Buffer.from(JSON.stringify(o)).toString("base64url");
 out.none=e({alg:"none",typ:"JWT",kid:h.kid})+"."+e({azp:"servicio-cifrado"})+".";
 console.log(JSON.stringify(out));' "$T")
 for k in firma_falsa hs256 none; do t=$(echo "$FAKE" | jget "['$k']"); r=$(c -X POST -H "$J" -H "Authorization: Bearer $t" -d '{"texto":"x"}' $SVC/cifrar); row P-18 "token $k" 401 $r; done
-r=$(c -X POST -H "$J" -H "Authorization: Bearer ${T%?}X" -d '{"texto":"x"}' $SVC/cifrar); row P-18 "token real con la firma alterada" 401 $r
+# Se altera un caracter del MEDIO de la firma (los ultimos bits del ultimo caracter base64 no cambian los bytes).
+TA=$(python3 -c "import sys;h,p,f=sys.argv[1].split('.');i=len(f)//2;print('.'.join([h,p,f[:i]+('B' if f[i]!='B' else 'C')+f[i+1:]]))" "$T")
+r=$(c -X POST -H "$J" -H "Authorization: Bearer $TA" -d '{"texto":"x"}' $SVC/cifrar); row P-18 "token real con un caracter de la firma alterado" 401 $r
 curl -s -o /dev/null -H "$H" -H "$J" -d '{"clientId":"otra-app","enabled":true,"publicClient":true,"directAccessGrantsEnabled":true}' $KC/admin/realms/appmovil/clients
 r=$(c -X POST -H "$J" -H "Authorization: Bearer $(tok otra-app)" -d '{"texto":"x"}' $SVC/cifrar); row P-10b "token valido de OTRO cliente (audiencia)" 401 $r
 curl -s -o /dev/null -X PUT -H "$H" -H "$J" -d '{"realm":"appmovil","accessTokenLifespan":5}' $KC/admin/realms/appmovil
