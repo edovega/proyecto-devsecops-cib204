@@ -35,7 +35,10 @@ Actualizar el `devcontainer.json` del material (opción 3 o `"moby": false`) par
 
 *(Verificación: en el Codespace del estudiante la consola de Keycloak —contenedor Docker— responde en el puerto 8080 y el servicio de cifrado en el 3000, EV-C204-005 y EV-C204-006, por lo que Docker está disponible con la configuración corregida. Falta solo la captura de `docker --version`.)*
 
-## 8. Respuesta de la docente (19-sep-2026)
-El estudiante envió este reporte a la docente. Según lo informado por el estudiante, la docente respondió que **a ella no le había ocurrido** el error y que **puede deberse a diferencias en el tipo de cuenta de GitHub** que cada quien usa; indicó que el reporte y el ajuste estaban **correctos («ok»)** y **aceptó la sugerencia de cambios** al `devcontainer.json`. El estudiante lo informó de palabra; no se adjunta copia del mensaje.
+## 8. Respuesta de la docente
 
-*Nota técnica:* que no se reproduzca en otra cuenta es consistente con la causa hallada, porque la imagen `javascript-node:20` es una etiqueta móvil (hoy Debian «trixie»; antes «bookworm») y el resultado depende del momento y de qué versión de la imagen descargue el Codespace. La diferencia de cuenta (plan, máquina o caché de imágenes) es una **hipótesis de la docente, no verificada aquí**.
+El 19 de septiembre de 2026 el estudiante remitió el presente reporte a la docente. Según lo comunicado por el estudiante, la docente manifestó que no había experimentado el error y que este podría obedecer a diferencias en el tipo de cuenta de GitHub utilizada. Asimismo, consideró correcto el reporte y aprobó la modificación propuesta al archivo `devcontainer.json`.
+
+La respuesta fue transmitida verbalmente por el estudiante; no se adjunta constancia escrita. La hipótesis relativa al tipo de cuenta no ha sido verificada.
+
+*Observación técnica:* la imagen base `javascript-node:20` corresponde a una etiqueta que se actualiza con el tiempo (anteriormente Debian «bookworm», actualmente «trixie»), por lo que el resultado puede variar según la versión de la imagen obtenida en el momento de crear el Codespace.
