@@ -57,4 +57,5 @@ bash scripts/generar-manifiesto.sh            # regenera el manifiesto SHA-256
 | EV-C204-026 | Run verde de referencia | ✅ |
 | EV-C204-027 / 028 | SBOM y log de la Fase 1 | ✅ |
 | EV-C204-029 | Historial de ejecuciones | ✅ |
+| EV-C204-031 | Contribuidores del repositorio (Insights → Contributors) | ✅ |
 | EV-C204-033 a 051 | 19 capturas de pantalla individualizadas | ✅ (informe, Anexo I) |
