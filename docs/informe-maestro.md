@@ -529,3 +529,26 @@ Cada evidencia tiene un ID único **EV-C204-XXX** (ver índice de evidencias, se
 ## Anexo H — Nota de transparencia IA
 
 Este proyecto se desarrolló con asistencia de herramientas de IA (asistente de codificación en el entorno OpenWork) para: estructurar la documentación, redactar el informe y las tablas, generar las figuras, y agilizar tareas repetitivas del pipeline. **Todas las decisiones de seguridad, la ejecución del laboratorio, la verificación de resultados y el análisis crítico fueron realizados y validados por los integrantes del equipo.** El código fuente del laboratorio es el material oficial del curso; las correcciones de la Fase 2 fueron revisadas y verificadas por el equipo antes de cada commit.
+## Anexo I — Capturas de consola Git por slide (EV-C204-033..051)
+
+Cada screenshot del PPT del equipo (Capturas.pptx/capturas-consola-git) queda **individualizado** como evidencia EV-C204-033..051 en `docs/evidencias/capturas/consola-git/`, con su SHA-256 real del manifiesto canónico (byte-verificado):
+
+| EV-C204-033-screenshot-image10.png | Slide C204 — captura de consola Git: image10 | `docs/evidencias/capturas/consola-git/EV-C204-033-screenshot-image10.png` |
+| EV-C204-034-screenshot-image11.png | Slide C204 — captura de consola Git: image11 | `docs/evidencias/capturas/consola-git/EV-C204-034-screenshot-image11.png` |
+| EV-C204-035-screenshot-image12.png | Slide C204 — captura de consola Git: image12 | `docs/evidencias/capturas/consola-git/EV-C204-035-screenshot-image12.png` |
+| EV-C204-036-screenshot-image13.png | Slide C204 — captura de consola Git: image13 | `docs/evidencias/capturas/consola-git/EV-C204-036-screenshot-image13.png` |
+| EV-C204-037-screenshot-image14.png | Slide C204 — captura de consola Git: image14 | `docs/evidencias/capturas/consola-git/EV-C204-037-screenshot-image14.png` |
+| EV-C204-038-screenshot-image15.png | Slide C204 — captura de consola Git: image15 | `docs/evidencias/capturas/consola-git/EV-C204-038-screenshot-image15.png` |
+| EV-C204-039-screenshot-image16.png | Slide C204 — captura de consola Git: image16 | `docs/evidencias/capturas/consola-git/EV-C204-039-screenshot-image16.png` |
+| EV-C204-040-screenshot-image17.png | Slide C204 — captura de consola Git: image17 | `docs/evidencias/capturas/consola-git/EV-C204-040-screenshot-image17.png` |
+| EV-C204-041-screenshot-image18.png | Slide C204 — captura de consola Git: image18 | `docs/evidencias/capturas/consola-git/EV-C204-041-screenshot-image18.png` |
+| EV-C204-042-screenshot-image19.png | Slide C204 — captura de consola Git: image19 | `docs/evidencias/capturas/consola-git/EV-C204-042-screenshot-image19.png` |
+| EV-C204-043-screenshot-image1.png | Slide C204 — captura de consola Git: image1 | `docs/evidencias/capturas/consola-git/EV-C204-043-screenshot-image1.png` |
+| EV-C204-044-screenshot-image2.png | Slide C204 — captura de consola Git: image2 | `docs/evidencias/capturas/consola-git/EV-C204-044-screenshot-image2.png` |
+| EV-C204-045-screenshot-image3.png | Slide C204 — captura de consola Git: image3 | `docs/evidencias/capturas/consola-git/EV-C204-045-screenshot-image3.png` |
+| EV-C204-046-screenshot-image4.png | Slide C204 — captura de consola Git: image4 | `docs/evidencias/capturas/consola-git/EV-C204-046-screenshot-image4.png` |
+| EV-C204-047-screenshot-image5.png | Slide C204 — captura de consola Git: image5 | `docs/evidencias/capturas/consola-git/EV-C204-047-screenshot-image5.png` |
+| EV-C204-048-screenshot-image6.png | Slide C204 — captura de consola Git: image6 | `docs/evidencias/capturas/consola-git/EV-C204-048-screenshot-image6.png` |
+| EV-C204-049-screenshot-image7.png | Slide C204 — captura de consola Git: image7 | `docs/evidencias/capturas/consola-git/EV-C204-049-screenshot-image7.png` |
+| EV-C204-050-screenshot-image8.png | Slide C204 — captura de consola Git: image8 | `docs/evidencias/capturas/consola-git/EV-C204-050-screenshot-image8.png` |
+| EV-C204-051-screenshot-image9.png | Slide C204 — captura de consola Git: image9 | `docs/evidencias/capturas/consola-git/EV-C204-051-screenshot-image9.png` |
