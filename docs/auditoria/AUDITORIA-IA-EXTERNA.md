@@ -69,4 +69,4 @@ cd .. && bash scripts/prueba-e2e-keycloak.sh | grep -c PASA    # 25 (requiere Do
 1. **Convergencia (SÍ/NO + prueba):** run verde, hashes byte-idénticos y manifiesto.
 2. **Discrepancias:** lista numerada con el comando que las reproduce.
 3. **Cobertura de la guía y la rúbrica:** cumple / cumple con desviación / no cumple, por criterio.
-4. **Pendientes conocidos del equipo:** la captura opcional de `docker --version` y la confirmación de fechas con la docente. (El reporte sobre el `devcontainer` fue remitido y la modificación aprobada por la docente, según lo comunicado por el estudiante.)
+4. **Pendientes conocidos del equipo:** la confirmación de fechas con la docente. (La versión de Docker del Codespace no consta: los Codespaces fueron eliminados y solo se conserva la evidencia indirecta, EV-C204-003 a 006.) (El reporte sobre el `devcontainer` fue remitido y la modificación aprobada por la docente, según lo comunicado por el estudiante.)
