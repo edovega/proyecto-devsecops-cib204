@@ -241,6 +241,8 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
 
 *Causa (confirmada para la variante con `docker-outside-of-docker`, inferida para la del zip).* Al reproducir el fallo con la configuración alternativa, el registro de creación del Codespace muestra: `The 'moby' option is not supported on debian 'trixie' because 'moby-cli' and related system packages are not available in that distribution` y `Feature "Docker (docker-outside-of-docker)" failed to install`. La imagen `javascript-node:20` es hoy **Debian 13 «trixie»** (verificado: `PRETTY_NAME="Debian GNU/Linux 13 (trixie)"`, Node 20.20.2, igual que la captura EV-C204-046) y las características de Docker instalan por defecto el paquete `moby`, que no existe en trixie. La característica `docker-in-docker:2` del zip tiene la misma opción por defecto y la misma imagen base, por lo que es **muy probable** que la causa sea la misma; no se conservó el texto exacto del error de la configuración original, solo su síntoma (modo de recuperación). Nota: una versión anterior de este informe atribuía el fallo al plan gratuito de 2 núcleos; esa hipótesis no tiene respaldo en los registros y se descarta.
 
+*Reporte a la docente.* El incidente se reportó a la docente el 19-sep-2026 (`reporte-docente-devcontainer.md`). Según lo informado por el estudiante, ella indicó que a ella no le había ocurrido —posiblemente por diferencias en el tipo de cuenta de GitHub—, dio el reporte por correcto y **aceptó la sugerencia de cambios** al `devcontainer.json`. Es una respuesta verbal del estudiante, sin copia adjunta; la hipótesis de la cuenta no se verificó.
+
 *Solución.* La configuración alternativa `.devcontainer/con-docker/devcontainer.json` usa `docker-outside-of-docker` con `"moby": false`, que es lo que indica el propio mensaje de error (usar el Docker CLI de Docker en lugar de `moby`).
 
 ![EV-C204-043 — Registro de creación del Codespace (`creation.log`) y mensaje de modo de recuperación](evidencias/capturas/consola-git/EV-C204-043-screenshot-image1.png){width=95%}
@@ -1236,7 +1238,7 @@ Cada evidencia tiene un ID único **EV-C204-XXX** (ver índice de evidencias, se
 | `docs/tablas/tabla-1..6` | Tablas de entrega del laboratorio |
 | `docs/plantilla-diagnostico.md` | Plantilla de diagnóstico del curso, completa |
 | `docs/validacion-objetivos.md` | Trazabilidad objetivos → dónde → cómo excede |
-| `docs/reporte-docente-devcontainer.md` | Reporte a la docente sobre el `devcontainer.json` del zip oficial |
+| `docs/reporte-docente-devcontainer.md` | Reporte a la docente sobre el `devcontainer.json` del zip oficial (enviado y aceptado) |
 | `docs/remediacion-playbook.md` | Patrones de corrección de la Fase 2 |
 | `.github/workflows/devsecops.yml` | Pipeline (5 jobs + CodeQL por default setup) |
 | `.devcontainer/devcontainer.json` | Configuración del Codespace |

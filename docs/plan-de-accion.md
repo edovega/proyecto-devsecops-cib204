@@ -167,6 +167,7 @@
 - [x] Informe integrado completo
 - [x] PDF generado
 - [x] Manifiesto SHA-256 verificado
+- [x] Reporte del error del `devcontainer.json` enviado a la docente (aceptado el 19-sep-2026)
 - [ ] Entrega a la docente — **pendiente del equipo**
 
 ---
