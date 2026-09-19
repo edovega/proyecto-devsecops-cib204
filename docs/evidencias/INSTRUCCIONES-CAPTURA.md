@@ -11,7 +11,7 @@ Es normal: el Codespace actual no trae Docker (se quitó para evitar el modo de 
 1. En GitHub, su repositorio → botón verde **Code** → pestaña **Codespaces**.
 2. Junto al botón **+** pulse **… → New with options…**.
 3. En **Dev container configuration** elija **CIB-204 DevSecOps (Node 20 + Docker)**. Máquina: **2-core**. Pulse **Create codespace**.
-4. Cuando abra, en la Terminal escriba `docker --version`. Debe salir una versión.
+4. Cuando abra, en la Terminal escriba `docker --version`. Debe salir una versión. *(Los Codespaces de esta entrega ya fueron eliminados; este paso solo aplica si se vuelve a crear uno.)*
 5. **Si ya probó una versión anterior y falló** (mensaje «moby … not supported on debian trixie»): era un error de esa configuración, ya corregido. Borre ese Codespace (github.com/codespaces → … → Delete) y repita desde el paso 1 con el repositorio actualizado.
 6. Si el nuevo Codespace entra en «modo de recuperación» (aviso «running in recovery mode»), **deténgalo y bórrelo** (github.com/codespaces → … → Delete), y avise: en ese caso los puntos 2 y 3 se hacen en una computadora con Docker Desktop. Su Codespace original no se afecta.
 
