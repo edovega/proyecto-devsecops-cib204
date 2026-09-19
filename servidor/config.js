@@ -16,6 +16,10 @@ const config = {
   AUTH_ENABLED: process.env.AUTH_ENABLED === 'true',
   KEYCLOAK_URL: process.env.KEYCLOAK_URL || 'http://localhost:8080',
   KEYCLOAK_REALM: process.env.KEYCLOAK_REALM || 'appmovil',
+  // Cliente (audiencia) que debe figurar en el token y emisor esperado (opcional:
+  // si KEYCLOAK_ISSUER esta definido, el claim `iss` debe coincidir exactamente).
+  KEYCLOAK_CLIENT_ID: process.env.KEYCLOAK_CLIENT_ID || 'servicio-cifrado',
+  KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER || '',
   PUERTO: process.env.PORT || 3000,
   // [FIX-06] CORS restringido: lista blanca en .env.
   ORIGENES_PERMITIDOS: (process.env.ORIGENES_PERMITIDOS || 'http://localhost:3000').split(','),
