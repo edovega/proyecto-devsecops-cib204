@@ -11,7 +11,7 @@ Aplicación móvil que **cifra y descifra datos** (RSA) con un servicio backend 
 | Entregable | Peso | Documento |
 |---|---|---|
 | **Informe integrado** (primer avance + segundo avance + informe final) | 40% | [`docs/informe-maestro.md`](docs/informe-maestro.md) — sigue la plantilla del curso con sistema de evidencias, trazabilidad y análisis de riesgos |
-| **Tablas de entrega** | — | [`docs/tablas/`](docs/tablas/) — Tablas 1 a 6 listas para completar (requisitos, STRIDE, diagnóstico, antes/después, riesgo, pruebas) |
+| **Tablas de entrega** | — | [`docs/tablas/`](docs/tablas/) — Tablas 1 a 6 completas con datos reales (requisitos, STRIDE, diagnóstico, antes/después, riesgo, pruebas) |
 | **Evidencias** | — | [`docs/evidencias/`](docs/evidencias/) — manifiesto SHA-256, capturas y figuras |
 | **Guía del proyecto** | — | [`guia-paso-a-paso.md`](guia-paso-a-paso.md) — plan completo y mapa de la rúbrica |
 | **Plan de acción** | — | [`docs/plan-de-accion.md`](docs/plan-de-accion.md) — cobertura 100% de la rúbrica (45/45): herramientas, acciones, evidencia y verificación por criterio |
@@ -51,7 +51,7 @@ proyecto-devsecops-cib204
     ├─ remediacion-playbook.md  correcciones de la Fase 2
     ├─ plan-de-accion.md ....... cobertura 100% de la rúbrica
     ├─ datos-del-curso.md ...... datos del curso, docente e integrantes
-    ├─ tablas/ ................ Tablas 1–6 para completar
+    ├─ tablas/ ................ Tablas 1–6 completas
     └─ evidencias/ ............ capturas, figuras y manifiesto SHA-256
 ```
 

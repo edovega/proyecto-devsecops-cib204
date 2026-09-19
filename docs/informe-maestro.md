@@ -29,7 +29,8 @@
 
 | ID | Evidencia | Archivo (en `docs/evidencias/`) | Estado |
 |---|---|---|---|
-| EV-C204-001 | Versiones del entorno: `node v20.20.2`, `npm 10.8.2` en el Codespace | `capturas/consola-git/EV-C204-046-screenshot-image4.png` | ✅ (la captura muestra `node` y `npm`; la versión de Docker no consta) |
+| EV-C204-001 | Versiones del entorno: `node v20.20.2`, `npm 10.8.2` en el Codespace | `capturas/consola-git/EV-C204-046-screenshot-image4.png` | ✅ (Docker: ver EV-C204-001b) |
+| EV-C204-001b | Versión de Docker en el Codespace corregido: `Docker version 29.8.1, build 4a63305` | `capturas/EV-C204-001b-docker-version.png` | ✅ |
 | EV-C204-002 | Servicio `/salud` respondiendo en el Codespace | `capturas/EV-C204-002-salud.jpeg` y resumen `EV-C204-002b-resumen-chatgpt.png` (+ transcripción: `EV-C204-023-pruebas-e2e-keycloak.txt`, P-09) | ✅ |
 | EV-C204-003 | Keycloak: realm `appmovil` (consola web del Codespace) | `capturas/EV-C204-003-realm.jpeg` (+ datos: `EV-C204-023-pruebas-e2e-keycloak.txt`) | ✅ |
 | EV-C204-004 | Keycloak: cliente `servicio-cifrado` (consola web del Codespace) | `capturas/EV-C204-004-cliente.png` (+ datos, ídem) | ✅ |
@@ -253,9 +254,11 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
 
 ![EV-C204-046 — Versiones reales del entorno: `node v20.20.2` y `npm 10.8.2`](evidencias/capturas/consola-git/EV-C204-046-screenshot-image4.png){width=95%}
 
-> **Docker en el Codespace:** la configuración por defecto (sin Docker) no permite los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak). Para eso se creó la configuración alternativa `con-docker` (*Code → Codespaces → New with options… → CIB-204 DevSecOps (Node 20 + Docker)*) con `"moby": false`; fue probada por el equipo: en su Codespace la consola de Keycloak (contenedor Docker) responde en el puerto 8080 y el servicio en el 3000 (EV-C204-005 y EV-C204-006), lo que indica que Docker estaba disponible; no se conserva la salida de `docker --version` porque los Codespaces utilizados ya fueron eliminados; la versión de Docker no consta en la evidencia. El pipeline de GitHub Actions no depende de esto.
+> **Docker en el Codespace:** la configuración por defecto (sin Docker) no permite los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak). Para eso se creó la configuración alternativa `con-docker` (*Code → Codespaces → New with options… → CIB-204 DevSecOps (Node 20 + Docker)*) con `"moby": false`; fue probada por el equipo: en su Codespace la consola de Keycloak (contenedor Docker) responde en el puerto 8080 y el servicio en el 3000 (EV-C204-005 y EV-C204-006), y `docker --version` devuelve `Docker version 29.8.1, build 4a63305` (EV-C204-001b, Codespace «humble giggle», 19-sep-2026). El pipeline de GitHub Actions no depende de esto.
 
-**Evidencia:** EV-C204-043 a EV-C204-046 (EV-C204-001 = 046).
+![EV-C204-001b — Codespace corregido con Docker: `docker --version` → Docker version 29.8.1, build 4a63305](evidencias/capturas/EV-C204-001b-docker-version.png){width=95%}
+
+**Evidencia:** EV-C204-043 a EV-C204-046 (EV-C204-001 = 046) y EV-C204-001b (Docker).
 
 ### 8.2 Levantar el servicio y Keycloak
 ```bash
@@ -675,7 +678,7 @@ Riesgo residual aceptado: CVEs de util-linux sin parche, falso positivo de ZAP e
 4. **Cada herramienta produce ruido que hay que juzgar.** Se documentaron dos falsos positivos (CSRF de Semgrep en una API con Bearer sin cookies; CSP en respuestas 404 de ZAP) en lugar de suprimirlos sin explicación, y un riesgo residual real (util-linux sin parche).
 5. **Corregir puede romper.** La remediación introdujo por sí misma un error de construcción (`COPY public`), y dos correcciones nuevas volvieron a poner Semgrep en rojo. Verificar después de cada cambio no es opcional.
 6. **Evaluación de seguridad de la aplicación.** En el estado final, el servicio exige identidad de Keycloak, cifra con RSA-2048 OAEP-SHA256, valida la entrada según su capacidad real, limita las peticiones, falla cerrado, no filtra detalles internos, registra las operaciones sin datos sensibles y corre como usuario sin privilegios; el riesgo agregado bajó ≈ 58 % y no quedan riesgos Altos.
-7. **Alcance y límites.** La app móvil y Keycloak funcionaron en el Codespace del equipo (EV-C204-005 y 006); la versión de Docker no consta en la evidencia (los Codespaces fueron eliminados); las llaves RSA se generan en memoria y se pierden al reiniciar (adecuado para un laboratorio, no para producción).
+7. **Alcance y límites.** La app móvil y Keycloak funcionaron en el Codespace del equipo (EV-C204-005 y 006); Docker 29.8.1 verificado en el Codespace corregido (EV-C204-001b); las llaves RSA se generan en memoria y se pierden al reiniciar (adecuado para un laboratorio, no para producción).
 
 ## 21. Recomendaciones
 
@@ -1045,7 +1048,7 @@ Esta tabla alimenta: informe §16, la plantilla de diagnóstico y la Tabla 4.
 
 ### Tabla 6 — Documentación de pruebas
 
-> **Estado: COMPLETA con resultados reales**, la versión de Docker del Codespace no consta en la evidencia. Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
+> **Estado: COMPLETA con resultados reales**, todas las pruebas están ejecutadas. Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
 
 #### Pruebas funcionales del servicio
 
