@@ -33,7 +33,7 @@
 | EV-C204-002 | Servicio `/salud` respondiendo | `capturas/EV-C204-023-pruebas-e2e-keycloak.txt` (P-09) | ✅ transcripción; captura del navegador: pendiente del equipo |
 | EV-C204-003 | Keycloak: realm `appmovil` | `capturas/EV-C204-023-pruebas-e2e-keycloak.txt` (HTTP 201) | ✅ por API en Keycloak 24.0 local; captura de la consola: pendiente del equipo |
 | EV-C204-004 | Keycloak: cliente `servicio-cifrado` | ídem | ✅ por API; captura de la consola: pendiente del equipo |
-| EV-C204-005 | Keycloak: usuario `demo` (consola web del Codespace) | `capturas/EV-C204-005-usuario.png` (+ API: `EV-C204-023-pruebas-e2e-keycloak.txt`) | ✅ |
+| EV-C204-005 | Keycloak: usuario `demo` (consola web del Codespace) | `capturas/EV-C204-005-usuario.png` (+ datos: `EV-C204-023-pruebas-e2e-keycloak.txt`) | ✅ |
 | EV-C204-006 | App móvil cifrando/descifrando en el Codespace | `capturas/EV-C204-006-app.png` | ✅ |
 | EV-C204-007 | Pipeline Fase 1 (jobs en rojo) | `capturas/consola-git/EV-C204-047…051, 033…036` (ver §13 y Anexo I) | ✅ |
 | EV-C204-008 | Reporte Semgrep del **run verde** (Fase 2) | `capturas/EV-C204-008-semgrep.json` | ✅ |
