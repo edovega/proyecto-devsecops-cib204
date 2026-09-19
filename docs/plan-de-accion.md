@@ -161,7 +161,7 @@
 - [x] Tabla 4 (antes/después con commits)
 - [x] Tabla 5 (riesgo con ALE)
 - [x] Tabla 6 (pruebas completas)
-- [ ] Rama main protegida (EV-C204-014) — **pendiente del equipo** (informe §15)
+- [x] Rama main protegida (EV-C204-014 y EV-C204-030)
 
 ### Informe Final
 - [x] Informe integrado completo

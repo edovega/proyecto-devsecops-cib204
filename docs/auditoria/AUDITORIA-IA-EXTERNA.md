@@ -62,11 +62,11 @@ cd .. && bash scripts/prueba-e2e-keycloak.sh | grep -c PASA    # 25 (requiere Do
 - **Tablas 1 a 6** (guía): completas en `docs/tablas/`; la 3, 4, 5 y 6 con datos reales.
 - **STRIDE, SAST/DAST, Keycloak**: informe §5–§6, §12, §11 y `EV-C204-023`.
 - **Autenticación con Keycloak, RS256 + JWKS** (guía §10.5): `servidor/auth.js` y `servidor/auth.test.js`.
-- **Protección de la rama `main`** (guía, paso 14): **no activada**; pendiente del titular (informe §15). `gh api repos/edovega/proyecto-devsecops-cib204/branches/main/protection` responde 404 hasta entonces.
+- **Protección de la rama `main`** (guía, paso 14): activada mediante el ruleset `proteger-main` (informe §15). Verificar: `gh api repos/edovega/proyecto-devsecops-cib204/rulesets --jq '.[]|"\(.name) \(.enforcement)"'` → `proteger-main active`, y `EV-C204-030`. (La API clásica `branches/main/protection` responde 404 porque se usan *rulesets*, no la protección clásica.)
 
 ## 5. Formato del reporte del auditor
 
 1. **Convergencia (SÍ/NO + prueba):** run verde, hashes byte-idénticos y manifiesto.
 2. **Discrepancias:** lista numerada con el comando que las reproduce.
 3. **Cobertura de la guía y la rúbrica:** cumple / cumple con desviación / no cumple, por criterio.
-4. **Pendientes conocidos del equipo:** EV-C204-006 (app móvil), capturas de la consola de Keycloak, EV-C204-014 (protección de `main`), confirmación de fechas con la docente.
+4. **Pendientes conocidos del equipo:** EV-C204-006 (app móvil), capturas de la consola de Keycloak, confirmar que el Codespace con Docker funciona y confirmación de fechas con la docente.

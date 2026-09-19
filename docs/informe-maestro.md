@@ -40,9 +40,9 @@
 | EV-C204-009 | Reporte Gitleaks del **run verde** (Fase 2) | `capturas/EV-C204-009-gitleaks.json` | ✅ |
 | EV-C204-010 | SBOM del **run verde** (Fase 2) | `capturas/EV-C204-010-sbom.json` | ✅ |
 | EV-C204-011 | Informe ZAP del **run verde** (Fase 2) | `capturas/EV-C204-011-zap.html` | ✅ |
-| EV-C204-012 | Alertas CodeQL (Code scanning) | `capturas/EV-C204-025-codeql-alertas.json` | ✅ |
-| EV-C204-013 | Pipeline Fase 2 (todo verde) | `capturas/EV-C204-026-run-verde.txt` | ✅ transcripción; captura de pantalla: pendiente del equipo |
-| EV-C204-014 | Rama `main` protegida | — | ⏳ **pendiente del equipo** (§15) |
+| EV-C204-012 | Alertas CodeQL (Code scanning): 0 abiertas, 3 cerradas | `capturas/EV-C204-012-codeql-alertas.png` (+ datos: `EV-C204-025-codeql-alertas.json`) | ✅ |
+| EV-C204-013 | Pipeline Fase 2 (todo verde), run #27 (35442482331) | `capturas/EV-C204-013-pipeline-verde.png` (+ transcripción: `EV-C204-026-run-verde.txt`) | ✅ |
+| EV-C204-014 | Rama `main` protegida (ruleset `proteger-main`) | `capturas/EV-C204-014-proteccion.png` (+ configuración: `EV-C204-030-ruleset-main.json`) | ✅ |
 | EV-C204-015 | Figura 1. Contexto de la aplicación | `figuras/figura-1-contexto.svg` | ✅ |
 | EV-C204-016 | Figura 2. Arquitectura y límites de confianza | `figuras/figura-2-arquitectura.svg` | ✅ |
 | EV-C204-017 | Figura 3. Flujo de cifrado con identidad | `figuras/figura-3-flujo.svg` | ✅ |
@@ -58,9 +58,10 @@
 | EV-C204-028 | Log de los jobs en rojo de la Fase 1 (secretos redactados) | `capturas/EV-C204-028-log-fase1-jobs-rojos.txt` | ✅ |
 | EV-C204-029 | Historial de las 22+ ejecuciones del pipeline | `capturas/EV-C204-029-historial-runs.txt` | ✅ |
 | EV-C204-033 … 051 | 19 capturas de pantalla del equipo, individualizadas | `capturas/consola-git/` (Anexo I) | ✅ |
+| EV-C204-030 | Configuración real del ruleset `proteger-main` (API de GitHub) | `capturas/EV-C204-030-ruleset-main.json` | ✅ |
 | EV-C204-052 / 053 | Copias del PPTX y PDF dentro de `consola-git/` | `capturas/consola-git/` | ✅ (duplicados de 018 y 019) |
 
-> Los identificadores 030–032 no se usan. Las etiquetas «EV-C204-006 … 011» que aparecen dentro de las diapositivas del PPTX original son notas internas del equipo y **no** corresponden a este índice; la equivalencia está en el Anexo I.
+> Los identificadores 031–032 no se usan. Las etiquetas «EV-C204-006 … 011» que aparecen dentro de las diapositivas del PPTX original son notas internas del equipo y **no** corresponden a este índice; la equivalencia está en el Anexo I.
 
 ---
 
@@ -554,7 +555,11 @@ Se corrigió por orden de riesgo (Tabla 5), un commit por grupo de hallazgos, y 
 | CodeQL | — | **0 alertas abiertas** (3 de *rate limiting* halladas y corregidas) |
 | Pruebas Jest | 6 (guía) | **22** |
 
-Evidencia: EV-C204-008 a 011 (reportes del run verde), EV-C204-025 y 026. El script `scripts/verificar-evidencia.sh <RUN>` demuestra que esos cuatro reportes son **byte a byte idénticos** a los artefactos del run.
+Evidencia: EV-C204-008 a 011 (reportes del run verde), EV-C204-012, EV-C204-013, EV-C204-025 y 026.
+
+![EV-C204-013 — Run #27 (35442482331, commit `0fc1c11`): los 5 jobs en verde y 5 artefactos con su huella SHA-256](evidencias/capturas/EV-C204-013-pipeline-verde.png){width=95%}
+
+![EV-C204-012 — Code scanning (CodeQL): 0 alertas abiertas y 3 cerradas como corregidas («Missing rate limiting», `servidor/servidor.js` líneas 57, 72 y 86). El aviso rojo «CodeQL is reporting errors» es un mensaje de estado de GitHub visible en ese momento; los datos del repositorio (EV-C204-025) no muestran ningún error en los análisis](evidencias/capturas/EV-C204-012-codeql-alertas.png){width=95%} El script `scripts/verificar-evidencia.sh <RUN>` demuestra que esos cuatro reportes son **byte a byte idénticos** a los artefactos del run.
 
 ### 14.4 Correcciones adicionales halladas al revisar contra la guía
 La revisión final del código contra la guía y contra este informe encontró cuatro diferencias que el pipeline no detectaba, todas corregidas y probadas:
@@ -568,17 +573,19 @@ La revisión final del código contra la guía y contra este informe encontró c
 
 ## 15. Protección de la rama principal
 
-**Estado: pendiente de activar por el titular del repositorio.** Cambiar la configuración de seguridad de un repositorio es una decisión de quien lo administra, por lo que no se aplicó automáticamente. La guía (paso 14) pide proteger `main`.
+**Estado: activada el 19-sep-2026 por el titular del repositorio** (cambiar la configuración de seguridad de un repositorio es decisión de quien lo administra, por lo que no se aplicó automáticamente). La guía (paso 14) pide proteger `main`.
 
-Configuración recomendada (Settings → Rules → Rulesets → *New branch ruleset*, rama objetivo `main`):
+Configuración aplicada (Settings → Rules → Rulesets → ruleset `proteger-main`, activo, objetivo: rama por defecto `main`, sin excepciones de *bypass*):
 
 1. **Restrict deletions** y **Block force pushes**.
 2. **Require status checks to pass**, con las cinco pruebas del pipeline: `SAST - Semgrep`, `Secretos - Gitleaks`, `SCA - Dependencias`, `Imagen - Trivy + SBOM`, `DAST - OWASP ZAP`.
 3. **Require a pull request before merging** (0 aprobaciones si se trabaja solo).
 
-El paso a paso con capturas está en `docs/evidencias/INSTRUCCIONES-CAPTURA.md`. Al activarlo, guardar la captura como **EV-C204-014**.
+Se verificó la configuración real con la API de GitHub (`EV-C204-030-ruleset-main.json`): reglas `deletion`, `non_fast_forward`, `pull_request` (0 aprobaciones) y `required_status_checks` con los cinco nombres exactos del pipeline. **Consecuencia:** desde este momento todo cambio a `main` entra por *pull request* y solo se puede fusionar con las cinco pruebas en verde.
 
-**Evidencia:** EV-C204-014 — **pendiente del equipo**.
+![EV-C204-014 — Rulesets del repositorio: `proteger-main` activo, 4 reglas, 1 rama](evidencias/capturas/EV-C204-014-proteccion.png){width=90%}
+
+**Evidencia:** EV-C204-014 y EV-C204-030.
 
 ---
 
@@ -650,13 +657,13 @@ Riesgo residual aceptado: CVEs de util-linux sin parche, falso positivo de ZAP e
 4. **Cada herramienta produce ruido que hay que juzgar.** Se documentaron dos falsos positivos (CSRF de Semgrep en una API con Bearer sin cookies; CSP en respuestas 404 de ZAP) en lugar de suprimirlos sin explicación, y un riesgo residual real (util-linux sin parche).
 5. **Corregir puede romper.** La remediación introdujo por sí misma un error de construcción (`COPY public`), y dos correcciones nuevas volvieron a poner Semgrep en rojo. Verificar después de cada cambio no es opcional.
 6. **Evaluación de seguridad de la aplicación.** En el estado final, el servicio exige identidad de Keycloak, cifra con RSA-2048 OAEP-SHA256, valida la entrada según su capacidad real, limita las peticiones, falla cerrado, no filtra detalles internos, registra las operaciones sin datos sensibles y corre como usuario sin privilegios; el riesgo agregado bajó ≈ 58 % y no quedan riesgos Altos.
-7. **Alcance y límites.** La app móvil y la consola de Keycloak del Codespace no se pudieron verificar en este entorno (pendiente del equipo); las llaves RSA se generan en memoria y se pierden al reiniciar (adecuado para un laboratorio, no para producción).
+7. **Alcance y límites.** La app móvil y la consola de Keycloak del Codespace no se pudieron verificar en este entorno (pendiente del equipo) y el Codespace con Docker aún debe confirmarse; las llaves RSA se generan en memoria y se pierden al reiniciar (adecuado para un laboratorio, no para producción).
 
 ## 21. Recomendaciones
 
 **Sobre las vulnerabilidades halladas:**
 1. **Rotar** cualquier credencial que haya estado en el historial de git (aquí eran ficticias) y, en un proyecto real, reescribir el historial.
-2. **Activar la protección de `main`** (§15) para que ningún cambio llegue sin las cinco pruebas en verde.
+2. **Mantener la protección de `main`** (§15, ya activa) y, si el equipo crece, exigir al menos una aprobación de revisión.
 3. **Automatizar dependencias:** Dependabot con alertas de seguridad y una política SCA que bloquee severidad *high* o *critical*.
 4. **Re-escanear la imagen** de forma periódica para cerrar los CVEs de util-linux cuando exista parche, y retirar `--ignore-unfixed` entonces.
 
@@ -1178,7 +1185,7 @@ Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian docu
 | 6–7 | Fase 2: remediación (un commit por hallazgo) | Tabla 4 + pipeline verde | ✅ |
 | 8 | Pentest, riesgos (Tabla 5), pruebas (Tabla 6) | Tablas 5–6 | ✅ |
 | 9 | **Segundo Avance (15 %)**: diagnóstico, remediación, pruebas | Informe Parte III–IV | ✅ |
-| 10–13 | Protección de rama, revisión de CodeQL, informe final | Informe Parte V | ✅ CodeQL revisado · ⏳ protección de `main` (EV-C204-014) |
+| 10–13 | Protección de rama, revisión de CodeQL, informe final | Informe Parte V | ✅ CodeQL revisado · ✅ protección de `main` (EV-C204-014) |
 | 14 | **Informe Final (15 %)**: PDF integrado + repo público | Entrega | ✅ PDF y repo · ⏳ entrega formal a la docente |
 
 > Las fechas exactas de entrega figuran en `docs/datos-del-curso.md` y siguen marcadas «confirmar fecha con la docente».

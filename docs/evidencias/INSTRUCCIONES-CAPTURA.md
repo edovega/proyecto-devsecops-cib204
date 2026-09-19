@@ -31,17 +31,11 @@ Es normal: el Codespace actual no trae Docker (se quitó para evitar el modo de 
    - Si activó `AUTH_ENABLED=true`, necesita pegar un token: solo el valor de `access_token`, **sin** la palabra «Bearer».
 4. **Captura** (`EV-C204-006-app.png`): deben verse «Cifrado OK» y «Descifrado OK».
 
-## 4. EV-C204-014 — proteger la rama `main` (lo hace el dueño del repositorio)
-1. En GitHub: su repositorio → **Settings → Rules → Rulesets → New ruleset → New branch ruleset**.
-2. *Ruleset name*: `proteger-main`. *Enforcement status*: **Active**.
-3. *Target branches* → **Add target → Include default branch**.
-4. Marque: **Restrict deletions**, **Block force pushes**, **Require status checks to pass** (pulse *Add checks* y agregue: `SAST - Semgrep`, `Secretos - Gitleaks`, `SCA - Dependencias`, `Imagen - Trivy + SBOM`, `DAST - OWASP ZAP`) y **Require a pull request before merging** (deje las aprobaciones en 0 si trabaja solo).
-5. **Create**. **Captura** (`EV-C204-014-proteccion.png`) de la pantalla del ruleset ya creado.
-   > Con esta regla, los cambios a `main` deben entrar por *pull request*. Si en algún momento necesita subir directo, avísele a quien le ayuda antes de activarla.
+## 4. EV-C204-014 — proteger la rama `main`
+**Hecho el 19-sep-2026** (ruleset `proteger-main`; capturas EV-C204-012, 013 y 014 ya incorporadas al informe).
 
-## 5. EV-C204-013 — captura de la ejecución en verde (opcional, ya hay transcripción)
-1. Pestaña **Actions** → abra la última ejecución de «Pipeline DevSecOps CIB-204».
-2. **Captura** (`EV-C204-013-pipeline-verde.png`): deben verse los 5 jobs con ✔ verde.
+## 5. EV-C204-013 — captura de la ejecución en verde
+**Hecho** (run #27, commit `0fc1c11`).
 
 ## 6. Lo que debe confirmar con la docente
 - Las **fechas de entrega** (`docs/datos-del-curso.md`, sección 4): hoy dicen «referencia BóvedaSegura» y no están confirmadas.
