@@ -33,7 +33,7 @@ Sin Docker en el Codespace no se puede ejecutar `docker compose up` (servicio y 
 ## 7. Sugerencia
 Actualizar el `devcontainer.json` del material (opción 3 o `"moby": false`) para los próximos grupos.
 
-*(Verificación: en el Codespace del estudiante la consola de Keycloak —contenedor Docker— responde en el puerto 8080 y el servicio de cifrado en el 3000, EV-C204-005 y EV-C204-006, por lo que Docker está disponible con la configuración corregida. La salida de `docker --version` no se conserva, porque el Codespace fue eliminado; la versión exacta de Docker no consta en la evidencia.)*
+*(Verificación: en el Codespace del estudiante la consola de Keycloak —contenedor Docker— responde en el puerto 8080 y el servicio de cifrado en el 3000, EV-C204-005 y EV-C204-006, por lo que Docker está disponible con la configuración corregida. Además, `docker --version` devuelve `Docker version 29.8.1, build 4a63305` (evidencia EV-C204-001b).)*
 
 ## 8. Respuesta de la docente
 
