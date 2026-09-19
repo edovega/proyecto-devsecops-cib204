@@ -19,8 +19,8 @@ ecef5cb8f93eb2c339e1b0db64f4e262232aa73975d5ad9b12a0d4031c121bfa  ./docs/evidenc
 c4e04c2a17c9ecf19d87481ae800bed2e62da36b5dd53a42b98966bb779dd3a9  ./docs/evidencias/capturas/consola-git/EV-C204-051-screenshot-image9.png
 cd36005e7fb2e65811b1c85c4a015eb1345a5d1151daaf08f054c6edabf270ac  ./docs/evidencias/capturas/EV-C204-008-semgrep.json
 d3fd82cb5c12449220618d98f02010e16cd7455905d285784496fbfcdb201970  ./docs/evidencias/capturas/EV-C204-009-gitleaks.json
-a92bf3d835fe3983013e27f54d06947ed725daa4c9207b4d85869de9ef9076ab  ./docs/evidencias/capturas/EV-C204-010-sbom.json
-f50b605668d08ae2e43166259c45fca7bde87f596f024dbec6491478e9aae131  ./docs/evidencias/capturas/EV-C204-011-zap.html
+4f3d8a38aba1c06efd030f02edc2f20f9139f37e29c4be8cd5fc164f0a6a5967  ./docs/evidencias/capturas/EV-C204-010-sbom.json
+d4c11ee19be8e3cbe82dcea636e6dc6dcd5d93ae9e72a7a6b2de98f6ddc52de3  ./docs/evidencias/capturas/EV-C204-011-zap.html
 417e3fd3e17ef432f17c64c6e8be8838e51e171c7ac24a9cb15033a755b05a9e  ./docs/evidencias/capturas/EV-C204-018-capturas-consola-git.pptx
 8b9d03e75c6aae03a27f0e33a0b36b6a9ca3a10bc4fbaf800fa6c3dafbd4daf2  ./docs/evidencias/capturas/EV-C204-019-capturas-consola-git.pdf
 f7a7ee546f97cf76b8e198821300654541ddb42458e1e28197d2b6c8488dfc89  ./docs/evidencias/capturas/EV-C204-020-reporte-gitleaks.zip
