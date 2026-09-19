@@ -43,9 +43,9 @@ bash scripts/generar-manifiesto.sh            # regenera el manifiesto SHA-256
 | EV-C204-006 | App móvil cifrando/descifrando | ⏳ **pendiente del equipo** |
 | EV-C204-007 | Pipeline Fase 1 (jobs en rojo) | ✅ `consola-git/` (informe §13) |
 | EV-C204-008 a 011 | Reportes Semgrep, Gitleaks, SBOM y ZAP del **run verde** | ✅ |
-| EV-C204-012 | Alertas CodeQL | ✅ EV-C204-025 |
-| EV-C204-013 | Pipeline Fase 2 (todo verde) | ✅ transcripción EV-C204-026 · captura: ⏳ equipo (opcional) |
-| EV-C204-014 | Rama `main` protegida | ⏳ **pendiente del equipo** |
+| EV-C204-012 | Alertas CodeQL | ✅ captura + EV-C204-025 |
+| EV-C204-013 | Pipeline Fase 2 (todo verde) | ✅ captura + transcripción EV-C204-026 |
+| EV-C204-014 | Rama `main` protegida | ✅ captura + EV-C204-030 (configuración por API) |
 | EV-C204-015 a 017 | Figuras | ✅ |
 | EV-C204-018 / 019 | PPTX y PDF de capturas | ✅ |
 | EV-C204-020 a 022 | Reportes de la **Fase 1** (zips) | ✅ |

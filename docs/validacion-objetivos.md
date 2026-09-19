@@ -88,7 +88,7 @@
 | 10 | FASE 1: pipeline en rojo | `docs/tablas/tabla-3-diagnostico.md` | ✅ |
 | 11 | FASE 2: corregir a verde | `docs/tablas/tabla-4-evidencias.md` + `docs/remediacion-playbook.md` | ✅ |
 | 12 | Pentest + pruebas | `docs/tablas/tabla-5-riesgo.md` + `tabla-6-pruebas.md` | ✅ |
-| 13 | Proteger rama principal | GitHub Settings (branch protection), informe §15 | ⏳ pendiente del equipo (EV-C204-014) |
+| 13 | Proteger rama principal | GitHub Settings (ruleset `proteger-main`), informe §15 | ✅ (EV-C204-014, EV-C204-030) |
 | 14 | Informe final en PDF | `docs/informe-maestro.md` → PDF | ✅ |
 
 ---
