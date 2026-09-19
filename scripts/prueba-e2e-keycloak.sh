@@ -47,6 +47,9 @@ r=$(c -X POST -H "$J" -H "Authorization: Bearer $T" -d '{"texto":""}' $SVC/cifra
 python3 -c 'print("{\"texto\":\""+"a"*20000+"\"}")' > "$TMP/big.json"
 r=$(c -X POST -H "$J" -H "Authorization: Bearer $T" --data @"$TMP/big.json" $SVC/cifrar); row P-07 "entrada de 20 KB (limite 10 KB)" 413 $r
 r=$(c -X POST -H "$J" -H "Authorization: Bearer $T" -d '{"texto":12345}' $SVC/cifrar); row P-08 "entrada no texto (numero)" 400 $r
+A190=$(python3 -c 'print("a"*190)'); A191=$(python3 -c 'print("a"*191)')
+r=$(c -X POST -H "$J" -H "Authorization: Bearer $T" -d "{\"texto\":\"$A190\"}" $SVC/cifrar); row P-07b "borde: 190 bytes (maximo de RSA-OAEP)" 200 $r
+r=$(c -X POST -H "$J" -H "Authorization: Bearer $T" -d "{\"texto\":\"$A191\"}" $SVC/cifrar); row P-07c "borde: 191 bytes (rechazo controlado, no 500)" 400 $r
 r=$(c -X POST -H "$J" -H "Authorization: Bearer $T" -d '{"texto":"Ñandú 你好 😀\nlinea2"}' $SVC/cifrar); row P-25 "UTF-8, emoji y salto de linea (cifrar)" 200 $r
 C2=$(jget '["cifrado"]' < "$TMP/r.out")
 r=$(c -X POST -H "$J" -H "Authorization: Bearer $T" -d "{\"cifrado\":\"$C2\"}" $SVC/descifrar); row P-25 "roundtrip UTF-8 (descifrar)" 200 $r; echo "          cuerpo: $(cat "$TMP/r.out")"

@@ -82,8 +82,13 @@ app.get('/llave', (req, res) => {
 app.post('/cifrar', requiereAuth, (req, res) => {
   try {
     const texto = req.body.texto;
-    // [FIX-05] Validacion de entrada (CWE-20): tipo y longitud.
-    if (typeof texto !== 'string' || texto.length === 0 || texto.length > 4096) {
+    // [FIX-05] Validacion de entrada (CWE-20): tipo y longitud. [FIX-22] El limite es
+    //   la capacidad real de RSA-OAEP (190 bytes UTF-8), no un numero arbitrario.
+    if (
+      typeof texto !== 'string' ||
+      texto.length === 0 ||
+      Buffer.byteLength(texto, 'utf8') > cifrado.MAX_BYTES_TEXTO
+    ) {
       auditar(req, 'cifrar', 'rechazado', 'entrada invalida');
       return res.status(400).json({ error: 'Texto invalido' });
     }

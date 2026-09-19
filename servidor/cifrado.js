@@ -20,6 +20,9 @@ const TAMANO_LLAVE = 2048;
 const RELLENO = crypto.constants.RSA_PKCS1_OAEP_PADDING;
 // [FIX-20] OAEP con SHA-256 explicito: Node usa SHA-1 por defecto si no se indica.
 const HASH_OAEP = 'sha256';
+// [FIX-22] Capacidad maxima de RSA-OAEP: bytes_llave - 2*bytes_hash - 2 = 256 - 64 - 2 = 190.
+//   Un texto mayor lanza ERR_OSSL_RSA_DATA_TOO_LARGE_FOR_KEY_SIZE (antes daba 500).
+const MAX_BYTES_TEXTO = TAMANO_LLAVE / 8 - 2 * 32 - 2;
 
 function generarLlaves() {
   const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
@@ -48,4 +51,4 @@ function descifrar(textoCifradoBase64, llavePrivada) {
   return descifrado.toString('utf8');
 }
 
-module.exports = { generarLlaves, cifrar, descifrar, TAMANO_LLAVE };
+module.exports = { generarLlaves, cifrar, descifrar, TAMANO_LLAVE, MAX_BYTES_TEXTO };

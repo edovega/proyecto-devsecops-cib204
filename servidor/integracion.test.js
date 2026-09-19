@@ -38,4 +38,18 @@ describe('API del servicio de cifrado', () => {
     expect(JSON.parse(registro).resultado).toBe('ok');
     expect(registro).not.toContain('dato-secreto-123');
   });
+
+  test('borde de RSA-OAEP: 190 bytes se cifran; 191 se rechazan con 400 (no 500)', async () => {
+    const ok = await request(app).post('/cifrar').send({ texto: 'a'.repeat(190) });
+    expect(ok.statusCode).toBe(200);
+    const d = await request(app).post('/descifrar').send({ cifrado: ok.body.cifrado });
+    expect(d.body.descifrado).toBe('a'.repeat(190));
+    const largo = await request(app).post('/cifrar').send({ texto: 'a'.repeat(191) });
+    expect(largo.statusCode).toBe(400);
+  });
+
+  test('el limite cuenta bytes UTF-8, no caracteres (47 emojis = 188 B ok; 48 = 192 B rechazo)', async () => {
+    expect((await request(app).post('/cifrar').send({ texto: '😀'.repeat(47) })).statusCode).toBe(200);
+    expect((await request(app).post('/cifrar').send({ texto: '😀'.repeat(48) })).statusCode).toBe(400);
+  });
 });
