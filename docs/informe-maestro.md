@@ -236,7 +236,11 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
    ```
    Resultado real en el Codespace del equipo: `node v20.20.2` y `npm 10.8.2` (EV-C204-046).
 
-**Incidente resuelto.** La primera configuración del Codespace incluía la característica `docker-in-docker`; en el plan gratuito de 2 núcleos el contenedor fallaba y el Codespace arrancaba en **modo de recuperación** («This codespace is currently running in recovery mode due to a container error», EV-C204-043 y EV-C204-044). El commit `46cb634` retiró esa característica y pasó a una imagen Node 20 ligera, con lo que el Codespace arranca en menos de un minuto (EV-C204-045).
+**Incidente del Codespace (reportable a la docente; detalle en [`reporte-docente-devcontainer.md`](reporte-docente-devcontainer.md)).** El `.devcontainer/devcontainer.json` del **zip oficial** usa la imagen `mcr.microsoft.com/devcontainers/javascript-node:20` más la característica `docker-in-docker:2` (sin opciones). Al abrir el Codespace, este arrancaba en **modo de recuperación** («This codespace is currently running in recovery mode due to a container error», EV-C204-043 y EV-C204-044). El commit `46cb634` retiró la característica para poder trabajar (EV-C204-045) y el Codespace pasó a arrancar en menos de un minuto.
+
+*Causa (confirmada para la variante con `docker-outside-of-docker`, inferida para la del zip).* Al reproducir el fallo con la configuración alternativa, el registro de creación del Codespace muestra: `The 'moby' option is not supported on debian 'trixie' because 'moby-cli' and related system packages are not available in that distribution` y `Feature "Docker (docker-outside-of-docker)" failed to install`. La imagen `javascript-node:20` es hoy **Debian 13 «trixie»** (verificado: `PRETTY_NAME="Debian GNU/Linux 13 (trixie)"`, Node 20.20.2, igual que la captura EV-C204-046) y las características de Docker instalan por defecto el paquete `moby`, que no existe en trixie. La característica `docker-in-docker:2` del zip tiene la misma opción por defecto y la misma imagen base, por lo que es **muy probable** que la causa sea la misma; no se conservó el texto exacto del error de la configuración original, solo su síntoma (modo de recuperación). Nota: una versión anterior de este informe atribuía el fallo al plan gratuito de 2 núcleos; esa hipótesis no tiene respaldo en los registros y se descarta.
+
+*Solución.* La configuración alternativa `.devcontainer/con-docker/devcontainer.json` usa `docker-outside-of-docker` con `"moby": false`, que es lo que indica el propio mensaje de error (usar el Docker CLI de Docker en lugar de `moby`).
 
 ![EV-C204-043 — Registro de creación del Codespace (`creation.log`) y mensaje de modo de recuperación](evidencias/capturas/consola-git/EV-C204-043-screenshot-image1.png){width=95%}
 
@@ -246,7 +250,7 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
 
 ![EV-C204-046 — Versiones reales del entorno: `node v20.20.2` y `npm 10.8.2`](evidencias/capturas/consola-git/EV-C204-046-screenshot-image4.png){width=95%}
 
-> **Limitación conocida (pendiente del equipo):** al quitar `docker-in-docker`, la imagen del Codespace ya no incluye Docker, y los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak) requieren Docker. Para tener Docker se agregó la configuración alternativa `.devcontainer/con-docker/devcontainer.json` (*New with options… → CIB-204 DevSecOps (Node 20 + Docker)*), que añade `docker-outside-of-docker` sin alterar la configuración por defecto; **no se pudo probar en este entorno**. Verifique con `docker --version`; si no está disponible, esos pasos se pueden reproducir con Docker en un equipo local (el script `scripts/prueba-e2e-keycloak.sh` lo hace de forma automática). El pipeline de GitHub Actions no depende de esto.
+> **Limitación conocida (pendiente del equipo):** la configuración por defecto (sin Docker) no permite los pasos 6.2 y 7 de la guía (`docker compose up`, Keycloak). Para eso se creó la configuración alternativa `con-docker` (*Code → Codespaces → New with options… → CIB-204 DevSecOps (Node 20 + Docker)*) con `"moby": false`; **no se pudo probar en este entorno** y debe verificarse con `docker --version`. El pipeline de GitHub Actions no depende de esto.
 
 **Evidencia:** EV-C204-043 a EV-C204-046 (EV-C204-001 = 046).
 
@@ -1209,6 +1213,7 @@ Cada evidencia tiene un ID único **EV-C204-XXX** (ver índice de evidencias, se
 | `docs/tablas/tabla-1..6` | Tablas de entrega del laboratorio |
 | `docs/plantilla-diagnostico.md` | Plantilla de diagnóstico del curso, completa |
 | `docs/validacion-objetivos.md` | Trazabilidad objetivos → dónde → cómo excede |
+| `docs/reporte-docente-devcontainer.md` | Reporte a la docente sobre el `devcontainer.json` del zip oficial |
 | `docs/remediacion-playbook.md` | Patrones de corrección de la Fase 2 |
 | `.github/workflows/devsecops.yml` | Pipeline (5 jobs + CodeQL por default setup) |
 | `.devcontainer/devcontainer.json` | Configuración del Codespace |
