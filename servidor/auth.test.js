@@ -57,7 +57,8 @@ describe('Autenticacion con Keycloak (RS256 + JWKS)', () => {
   });
 
   test('algoritmo HS256 (confusion de algoritmo) -> 401', async () => {
-    const t = jwt.sign({ azp: 'servicio-cifrado' }, 'secreto', {
+    const secretoAleatorio = crypto.randomBytes(32).toString('hex');
+    const t = jwt.sign({ azp: 'servicio-cifrado' }, secretoAleatorio, {
       algorithm: 'HS256',
       keyid: 'kid-1',
     });
