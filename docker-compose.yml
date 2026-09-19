@@ -14,6 +14,10 @@ services:
       - AUTH_ENABLED=${AUTH_ENABLED:-false}
       - KEYCLOAK_URL=http://keycloak:8080
       - KEYCLOAK_REALM=appmovil
+      # CORS con lista blanca (FIX-06): la app movil (Expo web, puerto 8081) es otro
+      # origen y debe estar permitida. En Codespaces se arma sola con CODESPACE_NAME,
+      # igual que la URL de Keycloak; fuera de Codespaces solo queda localhost.
+      - ORIGENES_PERMITIDOS=${ORIGENES_PERMITIDOS:-http://localhost:3000,http://localhost:8081,https://${CODESPACE_NAME:-local}-8081.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-app.github.dev}}
     restart: unless-stopped
 
   keycloak:
