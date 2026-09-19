@@ -27,4 +27,15 @@ describe('API del servicio de cifrado', () => {
     expect(d.statusCode).toBe(200);
     expect(d.body.descifrado).toBe(texto);
   });
+
+  test('cada operacion queda en la bitacora (no repudio) sin registrar el texto', async () => {
+    const espia = jest.spyOn(console, 'log').mockImplementation(() => {});
+    await request(app).post('/cifrar').send({ texto: 'dato-secreto-123' });
+    const lineas = espia.mock.calls.map((c) => String(c[0]));
+    espia.mockRestore();
+    const registro = lineas.find((l) => l.includes('"accion":"cifrar"'));
+    expect(registro).toBeDefined();
+    expect(JSON.parse(registro).resultado).toBe('ok');
+    expect(registro).not.toContain('dato-secreto-123');
+  });
 });

@@ -57,6 +57,17 @@ app.use(
 
 app.use(express.json({ limit: '10kb' })); // [FIX-05] CWE-20: tamano de cuerpo acotado
 
+// [FIX-21] Bitacora de operaciones (no repudio, Tabla 1) y errores del lado del
+//   servidor (informe 10.2): una linea JSON por operacion en la salida estandar,
+//   con usuario (del token verificado), accion, resultado e IP. Nunca registra el
+//   texto plano, el texto cifrado ni el token.
+function auditar(req, accion, resultado, detalle) {
+  const usuario = req.usuario ? req.usuario.preferred_username || req.usuario.sub : 'anonimo';
+  console.log(
+    JSON.stringify({ ts: new Date().toISOString(), accion, resultado, usuario, ip: req.ip, detalle })
+  );
+}
+
 // El servicio genera su par de llaves al arrancar.
 const llaves = cifrado.generarLlaves();
 
@@ -73,11 +84,14 @@ app.post('/cifrar', requiereAuth, (req, res) => {
     const texto = req.body.texto;
     // [FIX-05] Validacion de entrada (CWE-20): tipo y longitud.
     if (typeof texto !== 'string' || texto.length === 0 || texto.length > 4096) {
+      auditar(req, 'cifrar', 'rechazado', 'entrada invalida');
       return res.status(400).json({ error: 'Texto invalido' });
     }
     const resultado = cifrado.cifrar(texto, llaves.publicKey);
+    auditar(req, 'cifrar', 'ok');
     res.json({ cifrado: resultado });
   } catch (e) {
+    auditar(req, 'cifrar', 'error', e.code || e.name);
     // [FIX-07] Se responde un error generico sin pila interna (CWE-209).
     res.status(500).json({ error: 'Error interno' });
   }
@@ -87,11 +101,14 @@ app.post('/descifrar', requiereAuth, (req, res) => {
   try {
     const cifradoTxt = req.body.cifrado;
     if (typeof cifradoTxt !== 'string' || cifradoTxt.length === 0) {
+      auditar(req, 'descifrar', 'rechazado', 'entrada invalida');
       return res.status(400).json({ error: 'Dato invalido' });
     }
     const resultado = cifrado.descifrar(cifradoTxt, llaves.privateKey);
+    auditar(req, 'descifrar', 'ok');
     res.json({ descifrado: resultado });
   } catch (e) {
+    auditar(req, 'descifrar', 'error', e.code || e.name);
     res.status(500).json({ error: 'Error interno' });
   }
 });
@@ -100,7 +117,11 @@ app.post('/descifrar', requiereAuth, (req, res) => {
 app.get('/buscar', requiereAuth, (req, res) => {
   const nombre = req.query.nombre || '';
   db.buscarBitacora(nombre, (err, data) => {
-    if (err) return res.status(500).json({ error: 'Error interno' });
+    if (err) {
+      auditar(req, 'buscar', 'error', err.code || err.name);
+      return res.status(500).json({ error: 'Error interno' });
+    }
+    auditar(req, 'buscar', 'ok');
     res.json(data);
   });
 });
