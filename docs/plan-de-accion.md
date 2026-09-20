@@ -1,6 +1,6 @@
-# Plan de acción — Cobertura 100% de la rúbrica CIB-204
+# Plan de acción — Cobertura de la rúbrica CIB-204
 
-> Objetivo: **exceder cada criterio de la rúbrica** (columna "Excede el criterio" = 5 puntos) en los 9 criterios del proyecto (45/45 puntos).
+> Objetivo: **exceder cada criterio de la rúbrica** (columna "Excede el criterio" = 5 puntos) en los 9 criterios del proyecto.
 > Este plan define: herramientas, acciones concretas, evidencia requerida y verificación de cada criterio.
 
 ---
@@ -42,7 +42,7 @@
 
 ---
 
-## 2. Mapa maestro: 9 criterios de rúbrica → 45/45 puntos
+## 2. Mapa maestro: 9 criterios de rúbrica
 
 ### Criterio 1 — Requerimientos de seguridad (5 pts)
 **Excede:** "Analiza los requerimientos de seguridad según la problemática planteada de manera amplia y explícita"
@@ -174,7 +174,7 @@
 
 ## 4. Definición de "hecho" (Definition of Done)
 
-El proyecto está **100% completo** cuando:
+Criterios de cierre del proyecto:
 
 1. ✅ El pipeline muestra **5/5 jobs en verde** más **CodeQL (default setup) sin alertas abiertas** en la última ejecución de `main` (desviación documentada de los 6 jobs, informe §12.1)
 2. ✅ Las **6 tablas** están completas con datos reales (no placeholders)

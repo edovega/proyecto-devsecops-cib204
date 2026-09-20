@@ -1,6 +1,6 @@
 # Tabla 1 — Requisitos de seguridad
 
-> 📄 **Tabla a llenar** — Primer Avance. Define qué debe proteger el sistema antes de tocar código.
+> Primer Avance. Define qué debe proteger el sistema antes de tocar código.
 > Marco de referencia: OWASP SAMM, NIST SSDF, OWASP ASVS y OWASP MASVS.
 
 ## Requisitos de seguridad
@@ -46,6 +46,6 @@
 | 9.1.2 | TLS en comunicaciones | HTTPS del Codespace / TLS en producción |
 | 12.3.1 | Cabeceras de seguridad HTTP | CSP, X-Frame-Options, etc. (corregido en Fase 2) |
 
-## Nota de trazabilidad
+## Relación con otras secciones
 
 Esta tabla alimenta: informe §5, Tabla 2 (STRIDE — los controles responden a las amenazas), Tabla 5 (riesgo — los requisitos priorizan las mitigaciones) y Tabla 6 (pruebas — cada requisito tiene su prueba de verificación).

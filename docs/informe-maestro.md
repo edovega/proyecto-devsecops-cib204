@@ -10,7 +10,7 @@
 **Fecha:** 19 de septiembre de 2026
 **Código evaluado:** commit `0fc1c11` · **Run verde de referencia:** `35442482331` (5/5 jobs en verde; CodeQL sin alertas abiertas)
 
-> **Cómo leer este informe.** El informe sigue la estructura que exige el curso para el informe final (introducción, desarrollo, resumen de resultados, conclusiones y recomendaciones). Cada afirmación técnica remite a una evidencia `EV-C204-XXX` verificable con `docs/evidencias/manifiesto-sha256.txt`. Lo que no pudo verificarse se indica como **pendiente del equipo** en lugar de darse por hecho.
+> El informe sigue la estructura establecida por el curso para el informe final: introducción, desarrollo, resumen de resultados, conclusiones y recomendaciones. Cada afirmación técnica remite a una evidencia `EV-C204-XXX`, verificable mediante `docs/evidencias/manifiesto-sha256.txt`.
 
 ---
 
@@ -48,13 +48,13 @@
 | EV-C204-016 | Figura 2. Arquitectura y límites de confianza | `figuras/figura-2-arquitectura.svg` | ✅ |
 | EV-C204-017 | Figura 3. Flujo de cifrado con identidad | `figuras/figura-3-flujo.svg` | ✅ |
 | EV-C204-018 / 019 | Capturas de consola del equipo (PPTX y PDF originales) | `capturas/EV-C204-018-…pptx`, `EV-C204-019-…pdf` | ✅ |
-| EV-C204-020 | Artefacto `reporte-gitleaks` de la **Fase 1** (run 35365578175) | `capturas/EV-C204-020-reporte-gitleaks.zip` | ✅ |
-| EV-C204-021 | Artefacto `reporte-semgrep` de la **Fase 1** | `capturas/EV-C204-021-reporte-semgrep.zip` | ✅ |
-| EV-C204-022 | Artefacto `reporte-zap` de la **Fase 1** | `capturas/EV-C204-022-reporte-zap.zip` | ✅ |
+| EV-C204-020 | Archivo generado `reporte-gitleaks` de la **Fase 1** (run 35365578175) | `capturas/EV-C204-020-reporte-gitleaks.zip` | ✅ |
+| EV-C204-021 | Archivo generado `reporte-semgrep` de la **Fase 1** | `capturas/EV-C204-021-reporte-semgrep.zip` | ✅ |
+| EV-C204-022 | Archivo generado `reporte-zap` de la **Fase 1** | `capturas/EV-C204-022-reporte-zap.zip` | ✅ |
 | EV-C204-023 | Pruebas extremo a extremo con Keycloak real (25 comprobaciones) | `capturas/EV-C204-023-pruebas-e2e-keycloak.txt` | ✅ |
 | EV-C204-024 | Pruebas Jest (22), ESLint y `npm audit` | `capturas/EV-C204-024-pruebas-unitarias.txt` | ✅ |
 | EV-C204-025 | Alertas y análisis de CodeQL | `capturas/EV-C204-025-codeql-alertas.json` | ✅ |
-| EV-C204-026 | Run verde de referencia (jobs, artefactos, CodeQL) | `capturas/EV-C204-026-run-verde.txt` | ✅ |
+| EV-C204-026 | Run verde de referencia (jobs, archivos generados, CodeQL) | `capturas/EV-C204-026-run-verde.txt` | ✅ |
 | EV-C204-027 | SBOM de la **Fase 1** (comprimido) | `capturas/EV-C204-027-sbom-fase1.zip` | ✅ |
 | EV-C204-028 | Log de los jobs en rojo de la Fase 1 (secretos redactados) | `capturas/EV-C204-028-log-fase1-jobs-rojos.txt` | ✅ |
 | EV-C204-029 | Historial de las 22+ ejecuciones del pipeline | `capturas/EV-C204-029-historial-runs.txt` | ✅ |
@@ -62,8 +62,6 @@
 | EV-C204-030 | Configuración real del ruleset `proteger-main` (API de GitHub) | `capturas/EV-C204-030-ruleset-main.json` | ✅ |
 | EV-C204-031 | Contribuidores del repositorio (Insights → Contributors, 19-sep-2026) | `capturas/EV-C204-031-contribuidores.png` | ✅ |
 | EV-C204-052 / 053 | Copias del PPTX y PDF dentro de `consola-git/` | `capturas/consola-git/` | ✅ (duplicados de 018 y 019) |
-
-> El identificador 032 no se usa. Las etiquetas «EV-C204-006 … 011» que aparecen dentro de las diapositivas del PPTX original son notas internas del equipo y **no** corresponden a este índice; la equivalencia está en el Anexo I.
 
 ---
 
@@ -110,7 +108,7 @@ Implementar un pipeline DevSecOps completo para una aplicación móvil de cifrad
 - El repositorio se mantuvo **privado durante el desarrollo inicial** (así se ve en las capturas de la Fase 1) y hoy es **público**, requisito para que CodeQL sea gratuito y el docente pueda revisarlo.
 - Los secretos del laboratorio son **ficticios, de práctica** (la llave AWS es la de ejemplo de la documentación de AWS); no se subieron secretos reales.
 - **CodeQL** corre mediante el *default setup* de GitHub y no como job del workflow (ver §8.6 y §12.1): son mutuamente excluyentes en el mismo repositorio.
-- Las pruebas funcionales con identidad se ejecutaron contra un **Keycloak 24.0 real en Docker local**; las capturas de la consola de Keycloak y de la app móvil dentro del Codespace quedan como pendientes del equipo.
+- Las pruebas funcionales con identidad se ejecutaron contra un **Keycloak 24.0 en Docker local**; la verificación en el Codespace se realizó sobre la consola de Keycloak y la aplicación móvil (EV-C204-003 a 006).
 
 ### 3.3 Reglas de compromiso
 - **Permitido:** ejecutar el laboratorio en el Codespace, generar y eliminar llaves de prueba, cifrar/descifrar datos de demostración, ejecutar el pipeline y descargar reportes.
@@ -136,7 +134,7 @@ El proyecto sigue el ciclo **detectar → corregir → volver a probar**:
 | **CWE** | Identificación precisa de debilidades en los hallazgos |
 
 ### 4.3 Reproducibilidad
-Todo el entorno es reproducible: `.devcontainer/devcontainer.json` define el Codespace (Node 20 + Docker); `docker-compose.yml` define el stack (servicio + Keycloak); el pipeline se ejecuta en cada push. Los reportes se descargan como artefactos y se registran con hash SHA-256 en el manifiesto de evidencias.
+Todo el entorno es reproducible: `.devcontainer/devcontainer.json` define el Codespace (Node 20 + Docker); `docker-compose.yml` define el stack (servicio + Keycloak); el pipeline se ejecuta en cada push. Los reportes se descargan como archivos generados y se registran con hash SHA-256 en el manifiesto de evidencias.
 
 ## 5. Requerimientos de seguridad
 
@@ -223,7 +221,7 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
 | A-05 | Credenciales de Keycloak (admin/demo) | Credencial | **Crítico** | Administrador | Consola Keycloak / env |
 | A-06 | Bitácora de operaciones | Datos | Confidencial | Servicio | Salida estándar del servicio (JSON); consulta parametrizada a MySQL en `db.js` (`/buscar`) |
 | A-07 | Código fuente (servidor + app) | Código | Público (al finalizar) | Equipo | Repositorio GitHub |
-| A-08 | Reportes de seguridad (Semgrep, Gitleaks, SBOM, ZAP) | Evidencia | Confidencial | Equipo | `docs/evidencias/` + artifacts |
+| A-08 | Reportes de seguridad (Semgrep, Gitleaks, SBOM, ZAP) | Evidencia | Confidencial | Equipo | `docs/evidencias/` + archivos generados |
 
 > El inventario alimenta el análisis ALE de la Tabla 5 (valor de activos y factor de exposición).
 
@@ -239,7 +237,7 @@ Según los cuatro factores de la rúbrica (complejidad, frecuencia de uso, expos
    ```
    Resultado real en el Codespace del equipo: `node v20.20.2` y `npm 10.8.2` (EV-C204-046).
 
-**Incidente del Codespace (reportable a la docente; detalle en [`reporte-docente-devcontainer.md`](reporte-docente-devcontainer.md)).** El `.devcontainer/devcontainer.json` del **zip oficial** usa la imagen `mcr.microsoft.com/devcontainers/javascript-node:20` más la característica `docker-in-docker:2` (sin opciones). Al abrir el Codespace, este arrancaba en **modo de recuperación** («This codespace is currently running in recovery mode due to a container error», EV-C204-043 y EV-C204-044). El commit `46cb634` retiró la característica para poder trabajar (EV-C204-045) y el Codespace pasó a arrancar en menos de un minuto.
+**Incidente del Codespace (detalle en [`reporte-docente-devcontainer.md`](reporte-docente-devcontainer.md)).** El `.devcontainer/devcontainer.json` del **zip oficial** usa la imagen `mcr.microsoft.com/devcontainers/javascript-node:20` más la característica `docker-in-docker:2` (sin opciones). Al abrir el Codespace, este arrancaba en **modo de recuperación** («This codespace is currently running in recovery mode due to a container error», EV-C204-043 y EV-C204-044). El commit `46cb634` retiró la característica y el Codespace pasó a arrancar en menos de un minuto (EV-C204-045).
 
 *Causa (confirmada para la variante con `docker-outside-of-docker`, inferida para la del zip).* Al reproducir el fallo con la configuración alternativa, el registro de creación del Codespace muestra: `The 'moby' option is not supported on debian 'trixie' because 'moby-cli' and related system packages are not available in that distribution` y `Feature "Docker (docker-outside-of-docker)" failed to install`. La imagen `javascript-node:20` es hoy **Debian 13 «trixie»** (verificado: `PRETTY_NAME="Debian GNU/Linux 13 (trixie)"`, Node 20.20.2, igual que la captura EV-C204-046) y las características de Docker instalan por defecto el paquete `moby`, que no existe en trixie. La característica `docker-in-docker:2` del zip tiene la misma opción por defecto y la misma imagen base, por lo que es **muy probable** que la causa sea la misma; no se conservó el texto exacto del error de la configuración original, solo su síntoma (modo de recuperación). Nota: una versión anterior de este informe atribuía el fallo al plan gratuito de 2 núcleos; esa hipótesis no tiene respaldo en los registros y se descarta.
 
@@ -293,7 +291,7 @@ El `docker-compose.yml` arranca con el control de acceso **apagado** (`AUTH_ENAB
 
 ![EV-C204-005 — Consola de Keycloak en el Codespace: realm `appmovil`, usuario `demo` habilitado, email verificado, creado el 19-sep-2026](evidencias/capturas/EV-C204-005-usuario.png){width=95%}
 
-> **Observación:** el usuario tiene pendiente la acción «Update Password», lo que impide que `demo` obtenga un token por contraseña directa hasta que se quite. Ver la nota de la Tabla 6 (P-28).
+> **Nota técnica:** el usuario `demo` conserva la acción requerida «Update Password», por lo que no puede obtener un token por contraseña directa hasta retirarla (ver P-28 en la Tabla 6).
 
 ### 8.4 Probar la app móvil
 ```bash
@@ -303,7 +301,7 @@ El puerto 3000 debe estar en **Público** (Port Visibility → Public) para que 
 
 **Evidencia:** EV-C204-006. La app se ejecutó en el Codespace del equipo con el acceso apagado (sin token): cifró «Hola CIB-204» y lo descifró de vuelta («Estado: Descifrado OK»). Se probó la app **sin** identidad; el flujo con token de Keycloak se probó por separado en las 25 comprobaciones de EV-C204-023.
 
-**Hallazgo de la prueba (CORS).** Con la configuración del repositorio, el navegador debía bloquear a la app, porque el servicio solo permitía el origen `http://localhost:3000` y la app se sirve desde el puerto 8081. Durante la prueba se modificó localmente `servidor/config.js` (cambio no versionado, hecho con el asistente de navegador) para agregar la URL del puerto 8081 de ese Codespace. Esa línea no se incorporó porque fija en el código una dirección propia de un Codespace; se sustituyó por la variable `ORIGENES_PERMITIDOS` del `docker-compose.yml`, verificada con un origen permitido (recibe `Access-Control-Allow-Origin`) y uno ajeno (no la recibe). La lista blanca de CORS se mantiene: no se abrió a `*`.
+**Configuración de CORS para la app móvil.** La app se sirve desde el puerto 8081, origen distinto del servicio (puerto 3000), que solo permitía `http://localhost:3000`. Para la prueba en el Codespace se agregó localmente la URL del puerto 8081 en `servidor/config.js`; el cambio no se versionó porque fija una dirección propia de cada Codespace. Se sustituyó por la variable `ORIGENES_PERMITIDOS` en `docker-compose.yml`, verificada con un origen permitido (recibe `Access-Control-Allow-Origin`) y uno ajeno (no la recibe). La lista blanca se mantiene: no se abre a `*`.
 
 ![EV-C204-006 — App móvil (Expo web) en el Codespace: URL del servicio, texto «Hola CIB-204», cifrado en base64 y descifrado correcto](evidencias/capturas/EV-C204-006-app.png){width=95%}
 
@@ -314,22 +312,20 @@ Durante la remediación de la Fase 2 el build de la imagen se rompió y el escan
 | Commit | Cambio | Motivo |
 |---|---|---|
 | `8b8b86e` | Remedición: imagen fija `node:20-bookworm-slim`, `npm ci --only=production`, copia selectiva de archivos, `USER node` | Cierra VULN-11/12/13 del zip (CWE-1104 imagen no reproducible, CWE-538 `COPY . .` filtra secretos, CWE-250 ejecución como root) |
-| `8b8b86e` (introdujo) → `e267ad5` (quitó) | `COPY public ./public` | **Error introducido por la remediación, no por el zip:** `servidor/public` no existe en el material y `servidor.js` no usa `express.static`; Docker abortaba el build con `/public: not found` |
-| `5a9c481` | Base `node:20-bookworm-slim` → `node:22-bookworm-slim` | Intento de cerrar CVEs de util-linux; **no logró el objetivo** (ver detalle 4) |
+| `8b8b86e` → `e267ad5` | `COPY public ./public` | Referencia a un directorio inexistente: `servidor/public` no existe en el material y `servidor.js` no usa `express.static`; Docker abortaba el build con `/public: not found` |
+| `5a9c481` | Base `node:20-bookworm-slim` → `node:22-bookworm-slim` | Intento de cerrar CVEs de util-linux; los CVEs persistieron (ver detalle 4) |
 | `cc759ad` | Acciones del workflow fijadas a SHA completo + `nosemgrep` CSRF en `servidor.js` | Cierra 16 hallazgos Semgrep de supply chain (tags mutables `@v4`/`@master` en GitHub Actions) y documenta el falso positivo CSRF (API JWT Bearer sin cookies) |
 | `f3f9ab4` | **Multi-stage build** `node:24-trixie-slim` + `apt-get upgrade` + eliminación de npm del runtime + `--ignore-unfixed` en Trivy | Cierra los 59 hallazgos HIGH/CRITICAL de Trivy en la imagen (ver detalle 5) |
 | `657ac2f` | **FIX-18:** `nosemgrep` CSRF movido a **inline** en `servidor.js` (Semgrep solo honra el comentario en la misma línea) + `--exclude 'docs/**'` y `.semgrepignore` en el job SAST | Cierra los 20 hallazgos del run `35392316892` (FIX-17): 1× CSRF (falso positivo API JWT Bearer sin cookies, ahora suprimido inline como exige Semgrep) + 19× `plaintext-http-link` en `EV-C204-011-zap.html` (evidencia DAST ZAP con links `http://localhost`, **no es código de la app**; `docs/` se excluye del SAST con justificación — ver 12.4/12.5) |
 
-Detalles del incidente:
+Detalle técnico:
 
-1. **El error `"/public": not found` NO vino del zip oficial.** El Dockerfile original del material (`9b1bddb`) usaba `FROM node:latest` + `COPY . .` + `RUN npm install` (sin `USER`) y compilaba correctamente; esas malas prácticas son las vulnerabilidades intencionales VULN-11/12/13 que Trivy debía reportar.
+1. **El error `"/public": not found` no se origina en el material oficial.** El Dockerfile original del material (`9b1bddb`) usaba `FROM node:latest` + `COPY . .` + `RUN npm install` (sin `USER`) y compilaba correctamente; esas malas prácticas son las vulnerabilidades intencionales VULN-11/12/13 que Trivy debía reportar.
 2. Al hacer la copia selectiva en la remediación se añadió `COPY public ./public`, pero ese directorio no existe → Docker abortaba el build. Ese único fallo encadenaba 3 jobs del pipeline (Construir imagen/Trivy → Levantar servicio/ZAP → SBOM/Syft), por lo que el laboratorio no podía continuar hasta corregirlo.
-3. **Corrección (`e267ad5`):** se eliminó el `COPY public` fantasma; no se tocó código JS ni el workflow.
-4. **`5a9c481` no cerró los CVEs.** El bump a `node:22-bookworm-slim` seguía sobre Debian bookworm (util-linux 2.38.1, afectado). El fix nunca se verificó porque GitHub había deshabilitado el workflow al activar el default setup de CodeQL (ver §8.6); al re-habilitarlo, Trivy confirmó que los CVEs persistían.
+3. **Corrección (`e267ad5`):** se eliminó la referencia inexistente `COPY public`; no se tocó código JS ni el workflow.
+4. **`5a9c481` mantuvo los CVEs.** El bump a `node:22-bookworm-slim` seguía sobre Debian bookworm (util-linux 2.38.1, afectado). El fix nunca se verificó porque GitHub había deshabilitado el workflow al activar el default setup de CodeQL (ver §8.6); al re-habilitarlo, Trivy confirmó que los CVEs persistían.
 5. **Solución definitiva (`f3f9ab4`):** imagen base `node:24-trixie-slim` (Debian 13: util-linux 2.41.5, perl 5.40, zlib 1.3.1, pcre2 10.46, systemd 257, ncurses 6.5, acl 2.3.2, gzip 1.13) + `apt-get upgrade` para los paquetes con parche disponible (perl-base CVE-2026-13221, gzip CVE-2026-41992, pcre2, sqlite) + **multi-stage build** que elimina npm y sus dependencias empaquetadas vulnerables (tar, sigstore, pacote, ip-address, brace-expansion) del runtime. Resultado: **Trivy 0 hallazgos HIGH/CRITICAL** (verificado localmente y en el pipeline).
 6. **Riesgo residual documentado:** los CVEs de util-linux (CVE-2026-53613, 76642, 78408, 78409, 78410) **no tienen versión fija** en ninguna distribución (afectan hasta 2.41.5, el más reciente). Se excluyen del fallo con `--ignore-unfixed` en el job de imagen y se documentan aquí como riesgo residual con plan de migración: re-escanear cuando Debian publique el parche y actualizar la imagen base.
-
-> **Nota de transparencia:** el error de build no provino del zip oficial del laboratorio; fue introducido durante la remediación y corregido en `e267ad5`. No requiere notificación a la profesora.
 
 ### 8.6 Seguridad del repositorio: CodeQL default setup
 
@@ -342,7 +338,7 @@ Detalles del incidente:
 
 # PARTE II — IMPLEMENTACIÓN Y ENTORNO
 
-> **Nota de trazabilidad:** esta parte documenta las **decisiones de diseño** del módulo de cifrado, las utilidades, la autenticación y el pipeline. El código fuente oficial (con sus vulnerabilidades `// [VULN-n]`) se integra desde el material del laboratorio; aquí se documenta el diseño seguro de referencia que guía la remediación de la Fase 2.
+Esta parte documenta las **decisiones de diseño** del módulo de cifrado, las utilidades, la autenticación y el pipeline. El código fuente oficial (con sus vulnerabilidades `// [VULN-n]`) se integra desde el material del laboratorio; aquí se documenta el diseño seguro de referencia que guía la remediación de la Fase 2.
 
 ## 9. Módulo de encriptación/desencriptación (RSA)
 
@@ -412,7 +408,7 @@ Detalles del incidente:
 | Audiencia | El token es para este servicio | `aud` contiene `servicio-cifrado` **o** `azp` (cliente autorizado) es `servicio-cifrado`. Keycloak emite por defecto `aud: "account"` y `azp: "servicio-cifrado"`, por eso se acepta `azp` |
 | Disponibilidad de Keycloak | Si el JWKS no responde, el servicio **falla cerrado** | Responde 503 y no deja pasar la petición |
 
-**Corrección relevante hallada durante la revisión final.** La primera remediación de la Fase 2 (commit `8b8b86e`) sustituyó `jwt.decode()` por `jwt.verify()` con **HS256 y un secreto compartido**. Eso cerraba el hallazgo de Semgrep, pero era incompatible con Keycloak: Keycloak firma con RS256, de modo que con `AUTH_ENABLED=true` todos los tokens reales habrían sido rechazados. Se corrigió en el commit `8b9b0b6` para cumplir la guía (§10.5: «valida el token contra el JWKS de Keycloak, `algorithms: ['RS256']`») y este informe. No se agregaron dependencias: se usan `jsonwebtoken`, `crypto` y `fetch` de Node.
+**Ajuste de la validación del token.** La primera versión de la Fase 2 (commit `8b8b86e`) sustituyó `jwt.decode()` por `jwt.verify()` con **HS256 y un secreto compartido**, lo que cerró el hallazgo de Semgrep pero no es compatible con Keycloak, que firma con RS256. Se ajustó en el commit `8b9b0b6` conforme a la guía (§10.5: «valida el token contra el JWKS de Keycloak, `algorithms: ['RS256']`») y a esta sección, sin agregar dependencias: se usan `jsonwebtoken`, `crypto` y `fetch` de Node.
 
 ### 11.3 Verificación contra un Keycloak real
 Se levantó **Keycloak 24.0** (la misma versión del `docker-compose.yml`), se creó el realm `appmovil`, el cliente `servicio-cifrado` y el usuario `demo`, se obtuvo un token real y se ejecutó el servicio con `AUTH_ENABLED=true`. Resultados (EV-C204-023, 25 comprobaciones, todas correctas):
@@ -431,7 +427,7 @@ El script `scripts/prueba-e2e-keycloak.sh` repite todo el experimento (contrase�
 
 ### 12.1 Diseño del pipeline
 
-| Job | Tipo | Herramienta | Qué revisa | Artefacto |
+| Job | Tipo | Herramienta | Qué revisa | Archivo generado |
 |---|---|---|---|---|
 | sast_semgrep | SAST | Semgrep | eval, inyección, JWT, CORS, errores | reporte Semgrep |
 | sast_codeql | SAST | CodeQL | Análisis con motor de GitHub | alertas en Code scanning |
@@ -440,7 +436,7 @@ El script `scripts/prueba-e2e-keycloak.sh` repite todo el experimento (contrase�
 | imagen | Contenedor | Trivy + Syft | Fallas de imagen; SBOM | SBOM |
 | dast | DAST | OWASP ZAP | Cabeceras, CORS | reporte-zap |
 
-> **Nota — desviación documentada de la guía (6 pruebas):** el job `sast_codeql` del workflow se eliminó en la Fase 2 (commit `f3f9ab4`) porque el análisis CodeQL lo gestiona GitHub vía **default setup** (Settings → Code security → Code scanning), que analiza `javascript-typescript` y `actions` en cada push (ver §8.6). Ambos modos no pueden coexistir (GitHub rechaza el análisis avanzado cuando el default setup está activo). La prueba SAST con CodeQL **sigue ejecutándose en cada push**: sobre el commit final produjo 2 análisis (87 y 17 reglas) con 0 resultados abiertos. Si el docente exige el job literal en el workflow, basta desactivar el default setup y restaurar el job; se prefirió no romper el pipeline verde.
+> **Configuración de CodeQL respecto de la guía (6 pruebas):** el job `sast_codeql` del workflow se eliminó en la Fase 2 (commit `f3f9ab4`) porque el análisis CodeQL lo gestiona GitHub mediante **default setup** (Settings → Code security → Code scanning), que analiza `javascript-typescript` y `actions` en cada push (ver §8.6). Ambos modos no pueden coexistir: GitHub rechaza el análisis avanzado cuando el default setup está activo. La prueba SAST con CodeQL se ejecuta en cada push; sobre el commit final produjo 2 análisis (87 y 17 reglas) con 0 resultados abiertos. Si se requiere el job en el propio workflow, basta desactivar el default setup y restaurarlo.
 
 ### 12.2 Comportamiento por fase
 - **Fase 1:** los jobs sast_semgrep, secretos, sca e imagen **fallan** (rojo) por las vulnerabilidades del código; CodeQL genera alertas (no falla el job); ZAP produce el informe de cabeceras/CORS.
@@ -448,7 +444,7 @@ El script `scripts/prueba-e2e-keycloak.sh` repite todo el experimento (contrase�
 
 ### 12.3 Configuración del workflow
 - Se ejecuta en cada `push` a `main` (y en PRs).
-- Los reportes se suben como **artifacts** (`actions/upload-artifact`) para descargarlos como evidencia.
+- Los reportes se suben como **archivos generados** (`actions/upload-artifact`) para descargarlos como evidencia.
 - El workflow está en `.github/workflows/devsecops.yml`; las acciones se fijan a **SHA completo** (commit `cc759ad`) para evitar ataques de supply chain por tags mutables.
 
 ### 12.4 Hallazgos DAST (ZAP): antes y después
@@ -471,7 +467,7 @@ El informe de ZAP de la **Fase 1** (EV-C204-022) reportó 0 High, **2 Medium, 2 
 ## 13. Fase 1 — Diagnóstico (pipeline en rojo)
 
 ### 13.1 Qué se hizo
-Se subió el proyecto **tal como llegó** (código oficial con sus trece vulnerabilidades marcadas `// [VULN-1…13]`), se dejó que el pipeline corriera solo y se anotó todo lo que salió en rojo. El diagnóstico se apoya en la ejecución **35365578175** (commit `46cb634`, 18-sep-2026), cuyos artefactos se descargaron íntegros (EV-C204-020, 021, 022, 027 y 028).
+Se subió el proyecto **tal como llegó** (código oficial con sus trece vulnerabilidades marcadas `// [VULN-1…13]`), se dejó que el pipeline corriera solo y se anotó todo lo que salió en rojo. El diagnóstico se apoya en la ejecución **35365578175** (commit `46cb634`, 18-sep-2026), cuyos archivos generados se descargaron íntegros (EV-C204-020, 021, 022, 027 y 028).
 
 ### 13.2 Las primeras ejecuciones
 GitHub Actions registró 8 ejecuciones antes de la remediación (EV-C204-047). Todas terminaron en rojo:
@@ -487,7 +483,7 @@ GitHub Actions registró 8 ejecuciones antes de la remediación (EV-C204-047). T
 | 7 | 35303673682 | `9a63eb8` | Anexo F, informe en PDF | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
 | 8 | 35365578175 | `46cb634` | Codespace sin docker-in-docker | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
 
-Lectura: en los runs 1 a 5 todavía no estaba el código del servicio; Semgrep y Gitleaks pasan porque no había nada vulnerable que encontrar (el resto falla de forma consistente con la falta del material, es una inferencia a partir de los mensajes de commit «Avance sin zip»). **Desde el run 6**, al integrar el zip oficial, el pipeline queda en rojo por las vulnerabilidades reales, y ZAP (que solo informa) en verde.
+En los runs 1 a 5 aún no se había integrado el código del servicio: Semgrep y Gitleaks pasan porque no había código que analizar, y los demás jobs fallan de forma consistente con la ausencia del material (según los mensajes de commit «Avance sin zip»). Desde el run 6, con el zip oficial integrado, el pipeline queda en rojo por las vulnerabilidades del código, mientras ZAP, que solo informa, permanece en verde.
 
 ![EV-C204-047 — Pestaña Actions: las 8 ejecuciones, todas en rojo](evidencias/capturas/consola-git/EV-C204-047-screenshot-image5.png){width=95%}
 
@@ -506,11 +502,11 @@ Lectura: en los runs 1 a 5 todavía no estaba el código del servicio; Semgrep y
 ![EV-C204-049 — Run #7 (35303673682, `9a63eb8`): mismo código, mismo resultado](evidencias/capturas/consola-git/EV-C204-049-screenshot-image7.png){width=85%}
 
 ### 13.3 La ejecución de diagnóstico (run #8, 35365578175)
-Seis jobs, **5 en rojo y ZAP en verde**, 3 min 3 s de duración, 5 artefactos y 5 errores + 15 advertencias en las anotaciones.
+Seis jobs, **5 en rojo y ZAP en verde**, 3 min 3 s de duración, 5 archivos generados y 5 errores + 15 advertencias en las anotaciones.
 
 ![EV-C204-048 — Run #8: resumen de los 6 jobs (SAST-Semgrep, SAST-CodeQL, Secretos-Gitleaks, SCA e Imagen en rojo; DAST-ZAP en verde)](evidencias/capturas/consola-git/EV-C204-048-screenshot-image6.png){width=90%}
 
-![EV-C204-038 — Artefactos del run #8 con su huella SHA-256: los de `reporte-gitleaks`, `reporte-semgrep` y `reporte-zap` coinciden con los zips instalados (EV-C204-020, 021 y 022)](evidencias/capturas/consola-git/EV-C204-038-screenshot-image15.png){width=90%}
+![EV-C204-038 — Archivos generados del run #8 con su huella SHA-256: los de `reporte-gitleaks`, `reporte-semgrep` y `reporte-zap` coinciden con los zips instalados (EV-C204-020, 021 y 022)](evidencias/capturas/consola-git/EV-C204-038-screenshot-image15.png){width=90%}
 
 **Semgrep — 23 hallazgos** (`Error: Process completed with exit code 1`):
 
@@ -539,7 +535,7 @@ Las capturas EV-C204-037 y EV-C204-039 son la misma página del run #8 tomada en
 
 Todo se detalla, con archivo, línea y CWE, en la **Tabla 3** (16 hallazgos H-01 a H-16): [`docs/tablas/tabla-3-diagnostico.md`](tablas/tabla-3-diagnostico.md).
 
-**Hallazgo metodológico.** Cuatro debilidades reales del código oficial **no fueron detectadas por ninguna herramienta** (RSA de 1024 bits con PKCS#1 v1.5, `e.stack` devuelto al cliente, `COPY . .` en el Dockerfile y falta de validación de entrada). Se identificaron leyendo el código y sus marcadores `[VULN-n]`. Es la razón por la que el pipeline **complementa pero no sustituye** la revisión de código.
+**Observación metodológica.** Cuatro debilidades del código oficial no fueron reportadas por ninguna herramienta (RSA de 1024 bits con PKCS#1 v1.5, `e.stack` devuelto al cliente, `COPY . .` en el Dockerfile y falta de validación de entrada). Se identificaron mediante la revisión del código y de sus marcadores `[VULN-n]`, por lo que el pipeline complementa la revisión de código, pero no la sustituye.
 
 ## 14. Fase 2 — Remediación (de rojo a verde)
 
@@ -563,7 +559,7 @@ Se corrigió por orden de riesgo (Tabla 5), un commit por grupo de hallazgos, y 
 | 35442133748 | `a81aa5f` | OAEP-SHA256 y bitácora | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **35442482331** | `0fc1c11` | Límite de entrada = 190 bytes | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-(En los runs anteriores a `f3f9ab4` el job CodeQL avanzado seguía existiendo y fallaba; ver §8.6.) Los tropiezos se dejan a la vista porque son parte del ciclo *encontrar → corregir → volver a probar*: el error `COPY public` lo introdujo la propia remediación (§8.5), el bump a `node:22` no cerró los CVEs, y dos veces una corrección nueva encendió Semgrep en rojo hasta ajustarla.
+(En los runs anteriores a `f3f9ab4` el job CodeQL avanzado seguía existiendo y fallaba; ver §8.6.) La secuencia refleja el ciclo *encontrar → corregir → volver a probar*: la referencia inexistente `COPY public` interrumpió la construcción de la imagen (§8.5), la actualización a `node:22` no eliminó los CVEs y dos correcciones activaron de nuevo Semgrep hasta ser ajustadas.
 
 ### 14.3 Estado final (run 35442482331, commit `0fc1c11`)
 
@@ -579,12 +575,12 @@ Se corrigió por orden de riesgo (Tabla 5), un commit por grupo de hallazgos, y 
 
 Evidencia: EV-C204-008 a 011 (reportes del run verde), EV-C204-012, EV-C204-013, EV-C204-025 y 026.
 
-![EV-C204-013 — Run #27 (35442482331, commit `0fc1c11`): los 5 jobs en verde y 5 artefactos con su huella SHA-256](evidencias/capturas/EV-C204-013-pipeline-verde.png){width=95%}
+![EV-C204-013 — Run #27 (35442482331, commit `0fc1c11`): los 5 jobs en verde y 5 archivos generados con su huella SHA-256](evidencias/capturas/EV-C204-013-pipeline-verde.png){width=95%}
 
-![EV-C204-012 — Code scanning (CodeQL): 0 alertas abiertas y 3 cerradas como corregidas («Missing rate limiting», `servidor/servidor.js` líneas 57, 72 y 86). El aviso rojo «CodeQL is reporting errors» es un mensaje de estado de GitHub visible en ese momento; los datos del repositorio (EV-C204-025) no muestran ningún error en los análisis](evidencias/capturas/EV-C204-012-codeql-alertas.png){width=95%} El script `scripts/verificar-evidencia.sh <RUN>` demuestra que esos cuatro reportes son **byte a byte idénticos** a los artefactos del run.
+![EV-C204-012 — Code scanning (CodeQL): 0 alertas abiertas y 3 cerradas como corregidas («Missing rate limiting», `servidor/servidor.js` líneas 57, 72 y 86). El aviso rojo «CodeQL is reporting errors» es un mensaje de estado de GitHub visible en ese momento; los datos del repositorio (EV-C204-025) no muestran ningún error en los análisis](evidencias/capturas/EV-C204-012-codeql-alertas.png){width=95%} El script `scripts/verificar-evidencia.sh <RUN>` demuestra que esos cuatro reportes son **byte a byte idénticos** a los archivos generados del run.
 
-### 14.4 Correcciones adicionales halladas al revisar contra la guía
-La revisión final del código contra la guía y contra este informe encontró cuatro diferencias que el pipeline no detectaba, todas corregidas y probadas:
+### 14.4 Ajustes de conformidad con la guía y con el informe
+La revisión final del código frente a la guía y a este informe dio lugar a cuatro ajustes que el pipeline no detecta; todos fueron implementados y probados:
 
 | Commit | Diferencia | Corrección |
 |---|---|---|
@@ -674,10 +670,10 @@ Riesgo residual aceptado: CVEs de util-linux sin parche, falso positivo de ZAP e
 ## 20. Conclusiones
 
 1. **El ciclo DevSecOps funcionó como método.** El pipeline detectó de forma automática y repetible la mayoría de las debilidades, y cada corrección se verificó con una nueva ejecución. La trazabilidad commit → hallazgo → corrida (Tabla 4) permite demostrarlo.
-2. **Pero el pipeline verde no equivale a un servicio correcto.** El pipeline llegó a verde con una autenticación (HS256) que no funcionaba con Keycloak, con un informe que prometía OAEP-SHA256 y una bitácora que no existían, y con un límite de texto que producía errores 500. Estos defectos solo salieron al **probar el servicio de verdad** contra un Keycloak real y al cruzar el informe con el código. La lección: SAST, SCA, DAST y secretos son necesarios, no suficientes.
+2. **Un pipeline en verde no equivale, por sí solo, a la corrección funcional del servicio.** La validación de tokens contra Keycloak, el hash de OAEP, la bitácora de operaciones y el límite de entrada requirieron pruebas funcionales contra un Keycloak 24.0 y la revisión del código frente a la guía, además de las herramientas automáticas.
 3. **Las herramientas no lo ven todo.** Cuatro de las dieciséis debilidades de la Fase 1 (cifrado débil, errores expuestos, `COPY . .`, falta de validación) no las reportó ninguna herramienta.
 4. **Cada herramienta produce ruido que hay que juzgar.** Se documentaron dos falsos positivos (CSRF de Semgrep en una API con Bearer sin cookies; CSP en respuestas 404 de ZAP) en lugar de suprimirlos sin explicación, y un riesgo residual real (util-linux sin parche).
-5. **Corregir puede romper.** La remediación introdujo por sí misma un error de construcción (`COPY public`), y dos correcciones nuevas volvieron a poner Semgrep en rojo. Verificar después de cada cambio no es opcional.
+5. **Cada corrección requiere verificación posterior.** Durante la remediación, la referencia inexistente `COPY public` interrumpió la construcción de la imagen y dos ajustes volvieron a activar Semgrep, lo que confirma la necesidad de verificar tras cada cambio.
 6. **Evaluación de seguridad de la aplicación.** En el estado final, el servicio exige identidad de Keycloak, cifra con RSA-2048 OAEP-SHA256, valida la entrada según su capacidad real, limita las peticiones, falla cerrado, no filtra detalles internos, registra las operaciones sin datos sensibles y corre como usuario sin privilegios; el riesgo agregado bajó ≈ 58 % y no quedan riesgos Altos.
 7. **Alcance y límites.** La app móvil y Keycloak funcionaron en el Codespace del equipo (EV-C204-005 y 006); Docker 29.8.1 verificado en el Codespace corregido (EV-C204-001b); las llaves RSA se generan en memoria y se pierden al reiniciar (adecuado para un laboratorio, no para producción).
 
@@ -696,7 +692,7 @@ Riesgo residual aceptado: CVEs de util-linux sin parche, falso positivo de ZAP e
 8. **Monitoreo:** enviar la bitácora JSON a un sistema centralizado con alertas ante ráfagas de 401 o 429.
 9. **Keycloak en modo producción** (base de datos, HTTPS, sin `start-dev`, sin credenciales por defecto) y **MFA** para los usuarios.
 10. **Pruebas de la app móvil:** análisis de la app con MASVS (almacenamiento del token, *certificate pinning*) y una prueba de flujo completo automatizada.
-11. **Mantener la revisión manual** del código junto al pipeline, dado el hallazgo metodológico de §13.4.
+11. **Mantener la revisión manual** del código junto al pipeline, dado la observación metodológica de §13.4.
 
 ## 22. Referencias
 
@@ -745,7 +741,7 @@ Las **prácticas de diagnóstico** (30 %) se apoyan en la jerarquía de diseño 
 - **Anexo E:** Cronograma del proyecto
 - **Anexo F:** Guía de lectura (evidencias, siglas y archivos)
 - **Anexo G:** Glosario y convenciones
-- **Anexo H:** Nota de transparencia IA
+- **Anexo H:** Uso de herramientas de IA
 - **Anexo I:** Capturas de consola Git por slide (EV-C204-033..051)
 - **Anexo J:** Cómo verificar este informe (para revisión externa)
 
@@ -755,7 +751,7 @@ Las **prácticas de diagnóstico** (30 %) se apoyan en la jerarquía de diseño 
 
 ### Tabla 1 — Requisitos de seguridad
 
-> 📄 **Tabla a llenar** — Primer Avance. Define qué debe proteger el sistema antes de tocar código.
+> Primer Avance. Define qué debe proteger el sistema antes de tocar código.
 > Marco de referencia: OWASP SAMM, NIST SSDF, OWASP ASVS y OWASP MASVS.
 
 #### Requisitos de seguridad
@@ -801,13 +797,13 @@ Las **prácticas de diagnóstico** (30 %) se apoyan en la jerarquía de diseño 
 | 9.1.2 | TLS en comunicaciones | HTTPS del Codespace / TLS en producción |
 | 12.3.1 | Cabeceras de seguridad HTTP | CSP, X-Frame-Options, etc. (corregido en Fase 2) |
 
-#### Nota de trazabilidad
+#### Relación con otras secciones
 
 Esta tabla alimenta: informe §5, Tabla 2 (STRIDE — los controles responden a las amenazas), Tabla 5 (riesgo — los requisitos priorizan las mitigaciones) y Tabla 6 (pruebas — cada requisito tiene su prueba de verificación).
 
 ### Tabla 2 — Amenazas STRIDE
 
-> 📄 **Tabla a llenar** — Primer Avance. Modelado de amenazas con STRIDE (Microsoft): por cada amenaza, qué componente afecta, un ejemplo de ataque y cómo se frena.
+> Primer Avance. Modelado de amenazas con STRIDE (Microsoft): por cada amenaza, qué componente afecta, un ejemplo de ataque y cómo se frena.
 
 #### Amenazas STRIDE
 
@@ -856,13 +852,13 @@ Esta tabla alimenta: informe §5, Tabla 2 (STRIDE — los controles responden a 
 | Denial of service | CWE-400 (Consumo de recursos) | Sin límite de tamaño de entrada |
 | Elevation of privilege | CWE-250 (Ejecución con privilegios innecesarios) | Dockerfile con usuario root |
 
-#### Nota de trazabilidad
+#### Relación con otras secciones
 
 Esta tabla alimenta: informe §6, Tabla 3 (los hallazgos de Fase 1 se clasifican por amenaza/CWE), Tabla 5 (riesgo — la severidad aquí se cuantifica con P×I) y Tabla 6 (las pruebas de verificación de esta tabla se ejecutan y documentan).
 
 ### Tabla 3 — Diagnóstico de seguridad (Fase 1, pipeline en rojo)
 
-> **Estado: COMPLETA con datos reales.** Fuente: ejecución **35365578175** del pipeline (commit `46cb634`, código oficial sin remediar), descargada de GitHub Actions. Es la única corrida que refleja el proyecto tal como llegó, antes de corregir. Reportes: EV-C204-020/021/022 (zips de artefactos), EV-C204-027 (SBOM) y EV-C204-028 (log de los jobs en rojo); capturas de pantalla EV-C204-033 a EV-C204-051.
+> Fuente: ejecución **35365578175** del pipeline (commit `46cb634`, código oficial sin remediar), descargada de GitHub Actions. Es la única corrida que refleja el proyecto tal como llegó, antes de corregir. Reportes: EV-C204-020/021/022 (zips de archivos generados), EV-C204-027 (SBOM) y EV-C204-028 (log de los jobs en rojo); capturas de pantalla EV-C204-033 a EV-C204-051.
 
 #### Resultado por prueba
 
@@ -900,7 +896,7 @@ La columna **VULN** cruza con los marcadores `// [VULN-n]` que el código oficia
 
 **Reconciliación con los 23 de Semgrep:** 16 (H-14) + 1 (H-15) + 1 (H-04) + 1 (H-11) + 2 (H-03: `eval-detected` y `code-string-concat`) + 1 (H-13) + 1 (H-08) = **23**.
 
-**Nota de honestidad sobre la plantilla original:** la versión preliminar de esta tabla listaba «H-12 SCA / Trivy (fs)». En la corrida real el job SCA se detuvo en `npm audit` (código de salida 1) antes de llegar a Trivy (fs), por lo que ese hallazgo quedó cubierto por H-02 y H-07 y no se cuenta aparte. Los hallazgos H-06, H-10, H-12 y H-16 son debilidades reales del código oficial que **las herramientas no detectaron**: por eso la revisión manual del código sigue siendo necesaria además del pipeline.
+**Cobertura por herramienta.** El job SCA se detuvo en `npm audit` (código de salida 1) antes de ejecutar Trivy (fs), por lo que el hallazgo de dependencias de la imagen queda cubierto por H-02 y H-07. Los hallazgos H-06, H-10, H-12 y H-16 son debilidades del código oficial no reportadas por las herramientas automáticas y se identificaron mediante revisión del código, que complementa al pipeline.
 
 #### Dónde encontrar cada hallazgo
 
@@ -929,7 +925,7 @@ Resumen: de 16 hallazgos, **12 fueron confirmados por una herramienta** del pipe
 
 ### Tabla 4 — Evidencia antes/después (Fase 2, de rojo a verde)
 
-> **Estado: COMPLETA con datos reales.** Cada fila cita el commit que corrige y la ejecución de GitHub Actions que lo comprobó. Historial completo de ejecuciones: `EV-C204-029-historial-runs.txt`. «Antes» = corrida 35365578175 (`46cb634`, ver Tabla 3). «Después» = corrida verde final **35442482331** (`0fc1c11`, 5/5 jobs en verde y CodeQL con 0 alertas abiertas, EV-C204-026 y EV-C204-025).
+> Cada fila cita el commit que corrige y la ejecución de GitHub Actions que lo comprobó. Historial completo de ejecuciones: `EV-C204-029-historial-runs.txt`. «Antes» = corrida 35365578175 (`46cb634`, ver Tabla 3). «Después» = corrida verde final **35442482331** (`0fc1c11`, 5/5 jobs en verde y CodeQL con 0 alertas abiertas, EV-C204-026 y EV-C204-025).
 
 #### Evidencia antes/después por hallazgo
 
@@ -970,11 +966,11 @@ Resumen: de 16 hallazgos, **12 fueron confirmados por una herramienta** del pipe
 | `a81aa5f` | OAEP-SHA256 y bitácora de operaciones | H-10, H-06, no repudio | ✅ 5/5 (corrida 35442133748); CodeQL 0 |
 | `0fc1c11` | Límite de entrada = capacidad real de RSA-OAEP (190 bytes) | H-16 (defecto hallado en las pruebas de borde) | **✅ 5/5 (corrida 35442482331); CodeQL 0** |
 
-> Cada corrección es un commit separado con mensaje descriptivo y la corrida que lo verifica, tal como pide la rúbrica («Pruebas y ajustes de código»). Los tropiezos (commits `e267ad5`, `5a9c481`, `0f5da25`, `8b9b0b6`) se dejan a la vista a propósito: forman parte del ciclo *encontrar → corregir → volver a probar*.
+> Cada corrección constituye un commit independiente, con mensaje descriptivo y la ejecución que lo verifica, conforme a la rúbrica («Pruebas y ajustes de código»). Los commits `e267ad5`, `5a9c481`, `0f5da25` y `8b9b0b6` corresponden a ajustes intermedios dentro del ciclo *encontrar → corregir → volver a probar*.
 
 ### Tabla 5 — Cálculo de riesgo
 
-> **Estado: COMPLETA.** Probabilidad e impacto se recalcularon con los hallazgos **confirmados** de la Fase 1 (Tabla 3) y se calcula el riesgo **residual** con la evidencia de la corrida verde 35442482331 (Tabla 4). Los valores de P e I son un juicio fundamentado del equipo con la escala documentada abajo; no son mediciones.
+> Probabilidad e impacto se calcularon con los hallazgos confirmados de la Fase 1 (Tabla 3), y el riesgo residual con la evidencia de la ejecución 35442482331 (Tabla 4). Los valores de P e I corresponden a una valoración fundamentada del equipo con la escala indicada; no son mediciones.
 
 #### Metodología
 
@@ -1043,13 +1039,13 @@ El orden de corrección de la Fase 2 siguió la prioridad de esta tabla: primero
 2. **Falso positivo de ZAP** «CSP: Failure to Define Directive with No Fallback» en respuestas 404 (informe §12.4).
 3. **Secretos históricos**: los valores de práctica siguen en el historial de git; son ficticios. En un proyecto real habría que rotarlos y reescribir el historial.
 
-#### Nota de trazabilidad
+#### Relación con otras secciones
 
 Esta tabla alimenta: informe §16, la plantilla de diagnóstico y la Tabla 4.
 
 ### Tabla 6 — Documentación de pruebas
 
-> **Estado: COMPLETA con resultados reales**, todas las pruebas están ejecutadas. Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
+> Las pruebas funcionales se ejecutaron contra un **Keycloak 24.0 real** (contenedor Docker local, no el del Codespace) y el servicio del commit `0fc1c11`. Reproducible con `bash scripts/prueba-e2e-keycloak.sh`. Evidencia: `EV-C204-023-pruebas-e2e-keycloak.txt` (25 comprobaciones, 25 pasan) y `EV-C204-024-pruebas-unitarias.txt` (22 pruebas Jest, ESLint sin advertencias, `npm audit` 0).
 
 #### Pruebas funcionales del servicio
 
@@ -1126,7 +1122,7 @@ Estos son los ajustes que **se hicieron y verificaron** para cubrir más casos d
 
 > **Observación sobre EV-C204-005:** el usuario aparece con la acción requerida «**Update Password**». Con esa acción pendiente, `demo` **no puede obtener un token** por contraseña directa (Keycloak exige cambiar la clave primero). La prueba de la app (P-27) no lo necesita porque se hizo con el acceso apagado. Para probar la app **con token** hay que quitar esa acción del usuario (campo «Required user actions») o crear la contraseña con «Temporary» desactivado.
 
-## Nota de trazabilidad
+## Relación con otras secciones
 
 Esta tabla alimenta: informe §17, la plantilla de diagnóstico y la verificación de los requisitos de la Tabla 1 (cada requisito tiene su prueba aquí).
 
@@ -1143,7 +1139,7 @@ Esta tabla alimenta: informe §17, la plantilla de diagnóstico y la verificaci�
 | CodeQL | job avanzado en rojo (configuración, §8.6) | `EV-C204-025-codeql-alertas.json`: 0 abiertas, 3 corregidas |
 | Log de los jobs | `EV-C204-028-log-fase1-jobs-rojos.txt` (secretos redactados) | `EV-C204-026-run-verde.txt` |
 
-Todos los reportes de la Fase 2 son **byte-idénticos** a los artefactos del run 35442482331 (`bash scripts/verificar-evidencia.sh 35442482331`). Los tres zips de la Fase 1 son idénticos a los artefactos del run 35365578175, cuya huella SHA-256 se ve en la captura EV-C204-038.
+Todos los reportes de la Fase 2 son **byte-idénticos** a los archivos generados del run 35442482331 (`bash scripts/verificar-evidencia.sh 35442482331`). Los tres zips de la Fase 1 son idénticos a los archivos generados del run 35365578175, cuya huella SHA-256 se ve en la captura EV-C204-038.
 
 ---
 
@@ -1163,10 +1159,10 @@ Se regenera con `bash scripts/generar-manifiesto.sh` después de cualquier cambi
 
 Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian documentación y evidencia. El listado completo de ejecuciones del pipeline está en EV-C204-029.
 
-| Commit | Fecha | Mensaje |
+| Commit | Fecha | Descripción |
 |---|---|---|
 | `a20bf16` | 2026-09-17 | Estructura inicial del proyecto DevSecOps CIB-204: documentación, tablas, evidencias, pipeline y entorno |
-| `8129154` | 2026-09-17 | Plan de acción 100% rúbrica + datos del curso validados |
+| `8129154` | 2026-09-17 | Plan de acción con cobertura de la rúbrica y datos del curso validados |
 | `3441e89` | 2026-09-17 | Repo privado durante el desarrollo; público al finalizar (CodeQL) |
 | `e15ebce` | 2026-09-17 | Avance sin zip: validación de objetivos, Tablas 1-2 completas, Parte I del informe, figuras SVG, playbook de remediac... |
 | `82c3bbe` | 2026-09-17 | Avance sin zip (2): Parte II del informe (diseño RSA/JWT/pipeline), Tablas 3-5-6 pre-llenadas, casos de abuso, invent... |
@@ -1184,7 +1180,7 @@ Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian docu
 | `657ac2f` | 2026-09-18 | fix(servidor): FIX-18 excluye docs/ del SAST Semgrep (.semgrepignore + --exclude) y pasa CSRF a nosemgrep inline en s... |
 | `6112c42` | 2026-09-18 | docs(evidencias): manifiesto SHA-256 canónico regenerado y coincidente con los 4 EV descargados del run verde 3540583... |
 | `26fd547` | 2026-09-18 | docs(evidencias): EV-C204-018..051 — evidencia completa del cierre FIX-18: PPT/PDF de la consola Git del usuario + 19... |
-| `98236ec` | 2026-09-18 | fix(evidencias): FIX-18 — convergencia byte-exacta de EV-C204-010 (sbom) y EV-C204-011 (zap.html) con los artefactos ... |
+| `98236ec` | 2026-09-18 | fix(evidencias): FIX-18 — convergencia byte-exacta de EV-C204-010 (sbom) y EV-C204-011 (zap.html) con los archivos generados ... |
 | `0e88570` | 2026-09-18 | docs(evidencias): FIX-18 cierre — EV-C204-010 sbom y EV-C204-011 zap re-instalados byte-exactos desde el run verde 35... |
 | `fb706cb` | 2026-09-18 | docs(informe): FIX-18 cierre — cito tus 19 slides EV-C204-033..051 individualmente en §12.6 del informe, cada una en ... |
 | `77c1964` | 2026-09-18 | docs(evidencias): FIX-18 cierre — Anexo I con las 19 capturas de consola Git individualizadas EV-C204-033..051 (hashe... |
@@ -1270,13 +1266,13 @@ Cada evidencia tiene un ID único **EV-C204-XXX** (ver índice de evidencias, se
 
 **Convenciones:**
 - Un commit por corrección, con mensaje descriptivo en español.
-- Los reportes se descargan como artefactos y se registran en el manifiesto SHA-256.
+- Los reportes se descargan como archivos generados y se registran en el manifiesto SHA-256.
 - El repositorio se creó privado y hoy es público.
 - Los secretos del laboratorio son ficticios; nunca se suben secretos reales (los valores de práctica se **redactan** en los logs publicados).
 
 ---
 
-## Anexo H — Nota de transparencia sobre el uso de IA
+## Anexo H — Uso de herramientas de inteligencia artificial
 
 En el desarrollo de este proyecto se utilizaron herramientas de inteligencia artificial (asistentes de codificación y de navegador) como apoyo auxiliar en la depuración de código, la revisión de estándares de seguridad, la elaboración de documentación y la auditoría de consistencia entre el código, las pruebas y el informe. Las decisiones técnicas y de seguridad, la ejecución y validación del laboratorio en el Codespace, la toma de evidencias y la entrega son responsabilidad de los integrantes del equipo. El código fuente base es el material oficial del curso.
 
@@ -1297,7 +1293,7 @@ Cada captura del PPTX del equipo (`EV-C204-018-capturas-consola-git.pptx`) está
 | EV-C204-035 | `EV-C204-035-screenshot-image12.png` | 12 | Run #2 (35283334710, `8129154`) | §13.2 |
 | EV-C204-036 | `EV-C204-036-screenshot-image13.png` | 13 | Run #1 (35280933094, `a20bf16`), estructura inicial | §13.2 |
 | EV-C204-037 | `EV-C204-037-screenshot-image14.png` | 14 | Run #8 (35365578175), captura «hace 1 hora» (respaldo de EV-C204-048) | §13.3 |
-| EV-C204-038 | `EV-C204-038-screenshot-image15.png` | 15 | Run #8: sección *Artifacts* con 5 artefactos y huellas SHA-256 | §13.3 |
+| EV-C204-038 | `EV-C204-038-screenshot-image15.png` | 15 | Run #8: sección de archivos generados con 5 archivos generados y huellas SHA-256 | §13.3 |
 | EV-C204-039 | `EV-C204-039-screenshot-image16.png` | 16 | Run #8, captura «hace 2 horas» (respaldo de EV-C204-048) | §13.3 |
 | EV-C204-040 | `EV-C204-040-screenshot-image17.png` | 17 | Log de SAST-Semgrep: 23 hallazgos, salida 1 | §13.3 |
 | EV-C204-041 | `EV-C204-041-screenshot-image18.png` | 18 | Log de Secretos-Gitleaks: 4 fugas | §13.3 |

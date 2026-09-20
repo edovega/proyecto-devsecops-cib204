@@ -1,6 +1,6 @@
 # Tabla 2 — Amenazas STRIDE
 
-> 📄 **Tabla a llenar** — Primer Avance. Modelado de amenazas con STRIDE (Microsoft): por cada amenaza, qué componente afecta, un ejemplo de ataque y cómo se frena.
+> Primer Avance. Modelado de amenazas con STRIDE (Microsoft): por cada amenaza, qué componente afecta, un ejemplo de ataque y cómo se frena.
 
 ## Amenazas STRIDE
 
@@ -49,6 +49,6 @@
 | Denial of service | CWE-400 (Consumo de recursos) | Sin límite de tamaño de entrada |
 | Elevation of privilege | CWE-250 (Ejecución con privilegios innecesarios) | Dockerfile con usuario root |
 
-## Nota de trazabilidad
+## Relación con otras secciones
 
 Esta tabla alimenta: informe §6, Tabla 3 (los hallazgos de Fase 1 se clasifican por amenaza/CWE), Tabla 5 (riesgo — la severidad aquí se cuantifica con P×I) y Tabla 6 (las pruebas de verificación de esta tabla se ejecutan y documentan).

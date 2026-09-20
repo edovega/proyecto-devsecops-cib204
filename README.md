@@ -11,10 +11,10 @@ Aplicación móvil que **cifra y descifra datos** (RSA) con un servicio backend 
 | Entregable | Peso | Documento |
 |---|---|---|
 | **Informe integrado** (primer avance + segundo avance + informe final) | 40% | [`docs/informe-maestro.md`](docs/informe-maestro.md) — sigue la plantilla del curso con sistema de evidencias, trazabilidad y análisis de riesgos |
-| **Tablas de entrega** | — | [`docs/tablas/`](docs/tablas/) — Tablas 1 a 6 completas con datos reales (requisitos, STRIDE, diagnóstico, antes/después, riesgo, pruebas) |
+| **Tablas de entrega** | — | [`docs/tablas/`](docs/tablas/) — Tablas 1 a 6 (requisitos, STRIDE, diagnóstico, antes/después, riesgo, pruebas) |
 | **Evidencias** | — | [`docs/evidencias/`](docs/evidencias/) — manifiesto SHA-256, capturas y figuras |
 | **Guía del proyecto** | — | [`guia-paso-a-paso.md`](guia-paso-a-paso.md) — plan completo y mapa de la rúbrica |
-| **Plan de acción** | — | [`docs/plan-de-accion.md`](docs/plan-de-accion.md) — cobertura 100% de la rúbrica (45/45): herramientas, acciones, evidencia y verificación por criterio |
+| **Plan de acción** | — | [`docs/plan-de-accion.md`](docs/plan-de-accion.md) — cobertura de la rúbrica: herramientas, acciones, evidencia y verificación por criterio |
 | **Validación de objetivos** | — | [`docs/validacion-objetivos.md`](docs/validacion-objetivos.md) — trazabilidad completa: cada objetivo del curso, entregable y criterio de rúbrica → dónde se desarrolla → cómo se excede |
 | **Playbook de remediación** | — | [`docs/remediacion-playbook.md`](docs/remediacion-playbook.md) — corrección de cada hallazgo esperado de la Fase 2 (secretos, eval, JWT, CORS, imagen, cabeceras) |
 | **Datos del curso** | — | [`docs/datos-del-curso.md`](docs/datos-del-curso.md) — datos validados del curso, docente e integrantes |
@@ -49,9 +49,9 @@ proyecto-devsecops-cib204
     ├─ plantilla-diagnostico.md plantilla de diagnóstico del curso
     ├─ validacion-objetivos.md  trazabilidad objetivos → dónde → cómo excede
     ├─ remediacion-playbook.md  correcciones de la Fase 2
-    ├─ plan-de-accion.md ....... cobertura 100% de la rúbrica
+    ├─ plan-de-accion.md ....... cobertura de la rúbrica
     ├─ datos-del-curso.md ...... datos del curso, docente e integrantes
-    ├─ tablas/ ................ Tablas 1–6 completas
+    ├─ tablas/ ................ Tablas 1–6
     └─ evidencias/ ............ capturas, figuras y manifiesto SHA-256
 ```
 

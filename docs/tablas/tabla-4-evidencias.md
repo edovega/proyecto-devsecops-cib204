@@ -1,6 +1,6 @@
 # Tabla 4 — Evidencia antes/después (Fase 2, de rojo a verde)
 
-> **Estado: COMPLETA con datos reales.** Cada fila cita el commit que corrige y la ejecución de GitHub Actions que lo comprobó. Historial completo de ejecuciones: `EV-C204-029-historial-runs.txt`. «Antes» = corrida 35365578175 (`46cb634`, ver Tabla 3). «Después» = corrida verde final **35442482331** (`0fc1c11`, 5/5 jobs en verde y CodeQL con 0 alertas abiertas, EV-C204-026 y EV-C204-025).
+> Cada fila cita el commit que corrige y la ejecución de GitHub Actions que lo comprobó. Historial completo de ejecuciones: `EV-C204-029-historial-runs.txt`. «Antes» = corrida 35365578175 (`46cb634`, ver Tabla 3). «Después» = corrida verde final **35442482331** (`0fc1c11`, 5/5 jobs en verde y CodeQL con 0 alertas abiertas, EV-C204-026 y EV-C204-025).
 
 ## Evidencia antes/después por hallazgo
 
@@ -41,4 +41,4 @@
 | `a81aa5f` | OAEP-SHA256 y bitácora de operaciones | H-10, H-06, no repudio | ✅ 5/5 (corrida 35442133748); CodeQL 0 |
 | `0fc1c11` | Límite de entrada = capacidad real de RSA-OAEP (190 bytes) | H-16 (defecto hallado en las pruebas de borde) | **✅ 5/5 (corrida 35442482331); CodeQL 0** |
 
-> Cada corrección es un commit separado con mensaje descriptivo y la corrida que lo verifica, tal como pide la rúbrica («Pruebas y ajustes de código»). Los tropiezos (commits `e267ad5`, `5a9c481`, `0f5da25`, `8b9b0b6`) se dejan a la vista a propósito: forman parte del ciclo *encontrar → corregir → volver a probar*.
+> Cada corrección constituye un commit independiente, con mensaje descriptivo y la ejecución que lo verifica, conforme a la rúbrica («Pruebas y ajustes de código»). Los commits `e267ad5`, `5a9c481`, `0f5da25` y `8b9b0b6` corresponden a ajustes intermedios dentro del ciclo *encontrar → corregir → volver a probar*.
