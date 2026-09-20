@@ -1159,10 +1159,10 @@ Se regenera con `bash scripts/generar-manifiesto.sh` después de cualquier cambi
 
 Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian documentación y evidencia. El listado completo de ejecuciones del pipeline está en EV-C204-029.
 
-| Commit | Fecha | Mensaje |
+| Commit | Fecha | Descripción |
 |---|---|---|
 | `a20bf16` | 2026-09-17 | Estructura inicial del proyecto DevSecOps CIB-204: documentación, tablas, evidencias, pipeline y entorno |
-| `8129154` | 2026-09-17 | Plan de acción 100% rúbrica + datos del curso validados |
+| `8129154` | 2026-09-17 | Plan de acción con cobertura de la rúbrica y datos del curso validados |
 | `3441e89` | 2026-09-17 | Repo privado durante el desarrollo; público al finalizar (CodeQL) |
 | `e15ebce` | 2026-09-17 | Avance sin zip: validación de objetivos, Tablas 1-2 completas, Parte I del informe, figuras SVG, playbook de remediac... |
 | `82c3bbe` | 2026-09-17 | Avance sin zip (2): Parte II del informe (diseño RSA/JWT/pipeline), Tablas 3-5-6 pre-llenadas, casos de abuso, invent... |
@@ -1180,7 +1180,7 @@ Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian docu
 | `657ac2f` | 2026-09-18 | fix(servidor): FIX-18 excluye docs/ del SAST Semgrep (.semgrepignore + --exclude) y pasa CSRF a nosemgrep inline en s... |
 | `6112c42` | 2026-09-18 | docs(evidencias): manifiesto SHA-256 canónico regenerado y coincidente con los 4 EV descargados del run verde 3540583... |
 | `26fd547` | 2026-09-18 | docs(evidencias): EV-C204-018..051 — evidencia completa del cierre FIX-18: PPT/PDF de la consola Git del usuario + 19... |
-| `98236ec` | 2026-09-18 | fix(evidencias): FIX-18 — convergencia byte-exacta de EV-C204-010 (sbom) y EV-C204-011 (zap.html) con los artefactos ... |
+| `98236ec` | 2026-09-18 | fix(evidencias): FIX-18 — convergencia byte-exacta de EV-C204-010 (sbom) y EV-C204-011 (zap.html) con los archivos generados ... |
 | `0e88570` | 2026-09-18 | docs(evidencias): FIX-18 cierre — EV-C204-010 sbom y EV-C204-011 zap re-instalados byte-exactos desde el run verde 35... |
 | `fb706cb` | 2026-09-18 | docs(informe): FIX-18 cierre — cito tus 19 slides EV-C204-033..051 individualmente en §12.6 del informe, cada una en ... |
 | `77c1964` | 2026-09-18 | docs(evidencias): FIX-18 cierre — Anexo I con las 19 capturas de consola Git individualizadas EV-C204-033..051 (hashe... |
