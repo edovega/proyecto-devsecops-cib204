@@ -1,7 +1,7 @@
 # Plantilla de diagnóstico — CIB-204
 
 > Plantilla oficial de diagnóstico del curso para documentar los resultados del análisis de seguridad.
-> **Estado: COMPLETA.** Se llenó con los hallazgos reales de la Fase 1 (Tabla 3) y alimenta el cálculo de riesgo (Tabla 5).
+> Se elabora con los hallazgos de la Fase 1 (Tabla 3) y alimenta el cálculo de riesgo (Tabla 5).
 
 ## Datos del diagnóstico
 

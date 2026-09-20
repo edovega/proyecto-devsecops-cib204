@@ -1,6 +1,6 @@
 # Tabla 3 — Diagnóstico de seguridad (Fase 1, pipeline en rojo)
 
-> **Estado: COMPLETA con datos reales.** Fuente: ejecución **35365578175** del pipeline (commit `46cb634`, código oficial sin remediar), descargada de GitHub Actions. Es la única corrida que refleja el proyecto tal como llegó, antes de corregir. Reportes: EV-C204-020/021/022 (zips de artefactos), EV-C204-027 (SBOM) y EV-C204-028 (log de los jobs en rojo); capturas de pantalla EV-C204-033 a EV-C204-051.
+> Fuente: ejecución **35365578175** del pipeline (commit `46cb634`, código oficial sin remediar), descargada de GitHub Actions. Es la única corrida que refleja el proyecto tal como llegó, antes de corregir. Reportes: EV-C204-020/021/022 (zips de archivos generados), EV-C204-027 (SBOM) y EV-C204-028 (log de los jobs en rojo); capturas de pantalla EV-C204-033 a EV-C204-051.
 
 ## Resultado por prueba
 
@@ -38,7 +38,7 @@ La columna **VULN** cruza con los marcadores `// [VULN-n]` que el código oficia
 
 **Reconciliación con los 23 de Semgrep:** 16 (H-14) + 1 (H-15) + 1 (H-04) + 1 (H-11) + 2 (H-03: `eval-detected` y `code-string-concat`) + 1 (H-13) + 1 (H-08) = **23**.
 
-**Nota de honestidad sobre la plantilla original:** la versión preliminar de esta tabla listaba «H-12 SCA / Trivy (fs)». En la corrida real el job SCA se detuvo en `npm audit` (código de salida 1) antes de llegar a Trivy (fs), por lo que ese hallazgo quedó cubierto por H-02 y H-07 y no se cuenta aparte. Los hallazgos H-06, H-10, H-12 y H-16 son debilidades reales del código oficial que **las herramientas no detectaron**: por eso la revisión manual del código sigue siendo necesaria además del pipeline.
+**Cobertura por herramienta.** El job SCA se detuvo en `npm audit` (código de salida 1) antes de ejecutar Trivy (fs), por lo que el hallazgo de dependencias de la imagen queda cubierto por H-02 y H-07. Los hallazgos H-06, H-10, H-12 y H-16 son debilidades del código oficial no reportadas por las herramientas automáticas y se identificaron mediante revisión del código, que complementa al pipeline.
 
 ## Dónde encontrar cada hallazgo
 

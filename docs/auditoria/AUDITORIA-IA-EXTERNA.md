@@ -44,7 +44,7 @@ gh run list --branch main --limit 3 --json headSha,conclusion --jq '.[]|"\(.head
 # 2. Manifiesto canónico
 sha256sum --check docs/evidencias/manifiesto-sha256.txt      # exit 0, todas «OK»
 
-# 3. Reportes instalados == artefactos del run verde (byte a byte)
+# 3. Reportes instalados == archivos generados del run verde (byte a byte)
 bash scripts/verificar-evidencia.sh 35442482331               # 4 × IDENTICO
 
 # 4. Las 19 capturas están en el informe

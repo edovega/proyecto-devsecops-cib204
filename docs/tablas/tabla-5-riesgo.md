@@ -1,6 +1,6 @@
 # Tabla 5 — Cálculo de riesgo
 
-> **Estado: COMPLETA.** Probabilidad e impacto se recalcularon con los hallazgos **confirmados** de la Fase 1 (Tabla 3) y se calcula el riesgo **residual** con la evidencia de la corrida verde 35442482331 (Tabla 4). Los valores de P e I son un juicio fundamentado del equipo con la escala documentada abajo; no son mediciones.
+> Probabilidad e impacto se calcularon con los hallazgos confirmados de la Fase 1 (Tabla 3), y el riesgo residual con la evidencia de la ejecución 35442482331 (Tabla 4). Los valores de P e I corresponden a una valoración fundamentada del equipo con la escala indicada; no son mediciones.
 
 ## Metodología
 
@@ -69,6 +69,6 @@ El orden de corrección de la Fase 2 siguió la prioridad de esta tabla: primero
 2. **Falso positivo de ZAP** «CSP: Failure to Define Directive with No Fallback» en respuestas 404 (informe §12.4).
 3. **Secretos históricos**: los valores de práctica siguen en el historial de git; son ficticios. En un proyecto real habría que rotarlos y reescribir el historial.
 
-## Nota de trazabilidad
+## Relación con otras secciones
 
 Esta tabla alimenta: informe §16, la plantilla de diagnóstico y la Tabla 4.

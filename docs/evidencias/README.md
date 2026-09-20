@@ -16,13 +16,13 @@ docs/evidencias/
 
 ## Referencia de run verde
 
-`RUN_VERDE=35442482331` — commit de código `0fc1c11`, 5/5 jobs en verde, CodeQL sin alertas abiertas. Los reportes EV-C204-008 a 011 son **byte-idénticos** a los artefactos de ese run.
+`RUN_VERDE=35442482331` — commit de código `0fc1c11`, 5/5 jobs en verde, CodeQL sin alertas abiertas. Los reportes EV-C204-008 a 011 son **byte-idénticos** a los archivos generados de ese run.
 
 ## Cómo verificar (desde la raíz del repositorio)
 
 ```bash
 sha256sum --check docs/evidencias/manifiesto-sha256.txt        # esperado: todos «OK»
-bash scripts/verificar-evidencia.sh 35442482331                 # reportes == artefactos del run (requiere gh)
+bash scripts/verificar-evidencia.sh 35442482331                 # reportes == archivos generados del run (requiere gh)
 ```
 
 ## Cómo regenerar tras un cambio
