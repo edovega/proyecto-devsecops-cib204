@@ -28,7 +28,7 @@ Es normal: el Codespace actual no trae Docker (se quitó para evitar el modo de 
 **Hecho** (run #27, commit `0fc1c11`).
 
 ## 6. Lo que debe confirmar con la docente
-- Las **fechas de entrega** (`docs/datos-del-curso.md`, sección 4): hoy dicen «referencia BóvedaSegura» y no están confirmadas.
+- Las fechas exactas de entrega, según indique la docente.
 - Que aceptan **CodeQL por «default setup»** con 5 jobs en el workflow (informe §12.1) en lugar de 6 jobs.
 
 ## Reglas de captura

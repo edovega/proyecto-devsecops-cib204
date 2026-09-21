@@ -1,7 +1,7 @@
 # Datos del curso — CIB-204 Seguridad del Software
 
 > Documento de validación de datos académicos para el proyecto DevSecOps.
-> Fuentes: programa oficial del curso (PDF), guía de laboratorio (docx) y proyecto previo BóvedaSegura (informe-maestro.md).
+> Fuentes: programa oficial del curso (PDF) y guía de laboratorio (docx).
 
 ## 1. Datos del curso
 
@@ -24,42 +24,32 @@
 
 | Campo | Valor | Fuente | Estado |
 |---|---|---|---|
-| Nombre | **MsC. Alejandra Corrales Vargas** | Guía de laboratorio ("Prof. Alejandra Corrales Vargas") + informe BóvedaSegura (confirmado por el estudiante) | ✅ validado |
-| Nota histórica | La plantilla maestra del curso traía "Carlos Antonio Cantero Granados"; el estudiante confirmó que la docente correcta es MsC. Alejandra Corrales Vargas | Historial de commits BóvedaSegura | ✅ resuelto |
+| Nombre | **MsC. Alejandra Corrales Vargas** | Guía de laboratorio («Prof. Alejandra Corrales Vargas») | ✅ validado |
 
 ## 3. Datos de los estudiantes
 
 | Campo | Valor | Fuente | Estado |
 |---|---|---|---|
-| Integrante 1 | **Eduardo J. Vega Arguedas** | Informe BóvedaSegura (Cuadro 1) + git config | ✅ validado |
-| Integrante 2 | **Keylor Elizondo Rodriguez** | Informe BóvedaSegura (Cuadro 1) | ✅ validado |
-| Correo (git) | eduardo.j.vega@gmail.com | git config del proyecto previo | ✅ validado |
+| Integrante 1 | **Eduardo J. Vega Arguedas** | Confirmado por el estudiante | ✅ validado |
+| Integrante 2 | **Keylor Elizondo Rodriguez** | Confirmado por el estudiante | ✅ validado |
+| Correo (git) | eduardo.j.vega@gmail.com | Configuración de git del repositorio | ✅ validado |
 | Usuario GitHub | edovega | gh auth status | ✅ validado |
 
-## 4. Fechas de entrega (cronograma del curso)
+## 4. Entregas del proyecto (cronograma del programa)
 
-| Entrega | Semana | Fecha (referencia BóvedaSegura) | Contenido | Estado |
-|---|---|---|---|---|
-| Primer Avance | 3 | Lunes 14 de septiembre de 2026 | Tabla 1 (requisitos) + Tabla 2 (STRIDE) + jerarquía + entorno | ⚠️ **confirmar fecha con la docente** |
-| Segundo Avance | 9 | Lunes 26 de octubre de 2026 | Tablas 3–6 (diagnóstico, antes/después, riesgo, pruebas) | ⚠️ **confirmar fecha con la docente** |
-| Informe Final | 14 | Lunes 30 de noviembre de 2026 | Informe integrado en PDF con todas las tablas | ⚠️ **confirmar fecha con la docente** |
+| Entrega | Semana | Contenido | Ponderación |
+|---|---|---|---|
+| Primer Avance | 3 | Tabla 1 (requisitos) + Tabla 2 (STRIDE) + jerarquía de diseño + entorno | 10 % |
+| Segundo Avance | 9 | Tablas 3–6 (diagnóstico, antes/después, riesgo, pruebas) | 15 % |
+| Informe Final | 14 | Informe integrado en PDF con todas las tablas | 15 % |
 
-> ⚠️ Las fechas provienen del cronograma del curso (semanas 3, 9 y 14) y del proyecto previo. **Confirmar con la docente** las fechas exactas de este cuatrimestre antes de fijarlas en el informe.
+Las fechas exactas de cada entrega son las que indique la docente.
 
-## 5. Datos pendientes de confirmar
-
-| Dato | Por qué importa | Dónde se usa |
-|---|---|---|
-| Números de carné de ambos integrantes | Portada del informe | Informe final |
-| Fechas exactas de entrega del cuatrimestre actual | Cronograma del informe | Informe final |
-| Confirmar que el equipo es el mismo (Eduardo + Keylor) para este laboratorio | Portada y autoría | Informe final |
-| Periodo académico (cuatrimestre/año) | Portada | Informe final |
-
-## 6. Datos del repositorio del laboratorio
+## 5. Datos del repositorio del laboratorio
 
 | Campo | Valor |
 |---|---|
 | Repositorio | https://github.com/edovega/proyecto-devsecops-cib204 |
-| Visibilidad | **Privado durante el desarrollo** → **público al finalizar** (requisito para CodeQL gratis y revisión del docente) |
-| Rama principal | `main` |
+| Visibilidad | Público |
+| Rama principal | `main`, protegida mediante el ruleset `proteger-main` |
 | Identidad git | Eduardo J. Vega Arguedas <eduardo.j.vega@gmail.com> |

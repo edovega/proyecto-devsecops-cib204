@@ -1208,8 +1208,6 @@ Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian docu
 | 10–13 | Protección de rama, revisión de CodeQL, informe final | Informe Parte V | ✅ CodeQL revisado · ✅ protección de `main` (EV-C204-014) |
 | 14 | **Informe Final (15 %)**: PDF integrado + repo público | Entrega | ✅ PDF y repo · ⏳ entrega formal a la docente |
 
-> Las fechas exactas de entrega figuran en `docs/datos-del-curso.md` y siguen marcadas «confirmar fecha con la docente».
-
 ---
 
 ## Anexo F — Guía de lectura (evidencias, siglas y archivos)
