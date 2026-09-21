@@ -38,7 +38,7 @@
 | Node.js | v18.19.1 | ✅ | Validación local de código (el lab usa v20 en Codespace) |
 | Docker | 29.8.1 | ✅ | Pruebas locales de contenedores |
 | Python 3 | 3.12.3 | ✅ | Procesamiento de reportes, generación de PDF |
-| Pandoc | — | ⚠️ instalar | Conversión informe → PDF (como en BóvedaSegura) |
+| Pandoc | — | ✅ instalado | Conversión informe → DOCX/PDF |
 
 ---
 
@@ -190,9 +190,8 @@ Criterios de cierre del proyecto:
 | Riesgo | Impacto | Mitigación |
 |---|---|---|
 | ✅ Zip oficial integrado (`9b1bddb`) | — | Fase 1 real ejecutada y documentada (Tabla 3) |
-| CodeQL requiere repo público | Job sin resultados mientras esté privado | Repo **privado durante el desarrollo** (Semgrep es la prueba SAST principal); se hace **público al finalizar** — acción: `gh repo edit edovega/proyecto-devsecops-cib204 --visibility public --accept-visibility-change-consequences` |
+| CodeQL requiere repositorio público | Sin resultados si el repositorio es privado | El repositorio es público |
 | Horas de Codespace limitadas | Tiempo de trabajo | Detener Codespace al terminar; plan gratuito alcanza |
-| Fechas de entrega no confirmadas | Informe con fechas incorrectas | Confirmar con la docente (sección 4 de datos-del-curso) |
 | Pandoc no instalado | PDF final | ✅ Resuelto: pandoc 3.9 verificado (venv `pypandoc-binary`); LaTeX se instala en el Codespace (root) o se usa DOCX/GitHub-Print como alternativa |
 
 ---
