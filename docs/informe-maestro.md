@@ -1159,38 +1159,38 @@ Se regenera con `bash scripts/generar-manifiesto.sh` después de cualquier cambi
 
 Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian documentación y evidencia. El listado completo de ejecuciones del pipeline está en EV-C204-029.
 
-| Commit | Fecha | Descripción |
-|---|---|---|
-| `a20bf16` | 2026-09-17 | Estructura inicial del proyecto DevSecOps CIB-204: documentación, tablas, evidencias, pipeline y entorno |
-| `8129154` | 2026-09-17 | Plan de acción con cobertura de la rúbrica y datos del curso validados |
-| `3441e89` | 2026-09-17 | Repo privado durante el desarrollo; público al finalizar (CodeQL) |
-| `e15ebce` | 2026-09-17 | Avance sin zip: validación de objetivos, Tablas 1-2 completas, Parte I del informe, figuras SVG, playbook de remediac... |
-| `82c3bbe` | 2026-09-17 | Avance sin zip (2): Parte II del informe (diseño RSA/JWT/pipeline), Tablas 3-5-6 pre-llenadas, casos de abuso, invent... |
-| `9b1bddb` | 2026-09-17 | Integra material oficial (zip CIB-204 §17): 13 vulnerabilidades reales VULN-1..13 con CWE (RSA-PKCS1/1024, .env con A... |
-| `9a63eb8` | 2026-09-17 | Anexo F cierre §17: informe maestro renderizado en PDF (15 pag, pdflatex limpio) y DOCX con acentos ok; manifiesto SH... |
-| `46cb634` | 2026-09-18 | devcontainer: quita docker-in-docker (causa recovery-mode en plan gratis 2-core); pasa a imagen Node 20 ligera para a... |
-| `8b8b86e` | 2026-09-18 | remediacion(servidor): cierra 13 hallazgos SAST para pipeline verde Fase 2 |
-| `e267ad5` | 2026-09-18 | fix(imagen): quita COPY public residuo que rompia el build (Trivy+ZAP+SBOM en cascada) |
-| `5a9c481` | 2026-09-18 | fix(imagen): base node:22-bookworm-slim cierra CVE-2026-76642/76643 de Trivy (util-linux 2.40 parcheado) |
-| `e028d74` | 2026-09-18 | docs(informe): §8 documenta correccion del Dockerfile (COPY public no era del zip) y CodeQL default setup |
-| `cc759ad` | 2026-09-18 | fix(pipeline): fija acciones a SHA completo (16 hallazgos supply chain Semgrep) y suprime falso positivo CSRF (API JW... |
-| `f3f9ab4` | 2026-09-18 | fix(imagen): multi-stage node:24-trixie-slim + apt upgrade + quita npm del runtime; Trivy 0 hallazgos con --ignore-un... |
-| `b0115df` | 2026-09-18 | docs(informe): §8.5/§8.6 y playbook DoD actualizados con pipeline verde (5 jobs + CodeQL default setup) y riesgo resi... |
-| `0f5da25` | 2026-09-18 | fix(servidor): FIX-17 Permissions-Policy (camera/mic/geo/payment/usb=()) cierra hallazgo Low de ZAP 'Permissions Poli... |
-| `657ac2f` | 2026-09-18 | fix(servidor): FIX-18 excluye docs/ del SAST Semgrep (.semgrepignore + --exclude) y pasa CSRF a nosemgrep inline en s... |
-| `6112c42` | 2026-09-18 | docs(evidencias): manifiesto SHA-256 canónico regenerado y coincidente con los 4 EV descargados del run verde 3540583... |
-| `26fd547` | 2026-09-18 | docs(evidencias): EV-C204-018..051 — evidencia completa del cierre FIX-18: PPT/PDF de la consola Git del usuario + 19... |
-| `98236ec` | 2026-09-18 | fix(evidencias): FIX-18 — convergencia byte-exacta de EV-C204-010 (sbom) y EV-C204-011 (zap.html) con los archivos generados ... |
-| `0e88570` | 2026-09-18 | docs(evidencias): FIX-18 cierre — EV-C204-010 sbom y EV-C204-011 zap re-instalados byte-exactos desde el run verde 35... |
-| `fb706cb` | 2026-09-18 | docs(informe): FIX-18 cierre — cito tus 19 slides EV-C204-033..051 individualmente en §12.6 del informe, cada una en ... |
-| `77c1964` | 2026-09-18 | docs(evidencias): FIX-18 cierre — Anexo I con las 19 capturas de consola Git individualizadas EV-C204-033..051 (hashe... |
-| `86ff781` | 2026-09-19 | docs(auditoria): INSTRUCCIONES-AUDITORIA-AI.md — handoff autocontenido para auditoría externa por IA: qué/cómo/por-qu... |
-| `8b9b0b6` | 2026-09-19 | fix(auth): valida tokens de Keycloak con RS256 + JWKS (guia 10.5, informe 11.2) |
-| `c27d28d` | 2026-09-19 | test(auth): secreto HS256 aleatorio en la prueba (Semgrep jwt-hardcode lo marcaba como credencial fija) |
-| `500b39c` | 2026-09-19 | fix(servidor): FIX-19 limite de peticiones por IP (CodeQL js/missing-rate-limiting) |
-| `a81aa5f` | 2026-09-19 | fix(servidor): FIX-20 OAEP-SHA256 explicito y FIX-21 bitacora de operaciones |
-| `125d455` | 2026-09-19 | test(e2e): altera un caracter central de la firma (el ultimo caracter base64 no cambia los bytes) |
-| `0fc1c11` | 2026-09-19 | fix(servidor): FIX-22 limite de entrada = capacidad real de RSA-OAEP (190 bytes) |
+| Commit | Fecha | Tipo | Ámbito |
+|---|---|---|---|
+| `a20bf16` | 2026-09-17 | Estructura | Proyecto |
+| `8129154` | 2026-09-17 | Documentación | Informe y tablas |
+| `3441e89` | 2026-09-17 | Documentación | Repositorio |
+| `e15ebce` | 2026-09-17 | Documentación | Informe y tablas |
+| `82c3bbe` | 2026-09-17 | Documentación | Informe y tablas |
+| `9b1bddb` | 2026-09-17 | Integración | Material oficial |
+| `9a63eb8` | 2026-09-17 | Documentación | Informe y tablas |
+| `46cb634` | 2026-09-18 | Entorno | Codespace |
+| `8b8b86e` | 2026-09-18 | Corrección | servidor |
+| `e267ad5` | 2026-09-18 | Corrección | imagen |
+| `5a9c481` | 2026-09-18 | Corrección | imagen |
+| `e028d74` | 2026-09-18 | Documentación | informe |
+| `cc759ad` | 2026-09-18 | Corrección | pipeline |
+| `f3f9ab4` | 2026-09-18 | Corrección | imagen |
+| `b0115df` | 2026-09-18 | Documentación | informe |
+| `0f5da25` | 2026-09-18 | Corrección | servidor |
+| `657ac2f` | 2026-09-18 | Corrección | servidor |
+| `6112c42` | 2026-09-18 | Documentación | evidencias |
+| `26fd547` | 2026-09-18 | Documentación | evidencias |
+| `98236ec` | 2026-09-18 | Corrección | evidencias |
+| `0e88570` | 2026-09-18 | Documentación | evidencias |
+| `fb706cb` | 2026-09-18 | Documentación | informe |
+| `77c1964` | 2026-09-18 | Documentación | evidencias |
+| `86ff781` | 2026-09-19 | Documentación | auditoria |
+| `8b9b0b6` | 2026-09-19 | Corrección | auth |
+| `c27d28d` | 2026-09-19 | Pruebas | auth |
+| `500b39c` | 2026-09-19 | Corrección | servidor |
+| `a81aa5f` | 2026-09-19 | Corrección | servidor |
+| `125d455` | 2026-09-19 | Pruebas | e2e |
+| `0fc1c11` | 2026-09-19 | Corrección | servidor |
 
 ---
 
@@ -1206,7 +1206,7 @@ Commits hasta `0fc1c11` (el código evaluado); los posteriores solo cambian docu
 | 8 | Pentest, riesgos (Tabla 5), pruebas (Tabla 6) | Tablas 5–6 | ✅ |
 | 9 | **Segundo Avance (15 %)**: diagnóstico, remediación, pruebas | Informe Parte III–IV | ✅ |
 | 10–13 | Protección de rama, revisión de CodeQL, informe final | Informe Parte V | ✅ CodeQL revisado · ✅ protección de `main` (EV-C204-014) |
-| 14 | **Informe Final (15 %)**: PDF integrado + repo público | Entrega | ✅ PDF y repo · ⏳ entrega formal a la docente |
+| 14 | **Informe Final (15 %)**: PDF integrado + repo público | Entrega | ✅ PDF y repositorio |
 
 ---
 

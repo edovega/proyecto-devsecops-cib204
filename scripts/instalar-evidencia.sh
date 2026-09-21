@@ -30,6 +30,6 @@ E
   echo; gh run view "$RUN" --json jobs --jq '.jobs[]|"\(.conclusion)\t\(.name)\t\(.startedAt) -> \(.completedAt)"'
   echo; echo "# Artefactos (nombre y tamano)"; gh api "repos/$REPO/actions/runs/$RUN/artifacts" --jq '.artifacts[]|"\(.name)\t\(.size_in_bytes) bytes"'
   echo; echo "# CodeQL (default setup) sobre el mismo commit"; gh api "repos/$REPO/code-scanning/analyses?per_page=30" --jq '.[]|select(.commit_sha=="'"$SHA"'")|"\(.category)\tresultados=\(.results_count)\treglas=\(.rules_count)"'; } > $C/EV-C204-026-run-verde.txt
-{ echo "# Historial completo de ejecuciones del pipeline (gh run list)"; echo "# Generado: $GEN"; echo "# id_run	commit	resultado	fecha	titulo"
-  gh run list --workflow "Pipeline DevSecOps CIB-204" --limit 100 --json databaseId,headSha,conclusion,createdAt,displayTitle --jq 'reverse|.[]|"\(.databaseId)\t\(.headSha[0:7])\t\(.conclusion)\t\(.createdAt)\t\(.displayTitle[0:90])"'; } > $C/EV-C204-029-historial-runs.txt
+{ echo "# Historial completo de ejecuciones del pipeline (gh run list)"; echo "# Generado: $GEN"; echo "# id_run	commit	resultado	fecha"
+  gh run list --workflow "Pipeline DevSecOps CIB-204" --limit 100 --json databaseId,headSha,conclusion,createdAt --jq 'reverse|.[]|"\(.databaseId)\t\(.headSha[0:7])\t\(.conclusion)\t\(.createdAt)"'; } > $C/EV-C204-029-historial-runs.txt
 rm -rf "$TMP"; echo "Evidencia instalada desde el run $RUN (commit $SHA)"
